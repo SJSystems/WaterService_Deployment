@@ -1,0 +1,59 @@
+﻿@model List<WaterService.FrontEnd.WebUI.Models.Pages.VentasEntregas_RegistroArticulo>
+@{
+    Layout = null;
+}
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <tr class="tr_articulo">
+            <td class="center">
+                <button type="button" onclick="Modelo.EliminarArticulo(this);" class="btn  btn-sm  btn-danger btn-round center">
+                     <i class="ace-icon fa fa-trash-o "></i>
+                </button>
+            </td>
+            <td>
+                  @if (item.PuedeSeleccionar)
+                  {
+                      @Html.DropDownList( "ArticuloSeleccionado", new SelectList(item.ArticulosLista, "id", "articulo"),new { @class="col-xs-10 col-sm-5"})
+                  }
+                  else
+                  {
+                       <h5>@item.NombreArticuloSeleccionado</h5> 
+                      <input type="hidden" class="datosArticulo articuloVendido" 
+                             precioMaximo="@item.PrecioUnitario"
+                             articulo_id="@item.Articulo_id"
+                             nombreArticulo="@item.NombreArticuloSeleccionado"
+                             tipoArticulo_id="@item.TipoArticuloSeleccionado"
+                             cantidadSinCosto="@item.CantidadDisponibleSinCosto"
+                          />
+                  }
+            </td>
+            <td class="center">
+                <input type="text" class="input-mini spinner-input form-control numericControl txt_cantidadArticulo"  value="@item.Cantidad" maxlength="3">
+
+            </td>
+            <td class="center">
+                <h5>
+                    $<span class="precioUnitarioArticulo">@item.PrecioUnitario</span>
+                </h5>
+            </td>
+
+            <td class="center">
+                <h5>
+                    $<strong> <span class="subTotalArticulo">@item.Subtotal</span> </strong>
+                </h5>
+            </td>
+            
+          @* <td>
+                <div class="input-group">
+					<span class="input-group-addon">
+						<i class="ace-icon fa fa-usd"></i>
+					</span>
+					<input class="form-control " readonly="true" value="@item.Subtotal" type="text">
+				</div>
+            </td>*@
+        </tr>
+    }
+}

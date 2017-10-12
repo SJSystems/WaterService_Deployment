@@ -1,0 +1,190 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Cliente_EditDomicilio
+@{
+    ViewBag.Title = "Editar Domicilio";
+}
+
+@Html.Partial("_PasosCliente",Model.ClienteModelo)
+
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCrFetYLnnlcxcJjEhP79agcSbKo1_mAGg"></script>
+
+<div class="widget-box">
+		<div class="widget-header">
+			<h4 class="widget-title">Domicilio del Cliente: @Model.ClienteModelo.nombreCliente</h4>
+		</div>
+
+		<div class="widget-body">
+			<div class="widget-main no-padding">
+				                				
+                @using (Html.BeginForm("EditDomicilio", "Clientes", FormMethod.Post, new { id = "form_edit", name = "form_edit", @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.HiddenFor(x=> x.ClienteModelo.id)
+                    @Html.HiddenFor(x=> x.ClienteModelo.domicilio_id)
+                    @Html.HiddenFor(x=> x.DomicilioModelo.id)
+
+                    
+					<!-- <legend>Form</legend> -->
+					<fieldset>
+
+                        <div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right">Barrio</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+				                   @Html.DropDownListFor(x => x.DomicilioModelo.barrio_id, new SelectList(Model.Barrios, "id", "barrioCiudadProvincia"), new { @class=" chosen-select input-group col-xs-10 col-sm-3"})										
+                                </div>                                
+                                <div class="mensajeValidacion help-block"></div>
+							</div>
+						</div>
+
+                        <div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right">Calle</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									@Html.DropDownListFor(x => x.DomicilioModelo.calle_id, new SelectList(Model.Calles, "id", "nombreCalle"), new { @class="input-group col-xs-10 col-sm-3 chosen-select", })
+                                </div>                                
+                                <div class="mensajeValidacion help-block"></div>
+							</div>
+						</div>
+                        
+					    <div class="form-group">
+					        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Número de Puerta</label>
+					        <div class="col-xs-12 col-sm-3">
+					            <div class="clearfix">
+					                @Html.TextBoxFor(x=>x.DomicilioModelo.numeroPuerta, new { fieldType="text", errorMessage="ej: 4324", @class="validate col-xs-10 col-sm-4 ", placeholder="ej: 4231",type="text"})								
+					                <button class="btn btn-white btn-default btn-round" type="button" onclick="Modelo.ObtenerDireccionEnMapaPorDireccion(); return false;">
+					                    <i class="ace-icon fa fa-map-marker red2"></i>										
+					                </button>
+					            </div>                                
+					            <div class="mensajeValidacion help-block"></div>
+					        </div>
+					    </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-3 no-padding-right">Domicilio libre</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(x => x.DomicilioModelo.domicilioNoParametrizado, new { fieldType = "text", errorMessage = "Ingrese el nombre del cliente", @class = " col-xs-10 col-sm-12 ", placeholder = "", type = "text" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                 <div class="col-sm-12">
+
+                    <div class="row">
+                        <div class="col-sm-3">
+                        
+                            <div class="form-group">
+							    <label class="control-label col-xs-12 col-sm-3 no-padding-right">Piso</label>
+							    <div class="col-xs-12 col-sm-9">
+								    <div class="clearfix">
+									    @Html.TextBoxFor(x=>x.DomicilioModelo.piso, new { fieldType="text", errorMessage="Ingrese el nombre del cliente", @class=" col-xs-10 col-sm-8 ", placeholder="",type="text"})								
+                                    </div>                                
+                                    <div class="mensajeValidacion help-block"></div>
+							    </div>
+						    </div>
+
+                            <div class="form-group">
+							    <label class="control-label col-xs-12 col-sm-3 no-padding-right">Depto</label>
+							    <div class="col-xs-12 col-sm-9">
+								    <div class="clearfix">
+									    @Html.TextBoxFor(x=>x.DomicilioModelo.depto, new { fieldType="text", errorMessage="Ingrese el nombre del cliente", @class=" col-xs-10 col-sm-8 ", placeholder="",type="text"})								
+                                    </div>                                
+                                    <div class="mensajeValidacion help-block"></div>
+							    </div>
+						    </div>
+
+                        </div>
+
+                        <div class="col-sm-3">
+                                              
+                        <div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right">Torre</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									@Html.TextBoxFor(x=>x.DomicilioModelo.torre, new { fieldType="text", errorMessage="Ingrese el nombre del cliente", @class=" col-xs-10 col-sm-8 ", placeholder="ej: Torre A",type="text"})								
+                                </div>                                
+                                <div class="mensajeValidacion help-block"></div>
+							</div>
+						</div>
+
+                        <div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right">CP</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									@Html.TextBoxFor(x=>x.DomicilioModelo.codigoPostal, new { fieldType="text", errorMessage="Ingrese el nombre del cliente", @class=" col-xs-10 col-sm-8 ", placeholder="ej: 5000X",type="text"})								
+                                </div>                                
+                                <div class="mensajeValidacion help-block"></div>
+							</div>
+						</div>
+
+                    </div>
+
+                        <div class="col-sm-3">
+                                              
+                            <div class="form-group">
+							    <label class="control-label col-xs-12 col-sm-3 no-padding-right">Lote</label>
+							    <div class="col-xs-12 col-sm-9">
+								    <div class="clearfix">
+									    @Html.TextBoxFor(x=>x.DomicilioModelo.lote, new { fieldType="text", errorMessage="Ingrese el nombre del cliente", @class=" col-xs-10 col-sm-8 ", placeholder="",type="text"})								
+                                    </div>                                
+                                    <div class="mensajeValidacion help-block"></div>
+							    </div>
+						    </div>
+
+                            <div class="form-group">
+							    <label class="control-label col-xs-12 col-sm-3 no-padding-right">Manzana</label>
+							    <div class="col-xs-12 col-sm-9">
+								    <div class="clearfix">
+									    @Html.TextBoxFor(x=>x.DomicilioModelo.manzana, new { fieldType="text", errorMessage="Ingrese el nombre del cliente", @class=" col-xs-10 col-sm-8 ", placeholder="",type="text"})								
+                                    </div>                                
+                                    <div class="mensajeValidacion help-block"></div>
+							    </div>
+						    </div>
+
+                        </div>
+                                          
+                        <div class="col-sm-3">
+                                              
+                        <div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right">Latitud</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									@Html.TextBoxFor(x=>x.DomicilioModelo.altitud, new { fieldType="text", errorMessage="Ingrese la latitud", @class=" col-xs-10 col-sm-8 ", placeholder="",type="text"})								
+                                </div>                                
+                                <div class="mensajeValidacion help-block"></div>
+							</div>
+						</div>
+
+                        <div class="form-group">
+							<label class="control-label col-xs-12 col-sm-3 no-padding-right">Longitud</label>
+							<div class="col-xs-12 col-sm-9">
+								<div class="clearfix">
+									@Html.TextBoxFor(x=>x.DomicilioModelo.longitud, new { fieldType="text", errorMessage="Ingrese la longitud", @class=" col-xs-10 col-sm-8 ", placeholder="",type="text"})								
+                                </div>                                
+                               <button class="btn btn-white btn-default btn-round" type="button" onclick="Modelo.ObtenerCoordenadasDelMarker(); return false;">
+										<i class="ace-icon fa fa-map-marker red2"></i>										
+									</button>
+							</div>
+						</div>
+
+                    </div>
+                    </div>
+                    
+                     <div id="div_map" style="width: 100%; height: 300px;"></div>  
+
+                  </div>
+                    
+                    </fieldset>                    
+                    
+					<div class="form-actions center">
+						<button type="button" id="btn_domicilio" class="btn btn-sm btn-success">
+							Guardar Domicilio del Cliente
+							<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+						</button>
+					</div>
+                } 
+			</div>
+		</div>
+	</div>
+
+<script src="~/js/Views/Cliente_EditDomicilio.js"></script>

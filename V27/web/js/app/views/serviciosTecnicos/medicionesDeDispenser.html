@@ -1,0 +1,80 @@
+﻿<h4 class="header blue bolder smaller"> &nbsp; &nbsp; Mediciones de dispenser</h4>
+
+<div class="row">
+    <div class="col-sm-12">
+
+        <div class="form-group">
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Dispenser </label>
+
+                <div class="col-sm-9">
+                    Nro interno:
+                    <strong>
+                        {{dispenser.numeroInterno}}
+                    </strong>
+                    <br />
+                    Serie:
+                    <strong>
+                        {{dispenser.numeroSerie}}
+                    </strong>
+                    <br />
+                    Marca y color:
+                    <strong>
+                        {{dispenser.marcaDispenser}} - {{dispenser.color}}
+                    </strong>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+
+
+        <div class="scroll-content" style="max-height: 500px;">
+
+            <div class="profile-activity clearfix" ng-repeat="parametro in parametros">
+               
+                <div class="form-group" >
+                    <label class="col-sm-4 control-label no-padding-right">
+                        <label class="inline">
+                            <input type="checkbox" class="ace" ng-model="parametro.incluir">
+                            <span class="lbl"> {{parametro.valorTexto}}</span>
+                        </label>
+                    </label>
+
+                    <div class="col-sm-8">
+                        <input class="input-small" type="text" placeholder="valor" ng-model="parametro.valor" ng-disabled="!parametro.incluir">
+                        <input class="input" type="text" placeholder="observaciones..." ng-model="parametro.observaciones" ng-disabled="!parametro.incluir" style="width:75%">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+
+<div class="clearfix form-actions">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-3">
+            <button class="btn btn-info" type="button" ng-click="guardar()">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                Guardar
+            </button>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-danger" type="button" ng-click="cancelar()">
+                <i class="ace-icon fa fa-times bigger-110"></i>
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>

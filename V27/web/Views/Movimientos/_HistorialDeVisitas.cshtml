@@ -1,0 +1,29 @@
+﻿@model  List<WaterService.Common.Entities.DTOs.VIEW_VisitasAClientes_DTO>
+@{
+    Layout = null;
+}
+
+  <table class="table">
+      <thead>
+           <th>Fecha</th>
+          <th>Visita</th>
+          <th>Tipo</th>
+          <th>Reparto</th>
+          
+      </thead>
+    <tbody>
+        
+       @foreach (var item in Model)
+       {
+           <tr>
+               <td>@item.fechaHora.ToString("dd/MM/yyyy HH:mm")</td>
+               <td>@item.resultadoVisita</td>
+               <td>@item.tipoVisita</td>
+               <td>@item.nombreRepartoHojaDeRuta</td>
+               
+           </tr>
+
+       }
+
+    </tbody>
+</table>

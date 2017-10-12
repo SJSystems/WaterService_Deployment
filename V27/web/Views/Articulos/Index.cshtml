@@ -1,0 +1,110 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Articulo_Index
+
+@{
+    ViewBag.Title = "Editar Articulo";
+}
+
+<div id="div-buscar-articulos" ng-app="mainApp" ng-controller="buscarArticulosController">
+    <h2>Buscar Articulos</h2>
+
+    @using (Html.BeginForm("BuscarArticulos", "Articulos", FormMethod.Post, new { id = "form_buscar", name = "form_buscar", @class = "form-horizontal", role = "form" }))
+    {
+        <fieldset>
+
+            <div class="col-sm-6">
+
+                @*nombreArticulo*@
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Nombre artículo</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            @Html.TextBoxFor(x => x.ArticuloModelo.nombreArticulo,
+                                            new
+                                            {
+                                                fieldType = "text",
+                                                errorMessage = "Ingrese el nombre del artículo",
+                                                @class = " col-xs-10 col-sm-8 ",
+                                                placeholder = "nombre del artículo",
+                                                type = "text"
+                                            })
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+                @*codigoInterno*@
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Código Interno</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            @Html.TextBoxFor(x => x.ArticuloModelo.codigoInterno,
+                                            new
+                                            {
+                                                fieldType = "text",
+                                                errorMessage = "Ingrese el código interno ",
+                                                @class = "col-xs-10 col-sm-8 ",
+                                                placeholder = "código del artículo",
+                                                type = "text"
+                                            })
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+                @*Rubros*@
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Rubro</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            @Html.DropDownListFor(x => x.ArticuloModelo.rubro_ids,
+                                                new SelectList(Model.Rubros, "valor_ids", "valorTexto"),
+                                                new { @class = "input-group col-xs-10 col-sm-8" })
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+
+                @*Tipos*@
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            @Html.DropDownListFor(x => x.ArticuloModelo.tipoArticulo_ids,
+                                                new SelectList(Model.Tipos, "valor_ids", "valorTexto"),
+                                                new { @class = "input-group col-xs-10 col-sm-8" })
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </fieldset>
+
+        <div class="form-actions center">
+
+            <button type="submit" id="btn_submit" class="btn btn-sm btn-primary">
+                Buscar Articulos
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+            </button>
+
+            <a href="/Articulos/Create" id="btn_nuevaArticulo" class="btn btn-sm btn-success">
+                Nuevo Articulo
+                <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+            </a>
+
+        </div>
+    }
+
+    <div id="div_resultadoBusqueda">
+    </div>
+</div>
+
+
+<script src="~/js/Views/Articulos_Index.js"></script>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/articulosControllers.js"></script>

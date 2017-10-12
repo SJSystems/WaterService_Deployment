@@ -1,0 +1,109 @@
+﻿<div ng-controller="incidentesDeClienteController">
+
+    <div class="widget-container-col ">
+        <div class="widget-box">
+
+            <div class="widget-header">
+                <h4 class="widget-title">Pedidos</h4>
+                <div class="widget-toolbar">
+                    <a href="/Incidentes/#?clienteId={{obtenerClienteId()}}" target="_blank" class="btn btn-success btn-sm ">
+                        <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+                        Nuevo incidente
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main">
+
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <label class="control-label col-sm-4 padding-right">Desde</label>
+                            <div class="input-group">
+                                <input class="validate form-control date-picker col-xs-10 col-sm-5 "
+                                       placeholder="dd/mm/yyyy" type="text"
+                                       ng-model="fechaDesde">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label class="control-label col-sm-4 padding-right">Hasta</label>
+                            <div class="input-group">
+                                <input class="validate form-control date-picker col-xs-10 col-sm-8 "
+                                       placeholder="dd/mm/yyyy"
+                                       ng-model="fechaHasta">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <select class="form-control"
+                                    ng-model="tipoDeIncidenteId"
+                                    ng-options="tipo.valor_ids as tipo.valorTexto for tipo in tiposDeIncidentes"></select>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-purple btn-sm " ng-click="buscarIncidentes()">
+                                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                                Buscar
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha Registro</th>
+                <th>Tipo</th>
+                <th>Subtipo</th>
+                <th>Severidad</th>
+                <th>Comentarios</th>
+                <th>Estimada</th>
+                <th>Estado</th>
+                <th>Responsable</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="incidente in incidentes">
+
+                <td>{{incidente.id}}</td>
+                <td>{{incidente.fechaHoraRegistro.slice(6, -2)  |  date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{incidente.tipoIncidente}}</td>
+                <td>{{incidente.subtipoIncidente}}</td>
+                <td>{{incidente.severidad}}</td>
+                <td>
+                    <small>
+                        {{incidente.descripcion}}
+                    </small>
+                </td>
+                <td>{{(incidente.fechaCierreEstimado!=null? incidente.fechaCierreEstimado.slice(6, -2) :'') |  date:'dd/MM/yyyy' }}</td>
+                <td>{{incidente.estadoIncidente}}</td>
+                <td>{{incidente.usuarioResponsable}}</td>
+                <td>
+                    <a href="javascript:return false;"
+                       ng-click="VerIncidente(incidente)">
+                        Ver
+                    </a>
+                                        
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+

@@ -1,0 +1,22 @@
+﻿@model WaterService.Common.Entities.DTOs.CiclosDeFacturacionDTO
+
+ <tr class="tr_resultado">
+     <td> @Html.EditorFor(x=>x.diaInicio, new { @class="decimalFormat"})</td>
+     <td> @Html.EditorFor(x=>x.imputarAbonos)</td>
+     <td> @Html.EditorFor(x=>x.facturarAbonoEnInicio)</td>
+
+     <td> @Html.EditorFor(x=>x.diaFin, new { @class="decimalFormat"})</td>
+     <td> @Html.EditorFor(x=>x.facturarAbonoEnFin)</td>
+
+     <td> 
+         @Html.HiddenFor(x=>x.id)
+         @Html.HiddenFor(x => x.dactosFacturacion_id)
+         @Html.HiddenFor(x => x.eliminado, new { @class="txt_eliminado"})
+
+         <button type="button" class="red btn_borrarCiclo " onclick="Modelo.EliminarCiclo(this);" >
+            <i class="ace-icon fa fa-trash-o bigger-130"></i>
+        </button>
+
+     </td>
+</tr>
+

@@ -1,0 +1,176 @@
+﻿@model  WaterService.FrontEnd.WebUI.Models.Pages.CuentaCorriente_Facturas
+@{
+    Layout = null;
+}
+
+<div>
+
+    <div class="tabbable">
+        <ul class="nav nav-tabs" style="position: initial;">
+            <li class="active">
+                <a data-toggle="tab" href="#facturasDelCliente">
+                    <i class="ace-icon fa fa-file-pdf-o bigger-120"></i>
+                    Facturas
+                </a>
+            </li>
+
+            <li>
+                <a data-toggle="tab" href="#ajustesFacturacionDelCliente">
+                    <i class="ace-icon fa fa-align-justify bigger-120"></i>
+                    Ajustes de facturación
+                </a>
+            </li>
+
+        </ul>
+
+        <div class="tab-content">
+            <div id="facturasDelCliente" class="tab-pane fade in active">
+
+                <div class="alert alert-info hide" id="div_InformacionFactura">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
+                    <strong>Información de Afip de la Factura</strong>
+                    <span id="span_detallesFactura"></span>
+                </div>
+
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>n°</th>
+                            <th>Fecha</th>
+                            <th>Vencimientos</th>
+                            <th>Monto</th>
+                            <th>Saldo</th>
+                            <th>Estado</th>
+                            <th>CAE</th>
+                            <th>Comprobante</th>
+                            <th>Observaciones</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.Facturas)
+                        {
+                            <tr>
+                                @if (string.IsNullOrEmpty(item.pathFactura))
+                                {
+                                    <td>@item.nroFactura</td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a target="blank" href="/Facturas/@item.pathFactura">@item.nroFactura</a>
+                                        (<a target="blank" href="/Facturas/@item.pathFacturaDuplicado">dup</a>)
+                                    </td>
+                                }
+                                <td>@item.fechaFactura.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>
+                                    @(item.fechaVencimiento1.HasValue ? item.fechaVencimiento1.Value.ToString("dd/MM/yyyy") : "")
+                                    <br>
+                                    @(item.fechaVencimiento2.HasValue ? item.fechaVencimiento2.Value.ToString("dd/MM/yyyy") : "")
+                                    <br>
+                                    @(item.fechaVencimiento3.HasValue ? item.fechaVencimiento3.Value.ToString("dd/MM/yyyy") : "")
+                                </td>
+                                <td>$@item.montoFacturaTotal</td>
+                                <td>$@item.saldoPendiente</td>
+                                <td>@item.estadoFactura</td>
+                                <td>@item.cae</td>
+                                <td>@item.numeroComprobante</td>
+                                <td>@item.observaciones</td>
+                                <td>
+
+                                    @if (!string.IsNullOrEmpty(item.cae))
+                                    {
+                                        <a href="/Facturacion/NuevoAjusteFacturacion?facturaId=@item.id" class="btn btn-white btn-warning btn-bold">
+                                            <i class="ace-icon fa fa-bolt bigger-120 orange"></i>
+                                            Ajuste
+                                        </a>
+
+                                        <button class="btn btn-white btn-inverse btn-bold"
+                                                onclick="MovimientosModelo.ObtenerDatosAfip(@item.id)">
+                                            <i class="ace-icon fa fa-file-pdf-o bigger-120 blue"></i>
+                                            Afip
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-white btn-inverse btn-bold" onclick="MovimientosModelo.GenerarFacturaElectronica(@item.id)">
+                                            <i class="ace-icon fa fa-file-pdf-o bigger-120 orange"></i>
+                                            Generar FE
+                                        </button>
+                                    }
+
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="ajustesFacturacionDelCliente" class="tab-pane fade">
+
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Fecha</th>
+                            <th>Tipo</th>
+                            <th>Motivo</th>
+                            <th>Descripción</th>
+                            <th>Monto</th>
+                            <th>Comprobante</th>
+                            <th>CAE</th>
+                            <th>Afip</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.Ajustes)
+                        {
+                            <tr>
+                                <td>
+                                    @item.id
+                                </td>
+
+                                <td>@item.fechaCreacion.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@item.tipoAjuste</td>
+                                <td>@item.motivoAjuste</td>
+                                <td>@item.textoEnMovimiento</td>
+                                <td>$@item.totalAjuste</td>
+                                <td>@item.cae</td>
+                                <td>@item.numeroComprobante</td>
+                                <td>@item.observacionesAjuste</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.pathArchivo))
+                                    {
+                                        <a href="/Facturas/@item.pathArchivo" target="_blank" class="btn btn-xs btn-warning">
+                                            <i class="ace-icon fa fa-download bigger-120"></i> Orig
+                                        </a>
+                                        <a href="/Facturas/@item.pathArchivoDuplicado" target="_blank" class="btn btn-xs btn-inverse">
+                                            <i class="ace-icon fa fa-download bigger-120"></i> Dup
+                                        </a>
+                                    }
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

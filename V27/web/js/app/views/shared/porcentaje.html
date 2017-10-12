@@ -1,0 +1,6 @@
+﻿<div class="badge badge-{{esPositivo?'success':'danger'}}">
+    <span ng-show="obtenerValor()>0 || obtenerValor()<0">        
+        {{esPositivo?'+':''}}{{obtenerValor() | number : 1}} %
+    </span>
+    <i class="ace-icon fa fa-arrow-{{esPositivo?'up':'down'}}"></i>
+</div>

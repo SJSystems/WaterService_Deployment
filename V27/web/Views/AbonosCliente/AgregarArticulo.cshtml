@@ -1,0 +1,59 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.AbonosCliente_AgregarArticulo
+
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("AgregarArticulo", "AbonosCliente", FormMethod.Post, new { id = "form_ArticuloAbono", name = "form_ArticuloAbono", @class = "form-horizontal", role = "form" }))
+ {
+    
+    @Html.Partial("_StaticMessageBox")
+    
+    @Html.HiddenFor(x => x.Abono_id);
+    @Html.HiddenFor(x => x.ArticuloModelo.id);
+    @Html.HiddenFor(x => x.ArticuloModelo.abono_id);
+
+        
+         <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right">Artículo</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+				        @Html.DropDownListFor(x => x.ArticuloModelo.articulo_id, new SelectList(Model.Articulos, "id", "articulo"), 
+                                                new { @class=" input-group col-xs-10 col-sm-12"})
+                    </div>                                
+                    <div class="mensajeValidacion help-block"></div>
+				</div>
+			</div>
+    
+    <fieldset>
+
+             <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-4 no-padding-right">Cantidad</label>
+				<div class="col-xs-12 col-sm-8">
+					<div class="clearfix">
+							@Html.TextBoxFor(x=>x.ArticuloModelo.cantidad, new {fieldType="text",errorMessage="Ingrese un valor",  @class=" validate col-xs-10 col-sm-3 decimalFormat", placeholder=""})
+                    </div>                                
+                    <div class="mensajeValidacion help-block"></div>
+				</div>
+			</div>
+
+            <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-4 no-padding-right">Precio del excedente $</label>
+				<div class="col-xs-12 col-sm-8">
+					<div class="clearfix">
+							@Html.TextBoxFor(x=>x.ArticuloModelo.precioExcendente, new {fieldType="text", @class=" validate col-xs-10 col-sm-3 decimalFormat", errorMessage="Ingrese un valor", placeholder="ej: $150"})
+                    </div>                                
+                    <div class="mensajeValidacion help-block"></div>
+				</div>
+			</div>
+
+    </fieldset>
+    
+    <div class="form-actions center">
+		<button type="button" id="btn_guardarArticuloAbono" onclick="Modelo.GuardarArticuloAbono();" class="btn btn-sm btn-success">
+			Guardar
+			<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+		</button>
+	</div>
+    
+ }

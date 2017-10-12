@@ -1,0 +1,231 @@
+﻿<div ng-app="mainApp" ng-controller="repArticulosEntregadosController">
+
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">
+                Reporte Articulos Entregados
+            </h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <ctr-periodo fechas-periodo="desdeHasta" titulo="Periodo"></ctr-periodo>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <ctr-seleccionar-repartidor repartidor-seleccionado="repartidorSeleccionado"></ctr-seleccionar-repartidor>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <ctr-seleccionar-reparto reparto-seleccionado="repartoSeleccionado"></ctr-seleccionar-reparto>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+            <span ng-show="ventasPorRubro!=null">
+                {{ventasPorRubro.length}} registros encontrados.
+            </span>
+            <button type="button" ng-click="buscar()" class="btn btn-sm btn-primary pull-right">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar
+            </button>
+            <button type="button" ng-click="ExportarCSV()" class="btn btn-sm btn-success pull-right">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Export CSV
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- #section:elements.tab -->
+            <div class="tabbable">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active">
+                        <a data-toggle="tab" href="#resumen" ng-click="showTab('resumen')">
+                            Resumen
+                        </a>
+                    </li>
+
+                    <li class="">
+                        <a data-toggle="tab" href="#detalle" ng-click="showTab('detalle')">
+                            Detalle
+                        </a>
+                    </li>
+
+                </ul>
+
+                <div class="tab-content">
+                    <div id="resumen" class="tab-pane fade" ng-class="{'active in': tabShowing=='resumen'}" ng-show="tabShowing=='resumen'">
+                        <table id="tblMain" class="table table-striped table-bordered table-hover"
+                               st-table="displayVentasPorRubro"
+                               st-safe-src="ventasPorRubro">
+                            <thead>
+                                <tr>
+                                    <th st-sort="" style="width:60px;">
+                                        Detalle
+                                    </th>
+                                    <th class="center" st-sort="rubro_ids">
+                                        Codigo
+                                    </th>
+                                    <th st-sort="rubroArticulo">
+                                        Familia
+                                    </th>
+                                    <th st-sort="cantidad">
+                                        Cantidad
+                                    </th>
+                                    <th st-sort="ventas">
+                                        Ventas
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr id="{{'row' + $index}}" ng-repeat="venta in displayVentasPorRubro">
+                                    <td>
+                                        <a ng-click="verDetalle(venta,'row' + $index)" style="cursor:pointer;">
+                                            <i class="fa" ng-class="{'fa-chevron-down':showingVenta!=venta,'fa-chevron-right':showingVenta==venta}">
+                                            </i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{venta.rubro_ids}}
+                                    </td>
+                                    <td>
+                                        {{venta.rubroArticulo}}
+                                    </td>
+                                    <td>
+                                        {{venta.cantidad}}
+                                    </td>
+                                    <td>
+                                        {{venta.ventas}}
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="text-center">
+                                        <div st-pagination="" st-items-by-page="15" st-displayed-pages="8"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <table ng-show="showingVenta!=null" id="tblDetalle" class="table table-striped table-bordered table-hover"
+                               st-table="displayVentasPorArticulo"
+                               st-safe-src="ventasPorArticulo">
+                            <thead>
+                                <tr>
+                                    <th class="center" st-sort="rubro_ids">
+                                        Codigo
+                                    </th>
+                                    <th st-sort="rubroArticulo">
+                                        Árticulo
+                                    </th>
+                                    <th st-sort="cantidad">
+                                        Cantidad
+                                    </th>
+                                    <th st-sort="ventas">
+                                        Ventas
+                                    </th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ventaA in displayVentasPorArticulo">
+                                    <td>
+                                        {{ventaA.articulo_id}}
+                                    </td>
+                                    <td>
+                                        {{ventaA.nombreArticulo}}
+                                    </td>
+                                    <td>
+                                        {{ventaA.cantidad}}
+                                    </td>
+                                    <td>
+                                        {{ventaA.ventas}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="text-center">
+                                        <div st-pagination="" st-items-by-page="15" st-displayed-pages="8"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <div id="detalle" class="tab-pane fade" ng-class="{'active in': tabShowing=='detalle'}" ng-show="tabShowing=='detalle'">
+                        <table class="table table-striped table-bordered table-hover"
+                               st-table="displayArticulosEntregados"
+                               st-safe-src="articulosEntregados">
+                            <thead>
+                                <tr>
+                                    <th class="center" st-sort="rubro_ids">
+                                        Codigo
+                                    </th>
+                                    <th st-sort="nombreArticulo">
+                                        Articulo
+                                    </th>
+                                    <th st-sort="nombreCliente">
+                                        Cliente
+                                    </th>
+                                    <th st-sort="cantidad">
+                                        Cantidad
+                                    </th>
+                                </tr>
+    
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="articulo in displayArticulosEntregados">
+                                    <td>
+                                        {{articulo.rubro_ids}}
+                                    </td>
+                                    <td>
+                                        {{articulo.nombreArticulo}}
+                                    </td>
+                                    <td>
+                                        {{articulo.nombreCliente}}
+                                    </td>
+                                    <td>
+                                        {{articulo.cantidad}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="5" class="text-center">
+                                        <div st-pagination="" st-items-by-page="15" st-displayed-pages="8"></div>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- /section:elements.tab -->
+
+        </div><!-- /.span -->
+    </div>
+
+
+</div>
+
+<script src="~/js/app/controllers/reportes/appReportes.js"></script>
+<script src="~/js/app/controllers/reportes/directivesReportes.js"></script>
+<script src="~/js/app/controllers/reportes/repArticulosEntregados.js"></script>
+<script src="~/js/app/app_directives.js"></script>

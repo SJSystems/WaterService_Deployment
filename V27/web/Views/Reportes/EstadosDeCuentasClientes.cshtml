@@ -1,0 +1,225 @@
+﻿<div ng-app="mainApp" ng-controller="repEstadosDeCuentasClientesController">
+
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">
+                Reporte de estado de cuenta de clientes
+            </h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Días último cobro</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix" style="margin-top: 10px;">
+                                    <input type="text" class="numericControl form-control" id="diasUltimoCobro" ng-model="busqueda.diasUltimoCobro" value="0" maxlength="8">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Repartos</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-repartos dir-model="busqueda.repartos" multiple="true" allow-clear="true"></ui-seleccionar-repartos>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Días</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-dias dir-model="busqueda.dias" multiple="true" allow-clear="true"></ui-seleccionar-dias>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Días última entrega</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix" style="margin-top: 10px;">
+                                    <input type="text" class="numericControl form-control" id="diasUltimaEntrega" ng-model="busqueda.diasUltimaEntrega" value="0" maxlength="8">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Tipos</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-valores-tabla-satelite dir-model="busqueda.tipos" multiple="true" allow-clear="true" tabla-satelite-id="20"></ui-seleccionar-valores-tabla-satelite>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Estados</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-valores-tabla-satelite dir-model="busqueda.estados" multiple="true" allow-clear="true" tabla-satelite-id="30"></ui-seleccionar-valores-tabla-satelite>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+            <span ng-show="ventasPorRubro!=null">
+                {{cajasDeRepartos.length}} registros encontrados.
+            </span>
+            <button type="button" ng-disabled="descangando" ng-click="descargarExcel()" class="btn btn-sm btn-success pull-right" style="margin-left: 10px">
+                <i class="ace-icon fa fa-file-excel-o icon-on-right bigger-110"></i>
+                {{descangando?'Descargando archivo...':'Descargar Excel'}}
+            </button>
+            <button type="button" ng-click="buscar()" class="btn btn-sm btn-primary pull-right" style="margin-left: 10px">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar
+            </button>
+
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-xs-12">
+
+            <table class="table table-striped table-bordered"
+                   st-table="displayItems"
+                   st-safe-src="resultado.items">
+                <thead>
+                    <tr>
+                        <th class="center" st-sort="clienteId">
+                            Id
+                        </th>
+                        <th st-sort="nombreCliente">
+                            Cliente
+                        </th>
+                        <th st-sort="tipo">
+                            Tipo
+                        </th>
+                        <th st-sort="reparto">
+                            Reparto
+                        </th>
+                        <th st-sort="estado">
+                            Estado
+                        </th>
+                        <th st-sort="condicionIva">
+                            Iva
+                        </th>
+                        <th st-sort="limiteFacturas">
+                            Lim facturas
+                        </th>
+                        <th st-sort="limiteSaldoPermitido">
+                            Lim saldo
+                        </th>
+                        <th st-sort="saldoFacturas">
+                            En facturas
+                        </th>
+                        <th st-sort="saldosConsumosPendientes">
+                            Consumos
+                        </th>
+                        <th st-sort="creditoAFavor">
+                            A favor
+                        </th>
+                        <th st-sort="saldoTotal">
+                            Saldo
+                        </th>
+                        <th st-sort="cantidadFacturas">
+                            Facturas
+                        </th>
+                        <th st-sort="fechaUltimoCobro">
+                            FUC
+                        </th>
+                        <th st-sort="fecghaUltimaEntrega">
+                            FUE
+                        </th>
+                    </tr>
+
+                </thead>
+                <tbody >
+                    <tr ng-repeat="item in displayItems">
+                        <td>
+                            {{item.clienteId}}
+                        </td>
+                        <td>
+                            <a href="/Clientes/HistorialMovimientos/{{item.clienteId}}" target="_blank">
+                                {{item.nombreCliente}}
+                            </a>
+                        </td>
+                        <td>
+                            {{item.tipo}}
+                        </td>
+                        <td>
+                            {{item.reparto}}
+                        </td>
+                        <td>
+                            {{item.estado}}
+                        </td>
+                        <td>
+                            {{item.condicionIva}}
+                        </td>
+                        <td>
+                            {{item.limiteFacturas}}
+                        </td>
+                        <td>
+                            ${{item.limiteSaldoPermitido}}
+                        </td>
+                        <td>
+                            ${{item.saldoFacturas}}
+                        </td>
+                        <td>
+                            ${{item.saldosConsumosPendientes}}
+                        </td>
+                        <td>
+                            ${{item.creditoAFavor}}
+                        </td>
+                        <td>
+                            <strong>${{item.saldoTotal}}</strong>
+                        </td>
+                        <td>
+                            {{item.cantidadFacturas}}
+                        </td>
+                        <td>
+                            {{item.fechaUltimoCobro.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            {{item.fecghaUltimaEntrega.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                        </td>
+                    </tr>
+                  
+
+                </tbody>
+            </table>
+
+
+        </div><!-- /.span -->
+    </div>
+
+
+</div>
+
+<script src="~/js/app/controllers/reportes/appReportes.js"></script>
+<script src="~/js/app/controllers/reportes/directivesReportes.js"></script>
+<script src="~/js/app/controllers/reportes/repEstadoDeCuentasClientes.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<style>
+    .btn-default, .btn-default:focus, .btn:focus {
+        background-color: #5aa9d9 !important;
+        border-color: #031d2d;
+    }
+</style>

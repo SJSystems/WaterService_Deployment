@@ -1,0 +1,75 @@
+﻿
+<div ng-app="mainApp" ng-controller="notasDeCreditoCreateCtrl">
+    
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4 class="widget-title">Nota de crédito manual </h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+
+                <form name="mainForm" class="form-horizontal" novalidate>
+                                        <!-- <legend>Form</legend> -->
+                    <fieldset>
+                    
+                        <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="email">Para el cliente:</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input  ng-disabled="esClienteDirecto" required ng-model="notaDeCreditoModelo.clienteTexto" 
+                                                auto-complete="autoCompleteModel" name="txt_cliente" type="text" 
+                                                class="col-xs-12 col-sm-11">
+                                    </div>
+                                    <div ng-show="notaDeCreditoModelo.clienteSelected==null" class="help-block" style="color: #d16e6c">Seleccione un cliente de la lista</div>
+                                </div>
+                            </div>
+                        
+                        <div class="col-sm-6">
+                            
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" >Descripción:</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <textarea class="form-control limited" ng-model="notaDeCreditoModelo.descripcion" maxlength="100"></textarea>
+                                    </div>
+                                     <div ng-show="notaDeCreditoModelo.descripcion==null || notaDeCreditoModelo.descripcion==''" 
+                                        class="help-block" style="color: #d16e6c">Ingrese una descripción</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" >Monto $</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        
+                                      <input type="text" ng-model="notaDeCreditoModelo.monto" class="decimalFormat"/>
+                                    </div>
+                                    <div ng-show="notaDeCreditoModelo.monto==null || notaDeCreditoModelo.monto==''" 
+                                        class="help-block" style="color: #d16e6c">Ingrese un monto</div>
+                                </div>
+                            </div>
+                            
+                            
+
+                        </div>
+
+                       
+                         
+                    </fieldset>
+                    
+                    <div class="form-actions center">
+                        <button type="button" ng-disabled="!validarNotaDeCredito().isValid" ng-click="guardarNotaDeCredito()" 
+                            class="btn btn-sm btn-success">
+                            Guardar
+                            <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script src="~/js/app/controllers/notasDeCreditoController.js"></script>
+<script src="~/js/app/app_directives.js"></script>

@@ -1,0 +1,37 @@
+﻿@model System.Collections.Generic.List<WaterService.Common.Entities.DTOs.VIEW_NotasDeCredito_DTO>
+
+@{
+    Layout = null;
+}
+
+
+  <table class="table">
+      <thead>
+          <th></th>
+          <th>n°</th>
+          <th>Fecha</th>
+          <th>Descripción</th>
+          <th>Monto</th>
+          <th>Utilizado</th>
+          <th>Disponible</th>
+          <th></th>
+      </thead>
+    <tbody>
+        
+       @foreach (var item in Model)
+       {
+           <tr>
+               <td></td>
+               <td>NDC-@item.id</td>
+               <td>@item.fechaNotaDeCredito.ToString("dd/MM/yyyy")</td>
+               <td>@item.descripcion</td>
+               <td>@item.montoCredito</td>
+               <td>@item.utilizado</td>
+               <td>@item.disponible</td>
+               
+           </tr>
+
+       }
+
+    </tbody>
+</table>

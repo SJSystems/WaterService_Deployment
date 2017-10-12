@@ -1,0 +1,317 @@
+﻿@using WaterService.BackEnd.Common.Utilities
+@model WaterService.FrontEnd.WebUI.Models.Pages.Movimientos_Buscar
+@{
+    ViewBag.Title = "Historial de Movimientos";
+}
+
+<script>
+    var idClienteActual = @Model.ClienteModelo.id;
+</script>
+
+@*@Html.Partial("_PasosCliente", Model.ClienteModelo)*@
+<div  ng-app="mainApp" ng-controller="movimientosCtrl">
+    @Html.HiddenFor(x => x.ClienteModelo.id)
+    <div class="page-header">
+        <h1>
+            @Model.ClienteModelo.nombreCliente
+
+            <i class="ace-icon fa fa-angle-double-right"></i>
+
+           
+            @if (Model.ClienteModelo.clientePadre.HasValue)
+            {
+                <small>Sucursal de @Model.ClienteModelo.ClientePadreNombre</small> 
+                <a href="/Clientes/EditCliente/@Model.ClienteModelo.clientePadre.Value" class="btn btn-xs btn-danger">						
+                    Ir a principal
+                    <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                </a>
+            }
+            else
+            {
+                <a href="/Clientes/EditCliente/@Model.ClienteModelo.id"><i class="ace-icon fa fa-list-alt bigger-130 green hasTooltip" title="Ir a los datos del cliente"></i></a>
+                <i class="ace-icon fa fa-building-o bigger-130 blue hasTooltip" title="Cliente principal"></i>
+            }
+                
+            @if (!Model.ClienteModelo.datosCompletos)
+            {
+                <i class="ace-icon fa fa-exclamation-triangle bigger-130 orange hasTooltip" title="Datos incompletos"></i>
+                @*<button class="pull-right btn btn-white btn-default btn-round" onclick="CompletarCliente(@Model.ClienteModelo.id)">
+				    <i class="ace-icon fa fa-check-square-o red2"></i>
+				    Completar cliente
+			    </button>*@
+            }
+            
+            <a href="javascript:AbrirLogs('CLIENTES', @Model.ClienteModelo.id)">
+                <i class="ace-icon fa fa-clock-o bigger-130 brown hasTooltip" title="Ver historial"></i>
+            </a>
+
+        </h1>
+    </div>
+
+    <div id="tabs" class="tabbable">
+
+        <ul id="myTab" class="nav nav-tabs tab-color-blue background-blue">
+
+            @if (Model.ClienteModelo.clientePadre.HasValue)
+            {
+                <li class="active">
+                    <a href="#tabs-articulos" data-toggle="tab">Consumos</a>
+                </li>
+            }
+            else
+            {
+                <li class="active">
+                    <a href="#tabs-movimientos" data-toggle="tab">Movimientos</a>
+                </li>
+
+                <li>
+                    <a href="#tabs-articulos" data-toggle="tab">Consumos</a>
+                </li>
+            }
+            
+            <li class="@(Model.ClienteModelo.clientePadre.HasValue ? "hide" : "")" >
+                <a href="#tabs-facturas" data-toggle="tab">Facturas</a>
+            </li>
+            <li>
+                <a href="#tabs-visitas" data-toggle="tab">Visitas</a>
+            </li>
+            <li>
+                <a href="#tabs-articulosdisponibles" data-toggle="tab" class="@(Model.ClienteModelo.clientePadre.HasValue ? "hide" : "")">Disponibles</a>
+            </li>
+            <li>
+                <a href="#tabs-notasDeCreditos" data-toggle="tab" class="@(Model.ClienteModelo.clientePadre.HasValue ? "hide" : "")">Cobros a cuenta</a>
+            </li>
+            <li>
+                <a href="#tabs-devoluciones" data-toggle="tab">Devoluciones</a>
+            </li>
+            <li>
+                <a href="#tabs-envases" data-toggle="tab">Envases</a>
+            </li>
+            @*<li>
+                <a href="#tabs-pedidos" data-toggle="tab">Pedidos</a>
+            </li>*@
+            <li>
+                <a href="#tabs-incidentes" data-toggle="tab">Incidentes</a>
+            </li>
+            <li>
+                <a href="#tabs-ajustes-cuenta" data-toggle="tab" class="@(Model.ClienteModelo.clientePadre.HasValue ? "hide" : "")">Ajustes de cuenta</a>
+            </li>
+            <li>
+                <a href="#tabs-servicios-tecnicos" data-toggle="tab">Ordenes de trabajo</a>
+            </li>
+        </ul>
+
+        <div class="tab-content clearfix">
+        
+            @if (Model.ClienteModelo.clientePadre.HasValue)
+            {
+                <div id="tabs-articulos" class="tab-pane active">
+                    <div ng-include="'/js/app/views/movimientos/consumos.html'"></div>
+                </div>
+            }
+            else
+            {
+                <div id="tabs-movimientos" class="tab-pane in active">
+                    <div id="div_resultadoBusqueda"></div>
+                    <div id="div_resultadoBusquedaMovimientos"></div>
+                </div>
+
+                <div id="tabs-articulos" class="tab-pane">
+                    <div ng-include="'/js/app/views/movimientos/consumos.html'"></div>
+                </div>
+            }
+
+
+            
+            <div id="tabs-facturas"  class="@(Model.ClienteModelo.clientePadre.HasValue ? "hide" : "tab-pane")">
+                <div ng-include="'/js/app/views/movimientos/facturas.html'"></div>
+            </div>
+            
+            <div id="tabs-visitas" class="tab-pane">
+                <div ng-include="'/js/app/views/movimientos/visitas.html'"></div>
+            </div>
+            
+            <div id="tabs-articulosdisponibles" class="tab-pane @(Model.ClienteModelo.clientePadre.HasValue ? "hide" : "")">
+                <div ng-include="'/js/app/views/movimientos/articulosDisponibles.html'"></div>
+            </div>
+            
+            <div id="tabs-notasDeCreditos" class="tab-pane @(Model.ClienteModelo.clientePadre.HasValue ? "hide" : "")">
+
+                <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+                    <div class="widget-box ui-sortable-handle">
+
+                        <div class="widget-header">
+                            <h4 class="widget-title">Cobros a cuenta</h4>
+                            <div class="widget-toolbar">
+                            </div>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main" id="div_buscarNotasDeCredito">
+
+                                <div class="row">
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label col-sm-4 padding-right">Desde</label>
+                                        <div class="input-group">
+                                            <input class="validate form-control date-picker col-xs-10 col-sm-5 " data-val="true"
+                                                   data-val-date="The field fechaDesde must be a date." 
+                                                   data-val-required="El campo fechaDesde es obligatorio." errormessage="Ingrese una fecha válida" 
+                                                   fieldtype="text" id="txt_NotasDeCreditoFechaDesde" placeholder="dd/mm/yyyy" type="text" 
+                                                   value="@Misc.DateNow().AddMonths(-1).ToString("dd/MM/yyyy")">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label col-sm-4 padding-right">Hasta</label>
+                                        <div class="input-group">
+                                            <input class="validate form-control date-picker col-xs-10 col-sm-8 " 
+                                                   data-val="true" data-val-date="The field fechaHasta must be a date." 
+                                                   data-val-required="El campo fechaHasta es obligatorio."
+                                                   errormessage="Ingrese una fecha válida" fieldtype="text" 
+                                                   id="txt_NotasDeCreditoFechaHasta" 
+                                                   name="fechaHasta" 
+                                                   placeholder="dd/mm/yyyy" 
+                                                   type="text" 
+                                                   value="@Misc.DateNow().AddMonths(1).ToString("dd/MM/yyyy")">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <button id="btn_buscarNotasDeCreditos" type="button" class="btn btn-purple btn-sm " onclick="MovimientosModelo.BuscarNotasDeCredito()">
+                                            <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                                            Buscar
+                                        </button>
+                                        @*<a  href="/NotasDeCredito/Create?cliente_id=@Model.ClienteModelo.id" class="btn btn-white btn-warning btn-bold">
+												<i class="ace-icon fa fa-plus bigger-120 green"></i>
+												Nueva nota de crédito
+										</a>*@
+                                    </div>
+                                    
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-white btn-inverse btn-bold"
+                                                ng-click="modeloNotasDeCredito.imputarNotasDeCreditos()">
+                                            <i class="ace-icon fa fa-bolt bigger-120 orange"></i>
+                                            Imputar cobros a cuenta
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="div_NotasDeCreditos">
+                </div>
+            </div>
+            
+            <div id="tabs-devoluciones" class="tab-pane">
+
+                <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+                    <div class="widget-box ui-sortable-handle">
+
+                        <div class="widget-header">
+                            <h4 class="widget-title">Devoluciones de artículos</h4>
+                            <div class="widget-toolbar">
+                            </div>
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main" id="div_buscarDevoluciones">
+
+                                <div class="row">
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label col-sm-4 padding-right">Desde</label>
+                                        <div class="input-group">
+                                            <input class="validate form-control date-picker col-xs-10 col-sm-5 " data-val="true"
+                                                   data-val-date="The field fechaDesde must be a date." 
+                                                   data-val-required="El campo fechaDesde es obligatorio." errormessage="Ingrese una fecha válida" 
+                                                   fieldtype="text" id="txt_DevolucionesFechaDesde" placeholder="dd/mm/yyyy" type="text" 
+                                                   value="@Misc.DateNow().AddMonths(-1).ToString("dd/MM/yyyy")">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label col-sm-4 padding-right">Hasta</label>
+                                        <div class="input-group">
+                                            <input class="validate form-control date-picker col-xs-10 col-sm-8 " 
+                                                   data-val="true" data-val-date="The field fechaHasta must be a date." 
+                                                   data-val-required="El campo fechaHasta es obligatorio."
+                                                   errormessage="Ingrese una fecha válida" fieldtype="text" 
+                                                   id="txt_DevolucionesFechaHasta" 
+                                                   name="fechaHasta" 
+                                                   placeholder="dd/mm/yyyy" 
+                                                   type="text" 
+                                                   value="@Misc.DateNow().AddMonths(1).ToString("dd/MM/yyyy")">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <button id="btn_buscarDevoluciones" type="button" class="btn btn-purple btn-sm " onclick="MovimientosModelo.BuscarDevoluciones()">
+                                            <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                                            Buscar
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-3"></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="div_Devoluciones">
+                </div>
+            </div>
+            
+            <div id="tabs-envases" class="tab-pane">
+                <div ng-include="'/js/app/views/movimientos/envases.html'"></div>
+            </div>
+            
+            @*<div id="tabs-pedidos" class="tab-pane">
+                <div ng-include="'/js/app/views/movimientos/pedidos.html'"></div>
+            </div>*@
+
+            <div id="tabs-incidentes" class="tab-pane">
+                <div ng-include="'/js/app/views/movimientos/incidentes.html'"></div>
+            </div>
+            
+            <div id="tabs-ajustes-cuenta" class="tab-pane @(Model.ClienteModelo.clientePadre.HasValue ? "hide" : "")">
+                <div ng-include="'/js/app/views/movimientos/ajustesDeCuenta.html'"></div>
+            </div>
+
+            <div id="tabs-servicios-tecnicos" class="tab-pane">
+                <div ng-include="'/js/app/views/movimientos/serviciosTecnicos.html'"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Views/Clientes_Movimientos.js"></script>
+<script src="~/js/Views/Movimientos_Buscar.js"></script>
+
+<script src="~/js/app/mainApp.js"></script>
+
+<script src="~/js/app/controllers/incidentesControllers.js"></script>
+<script src="~/js/app/controllers/movimientosClienteControllers.js"></script>
+<script src="~/js/app/controllers/envasesControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

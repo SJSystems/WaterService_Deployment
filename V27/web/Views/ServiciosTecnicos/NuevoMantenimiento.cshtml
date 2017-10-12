@@ -1,0 +1,150 @@
+﻿<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable" style="min-height: 109px;"
+     ng-app="mainApp" ng-controller="crearMantenimientoController">
+    <div class="page-header">
+        <h1>
+            Nuevo Mantenimiento
+        </h1>
+    </div>
+    <div class="form-horizontal">
+        <autocomplete-seleccionar-dispenser ng-hide="(provieneDeServicioTecnico || mantenimiento.dispenser_id > 0)" ng-dispenser-seleccionado="dispenserSeleccionado"></autocomplete-seleccionar-dispenser>
+
+        <div class="form-group" ng-show="(provieneDeServicioTecnico || mantenimiento.dispenser_id > 0)">
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> N° Dispenser </label>
+                <div class="col-sm-3">
+                    <input value="{{mantenimiento.dispenser_id}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">Técnico</label>
+            <div class="col-sm-3">
+                <select ng-model="mantenimiento.tecnico_id" style="width: 200px"
+                        ng-options="tecnico.usuario_id as tecnico.nombreApellido for tecnico in tecnicosBuscar"></select>
+            </div>
+            <label class="col-sm-3 control-label no-padding-right"> Fecha: {{mantenimiento.fechaHora |date:'dd-MM-yyyy HH:mm:ss'}}</label>
+        </div>
+        
+        <div class="hr hr-18 dotted hr-double"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Condición Anterior </label>
+            <div class="col-sm-9">
+                <select class="col-sm-8" ng-model="mantenimiento.condicionAnterior_ids"
+                        ng-options="condicion.valor_ids as condicion.valorTexto for condicion in condicionesDispenser"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Estado Anterior </label>
+            <div class="col-sm-9">
+                <select class="col-sm-8" ng-model="mantenimiento.estadoDispenserAnterior_ids"
+                        ng-options="estado.valor_ids as estado.valorTexto for estado in estadosDispenser"></select>
+            </div>
+        </div>
+        <div class="hr hr-18 dotted hr-double"></div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label class="col-sm-5 control-label">
+                    <input name="form-field-checkbox" ng-model="mantenimiento.modificarDispenser" type="checkbox" class="ace">
+                    <span class="lbl"> Modificar Dispenser</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Estado Actual </label>
+            <div class="col-sm-9">
+                <select class="col-sm-8" ng-model="mantenimiento.estadoDispenserActual_ids"
+                        ng-options="estado.valor_ids as estado.valorTexto for estado in estadosDispenser"></select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Ubicación Actual </label>
+            <div class="col-sm-9">
+                <select class="col-sm-8" ng-model="mantenimiento.ubicacionActual_ids"
+                        ng-options="ubicacion.valor_ids as ubicacion.valorTexto for ubicacion in ubicacionesDispenser"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Condición Actual </label>
+            <div class="col-sm-9">
+                <select class="col-sm-8" ng-model="mantenimiento.condicionActual_ids"
+                        ng-options="condicion.valor_ids as condicion.valorTexto for condicion in condicionesDispenser"></select>
+            </div>
+        </div>
+
+        <div class="hr hr-18 dotted hr-double"></div>
+        
+        <div class="form-group" ng-show="provieneDeServicioTecnico">
+            <label class="col-sm-3 control-label no-padding-right"> Servicio Tecnico </label>
+            <label class="col-sm-3 control-label no-padding-right"> Sintoma: {{servicioTecnico.sintoma}} </label>
+            <label class="col-sm-3 control-label no-padding-right"> Fecha Creación: {{servicioTecnico.fechaCreacion | date:'dd-MM-yyyy HH:mm:ss'}} </label>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right"> Comentarios</label>
+            <div class="col-sm-9">
+                <textarea class="form-control"
+                          ng-model="mantenimiento.comentarios"
+                          placeholder="Comentarios para el técnico"></textarea>
+            </div>
+        </div>
+        
+        <div class="widget-box ui-sortable-handle">
+            <div class="widget-header">
+                <h5 class="widget-title">Trabajos realizados</h5>
+                <div class="widget-toolbar">
+                    <a href="javascript:void(0)" ng-click="agregarTrabajoRealizado()">
+                        <i class="ace-icon fa fa-plus"></i> Agregar trabajo
+                    </a>
+                </div>
+                
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Trabajo</th>
+                                <th>Cantidad</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="trabajoRealizado in trabajosRealizados">
+                            <tr>
+                                <td>
+                                    <select class="col-sm-12" ng-model="trabajoRealizado.trabajo_id"
+                                            ng-options="trb.id as trb.descripcion for trb in trabajosDisponibles"></select>
+                                </td>
+                                <td>
+                                    <input ng-model="trabajoRealizado.cantidad" type="text" class="col-sm-1" >
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" ng-click="quitarTrabajoRealizado($index)">
+                                        <i class="ace-icon fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                               
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="clearfix form-actions">
+        <div class="col-md-offset-3 col-md-9">
+            <button class="btn btn-info" type="button" ng-click="guardar()">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                Guardar
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

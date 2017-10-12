@@ -1,0 +1,53 @@
+﻿@model  List<WaterService.Common.Entities.DTOs.VIEW_ArticulosXVentasEntregas_DTO>
+@{
+    Layout = null;
+}
+
+<table class="table">
+    <thead>
+        <th>Cant</th>
+        <th>Artículo</th>
+        <th>Precio</th>
+        <th>Subtotal</th>
+    </thead>
+    <tbody>
+        
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.cantidad</td>
+                @switch (item.tipoItem_id)
+                {
+                    case 4: //En caso que sea un abono
+                     
+                        <td>
+                           <strong> @item.nombreArticulo (Abono)</strong>
+                        </td>
+                     
+                        break;
+                        
+                    case 5: //En caso que sea un abono
+                     
+                    <td>
+                         ∟ @item.nombreArticulo (abono)
+                    </td>
+                     
+                    break;
+                     
+                    default:
+                 
+                        <td>∟ @item.nombreArticulo</td>
+             
+                        break;
+                }
+           
+                <td>$@item.precioUnitario</td>
+                <td>$@(item.cantidad*item.precioUnitario)</td>
+            </tr>
+
+        }
+
+    </tbody>
+</table>
+
+<div id="dialog_DetalleAbono" title="Detalles del abono" ></div>

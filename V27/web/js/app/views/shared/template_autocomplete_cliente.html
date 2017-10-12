@@ -1,0 +1,19 @@
+﻿<div ng-show="visible" class="dropdown dropdown-preview" ng-mouseover="onMouseOver()">
+    
+    <ul class="dropdown-menu show" 
+        role="listbox" aria-activedescendant="ui-active-menuitem" style="position: fixed !important; z-index: 99999"
+        ng-style="{'top':top,'left':left,'width':width, 'position':'fixed !important'}"
+        >
+     
+        <li role="menuitem" 
+            ng-repeat="item in autoCompleteModel.dataSource"
+            class="smallSearchResult ui-menu-item {{isSelected($index)?'ui-state-hover':'noSelected'}}"
+            ng-click='select($index)'>
+            <a  class="ui-corner-all" tabindex="-1">
+                <div>
+                    {{item.nombreCliente}} - {{item.tipoCliente}} - {{item.domicilioCompleto}}
+                </div>
+            </a>
+        </li>
+    </ul>
+</div> 

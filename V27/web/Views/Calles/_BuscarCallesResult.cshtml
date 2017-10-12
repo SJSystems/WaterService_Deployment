@@ -1,0 +1,98 @@
+﻿
+
+@model WaterService.FrontEnd.WebUI.Models.Pages.Calle_Index
+
+@{
+    Layout = null;
+}
+
+
+<div class="row">
+
+    <div class="col-xs-12">
+        
+        <!-- <div class="table-responsive"> -->
+
+        <!-- <div class="dataTables_borderWrap"> -->
+        <div>
+            <table id="tb_resultadoCalles" class=" dynamicDataTable  table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>                        
+                        <th>Código Externo</th>
+                        <th>Calle</th>
+                        <th>Ciudad </th>
+                        <th>Provincia </th>
+
+                        <th>Acciones </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                    @if (Model!=null )
+                    {
+                        foreach (var item in Model.ListaBuscarCalles)
+                        {
+                            <tr>
+                                <td>@item.codigoExterno </td>
+                                <td>@item.nombreCalle </td>
+                                <td>@item.nombreCiudad </td>
+                                <td>@item.nombreProvincia </td>
+
+                                <td>
+                                    <div class="hidden-sm hidden-xs action-buttons">
+                                        @*<a class="blue" href="#">
+                                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                                            	<div class="btn-group">
+                                        </a>*@
+                                        
+											<div class="btn-group">
+												<button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+													Acciones
+													<span class="ace-icon fa fa-caret-down icon-on-right"></span>
+												</button>
+
+												<ul class="dropdown-menu dropdown-inverse">
+                                                                        
+													<li>
+														<a href="/Calles/EditCalle/@item.id">Ver detalles</a>
+													</li>
+                                                    
+                                                    <li class="divider"></li>
+
+													<li>
+														<a href="/Calles/EditCalle/@item.id">Editar</a>
+													</li>
+                                                                                                  
+                                                    <li class="divider"></li>
+
+                                                    <li>
+													    <a  href="javascript:Modelo.EliminarCalles(@item.id);"><i class="fa fa-trash"></i>Eliminar </a>
+													</li>                                                    
+
+												</ul>
+											</div><!-- /.btn-group -->
+										
+
+                                        <a class="green" href="/Calles/EditCalle/@item.id">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                        </a>
+
+                                        <a class="red" href="javascript:Modelo.EliminarCalle(@item.id);">
+                                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                        </a>
+                                        
+                                    </div>
+
+                                </td>
+                       
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

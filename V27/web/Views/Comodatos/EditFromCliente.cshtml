@@ -1,0 +1,66 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Comodato_Cliente_Edit
+
+@{
+    Layout = null;
+}
+ <br/>
+ @using (Html.BeginForm("EditFromCliente", "Comodatos", FormMethod.Post, new { id = "form_create", name = "form_create", @class = "form-horizontal", role = "form" }))
+    {
+
+      @Html.HiddenFor(x => x.ComodatoModel.id);
+      @Html.HiddenFor(x => x.ComodatoModel.cliente_id);
+      @Html.HiddenFor(x => x.ComodatoModel.fechaAlta);
+      @Html.HiddenFor(x => x.ComodatoModel.fechaInactivo);
+      @Html.HiddenFor(x => x.ComodatoModel.precio);
+      @Html.HiddenFor(x => x.ComodatoModel.articulo_id);
+      @Html.HiddenFor(x => x.ComodatoModel.activo);
+
+     <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right">Artículo</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+				        <strong>@Model.articuloSeleccionado</strong>
+                    </div>                                
+				</div>
+			</div>
+
+		<!-- <legend>Form</legend> -->
+		<fieldset>            
+            
+         
+		    <div class="form-group">
+		        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Precio $</label>
+		        <div class="col-xs-12 col-sm-9">
+		            <div class="clearfix">
+		                <strong>@Model.ComodatoModel.precio</strong>
+		            </div>                                
+		        </div>
+		    </div>
+            
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right">Cantidad</label>
+                <div class="col-xs-12 col-sm-9">
+                    <div class="clearfix">
+                        @Html.TextBoxFor(x => x.ComodatoModel.cantidad, new { fieldType = "text", errorMessage = "Ingrese la cantidad", @class = "validate decimalFormat col-xs-10 col-sm-3 ", placeholder = "ej: 3", type = "text" })
+                    </div>
+                </div>
+            </div>
+
+		    <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-3 no-padding-right">Observaciones</label>
+				<div class="col-xs-12 col-sm-9">
+					<div class="clearfix">
+						@Html.TextBoxFor(x=>x.ComodatoModel.observaciones, new { fieldType="text", errorMessage="Ingrese el sector de la empresa", @class="col-xs-10 col-sm-8 ", placeholder="",type="text"})
+                    </div>                                
+				</div>
+			</div>
+
+        </fieldset>
+                    
+		<div class="form-actions center">
+			<button type="button" id="btn_guardarComodato" onclick="Modelo.GuardarComodato();" class="btn btn-sm btn-success">
+				Guardar
+				<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+			</button>
+		</div>
+    } 

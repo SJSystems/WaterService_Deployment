@@ -1,0 +1,90 @@
+﻿<div class="widget-box ui-sortable-handle">
+
+    <div class="widget-header">
+        <h5 class="widget-title">
+            Devoluciones
+            <span class="label label-warning arrowed-in-right arrowed" ng-if="obtenerTextoDevoluciones()!=''">
+                <i class="ace-icon fa fa-exclamation-triangle  bigger-120"></i> {{obtenerTextoDevoluciones()}}
+            </span>
+        </h5>
+
+        <!-- #section:custom/widget-box.toolbar -->
+        <div class="widget-toolbar">
+
+            <a href="#" class="collapse-button" data-action="collapse">
+                <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+        </div>
+
+        <!-- /section:custom/widget-box.toolbar -->
+    </div>
+
+    <div class="widget-body" style="display: block;">
+        <div class="widget-main">
+            <table class="table table-bordered table-striped">
+                <thead class="thin-border-bottom">
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th>
+                            Artículo
+                        </th>
+                        <th>
+                            Cantidad
+                        </th>
+                        <th>
+                            Motivo
+                        </th>
+                        <th>
+
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="devolucion in ventaActual.devoluciones">
+                        <td>
+                            <button type="button" ng-click="eliminarDevolucion($index)" class="btn btn-sm btn-danger btn-round center">
+                                <i class="ace-icon fa fa-trash-o "></i>
+                            </button>
+                        </td>
+
+                        <td>
+                            <select ng-model="devolucion.articulo"
+                                    ng-options="('(ART- '+art.codigoInterno+') '+art.nombreArticulo) for art in articulos.articulosTodos"
+                                    class="input-group col-xs-6 col-sm-12 chosen-select " style="width: 400px"></select>
+                        </td>
+                        <td>
+                            <input type="text"
+                                   ng-model="devolucion.cantidad"
+                                   class="input-mini spinner-input form-control numericControl"
+                                   value="0" maxlength="4">
+                        </td>
+                        <td>
+                            <select ng-model="devolucion.motivo"
+                                    ng-options="motivo.valorTexto for motivo in listas.devoluciones_motivos"
+                                    class="input-group col-xs-10 col-sm-8"></select>
+                        </td>
+                        <td>
+                            <span class="help-inline col-xs-12 col-sm-5">
+                                <label class="middle">
+                                    <input class="ace" type="checkbox" ng-model="devolucion.esCambioDirecto">
+                                    <span class="lbl">Cambio directo</span>
+                                </label>
+                            </span>
+                        </td>
+
+                    </tr>
+
+
+
+                </tbody>
+            </table>
+            <button class="btn btn-white btn-default btn-round " ng-click="agregarDevolucion()">
+                <i class="ace-icon fa fa-plus orange"></i>
+                Agregar devolución
+            </button>
+        </div>
+    </div>
+</div>

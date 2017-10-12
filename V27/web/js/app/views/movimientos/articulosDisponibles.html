@@ -1,0 +1,225 @@
+﻿
+<div class="col-xs-12 col-sm-12 ">
+    <div class="widget-box ui-sortable-handle">
+
+        <div class="widget-header">
+            <h4 class="widget-title">Artículos disponibles por abono</h4>
+            <div class="widget-toolbar">
+            </div>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main" id="div_buscarDisponibles">
+
+                <div class="row">
+
+                    <div class="col-sm-3">
+                        <label class="control-label col-sm-4 padding-right">Desde</label>
+                        <div class="input-group">
+                            <input class="validate form-control date-picker col-xs-10 col-sm-5 "
+                                   ng-model="ModeloDisponibles.fechaDesde"
+                                   placeholder="dd/mm/yyyy" type="text">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="control-label col-sm-4 padding-right">Hasta</label>
+                        <div class="input-group">
+                            <input class="validate form-control date-picker col-xs-10 col-sm-8 "
+                                   ng-model="ModeloDisponibles.fechaHasta"
+                                   fieldtype="text"
+                                   placeholder="dd/mm/yyyy"
+                                   type="text">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <button type="button"
+                                class="btn btn-purple btn-sm "
+                                ng-click="ModeloDisponibles.buscarDisponibles()">
+                            <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                            Buscar
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 widget-container-col">
+                        <div class="widget-box widget-color-orange collapsed">
+                            <!-- #section:custom/widget-box.options.collapsed -->
+                            <div class="widget-header widget-header-small">
+                                <h5 class="widget-title">
+                                    Agregar disponibilidad de artículo de abonos
+                                </h5>
+
+                                <div class="widget-toolbar">
+                                    <a href="#" data-action="collapse">
+                                        <i class="ace-icon fa fa-plus" data-icon-show="fa-plus" data-icon-hide="fa-minus"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- /section:custom/widget-box.options.collapsed -->
+                            <div class="widget-body">
+
+                                <div class="row">
+
+                                    <div class="col-sm-4">
+                                        <div class="input-group">
+                                            <input class="validate form-control date-picker col-xs-10 col-sm-8 "
+                                                   fieldtype="text"
+                                                   placeholder="dd/mm/yyyy"
+                                                   type="text"
+                                                   ng-model="ModeloDisponibles.fechaImputacionDisponibles">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button type="button"
+                                                class="btn btn-purple btn-sm"
+                                                ng-click="ModeloDisponibles.consumirDisponibles()">
+                                            <i class="ace-icon fa fa-bolt icon-on-right bigger-110"></i>
+                                            Imputar disponibles
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="widget-main no-padding">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead class="thin-border-bottom">
+                                            <tr>
+                                                <th>
+                                                    Artículo
+                                                </th>
+
+                                                <th>
+                                                    Cantidad
+                                                </th>
+                                                <th>
+                                                    Periodo
+                                                </th>
+
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <select class="form-control"
+                                                            ng-model="ModeloDisponibles.articuloSeleccionado"
+                                                            ng-options="articulo.articulo for articulo in ModeloDisponibles.articulosTodos"></select>
+                                                </td>
+                                                <td>
+                                                    <input type="text"
+                                                           ng-model="ModeloDisponibles.cantidadDisponible"
+                                                           class="input-mini spinner-input form-control numericControl"
+                                                           value="1"
+                                                           maxlength="8">
+                                                </td>
+                                                <td>
+                                                    <div class="input-daterange input-group">
+                                                        <input type="text" class="input-sm form-control" name="start"
+                                                               ng-model="ModeloDisponibles.fechaDesdeDisponible" />
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-exchange"></i>
+                                                        </span>
+                                                        <input type="text" class="input-sm form-control" name="end"
+                                                               ng-model="ModeloDisponibles.fechaHastaDisponible" />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-white btn-info btn-bold"
+                                                            ng-click="agregarDisponible()">
+                                                        <i class="ace-icon fa fa-floppy-o bigger-120 blue"></i>
+                                                        Guardar
+                                                    </button>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="div_ArticulosDisponibles">
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Desde</th>
+                <th>Hasta</th>
+                <th>Artículo</th>
+                <th>Cant</th>
+                <th>Consumidos</th>
+                <th>Disponibles</th>
+                <th>Excedentes</th>
+                <th>Precio excedente</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="item in ModeloDisponibles.articulosDisponibles">
+
+            <tr>
+                <td>{{item.vigenciaDesde.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                <td>{{item.vigenciaHasta.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                <td>{{item.nombreArticulo}} </td>
+                <td>{{item.cantidad}}
+                <td>{{item.cantidadConsumida}} </td>
+                <td>{{ (item.cantidad) - item.cantidadConsumida > 0 ? (item.cantidad) - item.cantidadConsumida : 0}}</td>
+                <td>{{ (item.cantidad) - item.cantidadConsumida < 0 ? ((item.cantidad) - item.cantidadConsumida) * -1 : 0}}</td>
+                <td>${{item.precioExcendente}}</td>
+                <td>
+                    <a href="javascript:return false;">
+                        <i class="fa fa-edit" ng-click="item.visible=true"></i>
+                    </a>
+                </td>
+            </tr>
+            <tr ng-show="item.visible">
+                <td>
+                    Nuevo disponible:
+                </td>
+                <td colspan="2">
+                    <input type="text"
+                           ng-model="item.nuevoDisponible"
+                           class="input-mini spinner-input form-control numericControl"
+                           maxlength="3">
+                </td>
+                <td colspan="2">
+                    <button class="btn btn-white btn-info btn-bold"
+                            ng-click="ModeloDisponibles.modificarDisponible(item)">
+                        <i class="ace-icon fa fa-floppy-o bigger-120 blue"></i>
+                        Guardar
+                    </button>
+                    <button class="btn btn-white btn-danger btn-bold"
+                            ng-click="item.visible=false">
+                        <i class="ace-icon fa fa-times bigger-120 blue"></i>
+                        Cancelar
+                    </button>
+                </td>
+                <td colspan="2"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

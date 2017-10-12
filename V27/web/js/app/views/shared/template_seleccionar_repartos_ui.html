@@ -1,0 +1,22 @@
+﻿<ui-select ng-model="dirModel.itemsSelected"
+           theme="bootstrap"
+           ng-if="multiple!='true'">
+    <ui-select-match placeholder="Seleccione reparto" allow-clear="{{allowClear}}">
+        {{$select.selected.nombreReparto}}
+    </ui-select-match>
+    <ui-select-choices repeat="reparto in optionItems | propsFilter: {nombreReparto: $select.search}">
+        <div ng-bind-html="reparto.nombreReparto | highlight: $select.search"></div>
+    </ui-select-choices>
+</ui-select>
+
+<ui-select multiple
+           ng-model="dirModel.itemsSelected"
+           ng-if="multiple=='true'"
+           theme="bootstrap">
+    <ui-select-match placeholder="Seleccione repartos" allow-clear="{{allowClear}}">
+        {{$item.nombreReparto}}
+    </ui-select-match>
+    <ui-select-choices repeat="reparto in optionItems | propsFilter: {nombreReparto: $select.search}">
+        <div ng-bind-html="reparto.nombreReparto | highlight: $select.search"></div>
+    </ui-select-choices>
+</ui-select>

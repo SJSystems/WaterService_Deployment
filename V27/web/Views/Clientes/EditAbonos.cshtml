@@ -1,0 +1,100 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Cliente_EditAbono
+
+<div ng-app="mainApp" ng-controller="abonoClientesCtrl" >
+    
+    <div id="div_agregarDispenser" title="Agregar dispenser" ng-if="false">
+        <div class="alert alert-danger" ng-show="mensajeError!=''">
+            <button type="button" class="close" data-dismiss="alert">
+                <i class="ace-icon fa fa-times"></i>
+            </button>
+
+            <strong>
+                <i class="ace-icon fa fa-times"></i>
+                Error al procesar la asignación de dispenser
+            </strong>
+
+            {{mensajeError}}
+            <br>
+        </div>
+        <form class="form-horizontal" method="post" name="form_agregar" role="form">
+
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3 no-padding-right">Dispenser:</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <div class="clearfix">
+                            <span class="block input-icon input-icon-right">
+
+                                <input required ng-model="modelo.textDispenser"
+                                       auto-complete="autoCompleteModel" name="txt_dispenser" type="text"
+                                       class="col-xs-12 col-sm-11">
+                                <i ng-show="modelo.dispenser!=null" title="Cliente seleccionado" class="ace-icon fa fa-info-circle green"></i>
+
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Locación</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            <select ng-model="modelo.clienteSeleccionado"
+                                    ng-options="cliente.nombreCliente for cliente in sucursalesDisponibles"
+                                    class="input-group col-xs-10 col-sm-8"></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions center">
+                    <button type="button" ng-disabled="!validarAsignacionDispenser().isValid" ng-click="ConfirmarAgregarDispenser();" class="btn btn-sm btn-success">
+                        Guardar
+                        <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    
+    @Html.Partial("_PasosCliente",Model.ClienteModelo)
+    @Html.HiddenFor(x => x.ClienteModelo.id)
+
+    <button class="btn btn-white btn-default btn-round" onclick="Modelo.AbrirDialogo_NuevoAbono(@Model.ClienteModelo.id)" type="button">
+        <i class="ace-icon fa fa-plus red2" ></i>
+        Agregar Abono
+    </button>
+    
+    <div class="pull-right" style="width: 300px">
+        
+        <div class="input-group">
+            <input class="form-control input-mask-date date-picker" ng-model="fechaImputacion" type="text" id="form-field-mask-1" />
+            <span class="input-group-btn">
+                <button class="btn btn-sm btn-default" type="button" ng-click="imputarAbonos()">
+                    <i class="ace-icon fa fa-bolt bigger-110"></i>
+                    Imputar abonos
+                </button>
+            </span>
+        </div>
+    </div>
+
+    @if (Model.AbonosClientes!=null)
+    {
+        foreach (var item in Model.AbonosClientes)
+        {
+            Html.RenderPartial("_AbonoCliente", item);
+        }
+    }
+
+    <div id="div_AltaAbono" title="Abono"></div>
+    <div id="div_AltaArticulo" title="Artículo"></div>
+
+</div>
+    
+<script src="~/js/Views/Clientes_EditAbonos.js"></script>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/abonosClientesController.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/dispensersController.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

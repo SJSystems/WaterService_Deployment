@@ -1,0 +1,290 @@
+﻿<div class="page-header">
+    <h1>
+        <small>
+            <i class="ace-icon fa fa-user"></i>
+            Cliente:
+        </small> {{dashboard.cliente.nombreCliente}}
+
+    </h1>
+</div>
+
+<div class="row">
+
+    <div class="col-xs-12 col-sm-6 widget-container-col ui-sortable">
+
+        <div class="widget-box widget-color-blue">
+            <!-- #section:custom/widget-box.options -->
+            <div class="widget-header">
+                <h5 class="widget-title bigger lighter">
+                    <i class="ace-icon fa fa-dollar"></i>
+                    Saldo de la cuenta
+                </h5>
+
+            </div>
+
+            <!-- /section:custom/widget-box.options -->
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div class="row">
+
+                        <div class="col-sm-12 infobox-container">
+
+                            <div class="infobox infobox-red" style="width: 420px;text-align: center;">
+                                <div class="infobox-icon">
+                                    <i class="ace-icon fa fa-dollar"></i>
+                                </div>
+
+                                <div class="infobox-data" uib-tooltip="Saldo total adeudado por todo concepto a la fecha">
+                                    <span class="infobox-data-number">${{dashboard.saldoActual}}</span>
+                                    <div class="infobox-content">Saldo actual</div>
+                                </div>
+
+                            </div>
+
+                            <!-- #section:pages/dashboard.infobox -->
+                            <div class="infobox infobox-red">
+                                <div class="infobox-icon">
+                                    <i class="ace-icon fa fa-file-text"></i>
+                                </div>
+
+                                <div class="infobox-data" uib-tooltip="Suma total de los comprobantes adeudados">
+                                    <span class="infobox-data-number">${{dashboard.saldoComprobantes}}</span>
+                                    <div class="infobox-content">Saldo comprobantes</div>
+                                </div>
+
+                            </div>
+
+                            <div class="infobox infobox-orange">
+                                <div class="infobox-icon">
+                                    <i class="ace-icon fa fa-shopping-cart"></i>
+                                </div>
+
+                                <div class="infobox-data" uib-tooltip="Saldo de los consumos del periodo vigente o consumos no liquidados en ningún periodo">
+                                    <span class="infobox-data-number">${{dashboard.saldoConsumoActual}}</span>
+                                    <div class="infobox-content">Consumo actual</div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="infobox infobox-red">
+                                <div class="infobox-icon">
+
+                                </div>
+
+                                <div class="infobox-data" uib-tooltip="Cantidad de comprobantes con saldo pendiente">
+                                    <span class="infobox-data-number">{{dashboard.cantidadComprobantesAdeudados}}</span>
+                                    <div class="infobox-content">Comprobantes</div>
+                                </div>
+                            </div>
+
+                            <div class="infobox infobox-green">
+                                <div class="infobox-icon">
+
+                                </div>
+
+                                <div class="infobox-data" uib-tooltip="Suma de los cobros a cuenta recibidos o crédito a favor generado por notas de créditos">
+                                    <span class="infobox-data-number">${{dashboard.creditoAFavor}}</span>
+                                    <div class="infobox-content">Crédito a favor</div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="widget-box widget-color-red" ng-show="dashboard.prestamosDeEnvases.length > 0">
+            <!-- #section:custom/widget-box.options -->
+            <div class="widget-header">
+                <h5 class="widget-title bigger lighter">
+                    <i class="ace-icon fa fa-shopping-cart"></i>
+                    Préstamos de envases pendientes de devolución
+                </h5>
+
+            </div>
+
+            <!-- /section:custom/widget-box.options -->
+            <div class="widget-body fixed-widget-body">
+                <div class="widget-main no-padding">
+
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead class="thin-border-bottom">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+                                <th>Artículo</th>
+                                <th>Cantidad</th>
+                                <th>Pendiente</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="prestamo in dashboard.prestamosDeEnvases">
+                                <td>{{prestamo.fechaDePrestamo.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                <td>{{prestamo.cliente}}</td>
+                                <td>{{prestamo.articulo}}</td>
+                                <td>{{prestamo.cantidad}}</td>
+                                <td>{{prestamo.adeudada}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-xs-12 col-sm-6 widget-container-col ui-sortable">
+
+        <div class="widget-box widget-color-blue3" ng-show="dashboard.consumosDelPeriodo.length > 0">
+            <!-- #section:custom/widget-box.options -->
+            <div class="widget-header">
+                <h5 class="widget-title bigger lighter">
+                    <i class="ace-icon fa fa-shopping-cart"></i>
+                    Consumos del periodo sin liquidar
+                </h5>
+
+            </div>
+
+            <!-- /section:custom/widget-box.options -->
+            <div class="widget-body fixed-widget-body">
+                <div class="widget-main no-padding">
+
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead class="thin-border-bottom">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Cliente</th>
+
+                                <th>Concepto</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="consumo in dashboard.consumosDelPeriodo">
+                                <td>{{consumo.fecha.slice(6,-2) | date : 'dd/MM/yyyy'}}</td>
+                                <td>{{consumo.cliente}}</td>
+
+                                <td>{{consumo.articulo}}</td>
+                                <td>{{consumo.cantidad}}</td>
+                                <td>${{consumo.precio}}</td>
+                                <td>${{consumo.subtotal}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="widget-box widget-color-green" ng-show="dashboard.articulosDisponibles.length > 0">
+            <!-- #section:custom/widget-box.options -->
+            <div class="widget-header">
+                <h5 class="widget-title bigger lighter">
+                    <i class="ace-icon fa fa-shopping-cart"></i>
+                    Artículos de abonos
+                </h5>
+
+            </div>
+
+            <!-- /section:custom/widget-box.options -->
+            <div class="widget-body fixed-widget-body">
+                <div class="widget-main no-padding">
+
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead class="thin-border-bottom">
+                            <tr>
+                                <th>Artículo</th>
+                                <th>Cantidad</th>
+                                <th>Consumidos</th>
+                                <th>Disponibles</th>
+                                <th>Excedentes</th>
+                                <th>Precio</th>
+                                <th>Vencimiento</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="disponible in dashboard.articulosDisponibles">
+                                <td>{{disponible.articulo}}</td>
+                                <td>{{disponible.cantidad}}</td>
+                                <td>{{disponible.consumidos}}</td>
+                                <td>{{disponible.disponibles}}</td>
+                                <td>{{disponible.excedentes}}</td>
+                                <td>${{disponible.precio}}</td>
+                                <td>{{disponible.vencimiento.slice(6,-2)  |  date:'dd/MM/yyyy'}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="widget-box widget-color-orange" ng-show="dashboard.comodatos.length > 0">
+            <!-- #section:custom/widget-box.options -->
+            <div class="widget-header">
+                <h5 class="widget-title bigger lighter">
+                    <i class="ace-icon fa fa-shopping-cart"></i>
+                    Envases en comodato
+                </h5>
+
+            </div>
+
+            <!-- /section:custom/widget-box.options -->
+            <div class="widget-body fixed-widget-body">
+                <div class="widget-main no-padding">
+
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead class="thin-border-bottom">
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Artículo</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="comodato in dashboard.comodatos">
+                                <td>{{comodato.cliente}}</td>
+                                <td>{{comodato.articulo}}</td>
+                                <td>{{comodato.cantidad}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    .fixed-widget-body {
+        overflow-y: auto;
+        max-height: 219px;
+    }
+</style>

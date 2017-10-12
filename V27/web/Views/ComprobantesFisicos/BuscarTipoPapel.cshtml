@@ -1,0 +1,205 @@
+﻿
+<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable" style="min-height: 109px;"
+     ng-app="mainApp" ng-controller="buscarComprobantesPapelCtrl">
+
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">Comprobantes fiscales papel</h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center">Creado Desde</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaDesde" fieldtype="text" name="fecha" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center">Creado Hasta</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaHasta" fieldtype="text" name="fecha" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <div class="checkbox">
+                            <label>
+                                <input name="form-field-checkbox" ng-model="soloPendientes" type="checkbox" class="ace" checked>
+                                <span class="lbl"> Solo pendientes de asignación</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="row" >
+
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label no-padding-right center">Centro de facturación</label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="centroId" 
+                                                ng-options="centro.id as (
+                                                ( centro.id != 0 ) 
+                                                ? (centro.razonSocial + ' - Punto de Venta: ' + centro.puntoDeVenta) 
+                                                : (centro.razonSocial)
+                                                ) for centro in centros"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label no-padding-right center">Tipo de comprobante</label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="tipoComprobanteId" style="width: 400px"
+                                                ng-options="item.valor_ids as item.valorTexto for item in tiposComprobantes"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+           
+            </div>
+        </div>
+
+        <div class="widget-toolbox padding-8 clearfix">
+
+            <div class="row">
+
+                <div class="col-sm-3">
+                    <button type="button" style="margin-left: 10px" ng-click="asignarNumeracionAComprobantes()" class="btn btn-sm btn-danger pull-right">
+                        <i class="ace-icon fa fa-bolt icon-on-right bigger-110"></i>
+                        Asignar nro a comprobantes
+                    </button>        
+                </div>
+                <div class="col-sm-3">
+                    
+                    <div class="form-inline">
+                        <input type="text" ng-model="intervaloDesde" class="input-small" placeholder="Nº desde">
+                        <input type="text" ng-model="intervaloHasta" class="input-small" placeholder="Nº hasta">
+
+                        <a target="_blank" href="/ComprobantesFisicos/DescargarIntervalo?desde={{intervaloDesde}}&hasta={{intervaloHasta}}&centroDeFacturacionId={{centroId}}&tipoComprobanteId={{tipoComprobanteId}}" class="btn btn-info btn-sm" >
+                            <i class="ace-icon fa fa-download bigger-110"></i>Descargar
+                        </a>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <h4>
+                        Total facturas: ${{totalFacturas}} 
+                    </h4>
+                </div>
+                <div class="col-sm-3">
+                    <button type="button" style="margin-left: 10px" ng-click="BuscarComprobantes()" class="btn btn-sm btn-primary pull-right">
+                        <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                        Buscar
+                    </button>        
+                </div>
+
+            </div>
+
+    
+        </div>
+    </div>
+
+    <table class="table table-striped table-bordered table-hover" id="tablaResultado">
+        <thead>
+            <tr>
+                <th>Nro Asignado</th>
+                <th>Asignar Nro</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="comprobante in comprobantes">
+                <td>
+                    {{comprobante.numeroComprobante}}                  
+                </td>
+                <td style="width: 280px;">
+
+                   <div class="row">
+                       <div class="col-sm-9">
+                           <div class="form-inline">
+                               <input type="text" ng-model="comprobante.nroAsignado" class="input-small" placeholder="Nro">
+                               <input type="text" ng-model="comprobante.fechaAsignada" class="input-small date-picker" placeholder="Fecha">
+
+                           </div>                           
+                       </div>
+                       <div class="col-sm-3">
+                           <button type="button" style="margin-bottom: 3px;"
+                                   ng-click="asignarNumeroDeComprobante(comprobante)"
+                                   uib-tooltip="Asignar numeración y fecha"
+                                   class="btn  btn-sm btn-warning">
+                               <i class="ace-icon fa fa-bolt  bigger-110"></i>
+                           </button>
+                       </div>
+                   </div>
+                    @*<div class="input-group">
+                        <input type="text" class="form-control search-query" 
+                               ng-model="comprobante.nroAsignado">
+                        <span class="input-group-btn">
+                            <button type="button" 
+                                    ng-click="asignarNumeroDeComprobante(comprobante)" 
+                                    uib-tooltip = "Asignar numeración"
+                                    class="btn  btn-sm btn-warning">
+                                <i class="ace-icon fa fa-bolt  bigger-110"></i>
+                            </button>
+                        </span>
+                    </div>*@
+                </td>
+                <td>{{comprobante.tipoComprobanteAfip}}</td>
+                <td>{{comprobante.fechaFactura.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                <td>{{comprobante.nombreCliente}}</td>
+                <td>${{comprobante.montoTotal}}</td>
+                <td>
+                    <a ng-show="comprobante.archivoPdf!=null" href="~/Facturas/{{comprobante.archivoPdf}}" target="_blank">(Ori)</a> -
+                    <a ng-show="comprobante.archivoPdfDuplicado!=null" href="~/Facturas/{{comprobante.archivoPdfDuplicado}}" target="_blank">(Dup)</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/comprobantesPapelControllers.js"></script>

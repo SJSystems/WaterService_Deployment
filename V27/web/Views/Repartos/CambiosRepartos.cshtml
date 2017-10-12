@@ -1,0 +1,228 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Repartos_CambiosRepartos
+
+@{
+    ViewBag.Title = "Cambios Repartos";
+}
+
+<h2>Seleccionar clientes</h2>
+
+@using (Html.BeginForm("BuscarClientes", "Repartos", FormMethod.Post, new { id = "form_buscar", name = "form_buscar", @class = "form-horizontal", role = "form" }))
+{                    
+	<fieldset>
+
+	    <div class="col-sm-6">
+	        
+	        <div class="form-group">
+	            <label class="control-label col-xs-12 col-sm-2 no-padding-right">Cliente</label>
+	            <div class="col-xs-12 col-sm-10">
+	                <div class="clearfix">
+	                    @Html.TextBoxFor(x=>x.datosCliente, new { fieldType="text", errorMessage=" ", @class=" col-xs-10 col-sm-8 ", placeholder="nombre, dni, razón social",type="text"})
+	                </div>                                
+	                <div class="mensajeValidacion help-block"></div>
+	            </div>
+	        </div>
+                            
+	        <div class="form-group">
+	            <label class="control-label col-xs-12 col-sm-2 no-padding-right">Domicilio</label>
+	            <div class="col-xs-12 col-sm-10">
+	                <div class="clearfix">
+	                    @Html.TextBoxFor(x=>x.domicilio, new { fieldType="text", errorMessage=" ", @class=" col-xs-10 col-sm-8 ", placeholder="ciudad, barrio, calle",type="text"})
+	                </div>                                
+	                <div class="mensajeValidacion help-block"></div>
+	            </div>
+	        </div>
+
+	        <div class="form-group">
+	            <label class="control-label col-xs-12 col-sm-2 no-padding-right">Repartos</label>
+	            <div class="col-xs-12 col-sm-10">
+	                <div class="clearfix">
+	                    @Html.DropDownListFor(x => x.reparto_id, new SelectList(Model.Repartos, "id", "nombreReparto"), new { @class="input-group col-xs-10 col-sm-8"})
+	                </div>                                
+	                <div class="mensajeValidacion help-block"></div>
+	            </div>
+	        </div>                         
+                        
+            <div class="form-group">
+	            <label class="control-label col-xs-12 col-sm-2 no-padding-right">Día</label>
+	            <div class="col-xs-12 col-sm-10">
+	                <div class="clearfix">
+	                    @Html.DropDownListFor(x => x.dia_id, new SelectList(Model.Dias, "valor_ids", "valorTexto"), new { @class="input-group col-xs-10 col-sm-8"})
+	                </div>                                
+	                <div class="mensajeValidacion help-block"></div>
+	            </div>
+	        </div>    
+	    </div>
+
+        <div class="col-sm-6">
+                                                  
+            <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-2 no-padding-right">Tipo</label>
+				<div class="col-xs-12 col-sm-10">
+					<div class="clearfix">
+				        @Html.DropDownListFor(x => x.tipo_id, new SelectList(Model.TiposClientes, "valor_ids", "valorTexto"), new { @class="input-group col-xs-10 col-sm-8"})
+                    </div>                                
+                    <div class="mensajeValidacion help-block"></div>
+				</div>
+			</div>                         
+                        
+            <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-2 no-padding-right">Estado</label>
+				<div class="col-xs-12 col-sm-10">
+					<div class="clearfix">
+				        @Html.DropDownListFor(x => x.estado_id, new SelectList(Model.EstadosClientes, "valor_ids", "valorTexto"), new { @class="input-group col-xs-10 col-sm-8"})
+                    </div>                                
+                    <div class="mensajeValidacion help-block"></div>
+				</div>
+			</div>                         
+                        
+            <div class="form-group">
+				<label class="control-label col-xs-12 col-sm-2 no-padding-right">Promotor</label>
+				<div class="col-xs-12 col-sm-10">
+					<div class="clearfix">
+				        @Html.DropDownListFor(x => x.promotor_id, new SelectList(Model.Promotores, "usuario_id", "nombreApellido"), new { @class="input-group col-xs-10 col-sm-8"})
+                    </div>                                
+                    <div class="mensajeValidacion help-block"></div>
+				</div>
+			</div>                   
+            
+            
+            <div class="form-group">
+			<label class="control-label col-xs-12 col-sm-2 no-padding-right">Teléfono</label>
+			<div class="col-xs-12 col-sm-10">
+				<div class="clearfix">
+					@Html.TextBoxFor(x=>x.telefono, new { fieldType="text", errorMessage=" ", @class=" col-xs-10 col-sm-8 ", placeholder="teléfono: 351421431",type="text"})
+                </div>                                
+                <div class="mensajeValidacion help-block"></div>
+			</div>
+		</div>
+                      
+        </div>
+                        
+    </fieldset>                    
+                    
+	<div class="form-actions center">
+
+		<button type="submit" id="btn_submit" class="btn btn-sm btn-primary">
+			Buscar Clientes
+			<i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+		</button>
+
+        <button class="btn btn-sm btn-success" type="button" onclick="Modelo.Preguntar_CambiarReparto()">
+            Seleccionar clientes
+		    <i class="ace-icon fa  fa-check-square-o icon-on-right bigger-110"></i>
+        </button>
+
+	</div>
+} 
+
+<div id="div_resultadoBusqueda"></div>
+
+<div id="dialogo_seleccionRepartoDias" title="Reparto y días de visita">
+    
+        @Html.Partial("_StaticMessageBox")
+
+    <p>
+        Seleccione un reparto y los días de visita para los clientes seleccionados.
+    </p>
+    
+    <div class="row">
+
+        <div class="col-xs-12 col-sm-4">
+            <div class="control-group">
+                <label class="control-label bolder blue">Reparto</label>
+
+                <select class="form-control " id="cmb_nuevoRepartos">
+                    @foreach (var item in Model.Repartos)
+                    {
+                        if (item.id==0)
+                        {
+                            continue;
+                        }
+                        <option value="@item.id">@item.nombreReparto</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-4">
+            <div class="control-group">
+                <label class="control-label bolder blue">Días de visita</label>
+
+                <div class="checkbox">
+                    <label>
+                        <input name="form-field-checkbox" dia_id="1" class="ace ace-checkbox-2 checkbox-dia" type="checkbox" />
+                        <span class="lbl"> Lunes</span>
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input name="form-field-checkbox" dia_id="2" class="ace ace-checkbox-2 checkbox-dia" type="checkbox" />
+                        <span class="lbl"> Martes</span>
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input name="form-field-checkbox" dia_id="3" class="ace ace-checkbox-2 checkbox-dia" type="checkbox" />
+                        <span class="lbl"> Miércoles</span>
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input name="form-field-checkbox" dia_id="4" class="ace ace-checkbox-2 checkbox-dia" type="checkbox" />
+                        <span class="lbl"> Jueves</span>
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input name="form-field-checkbox" dia_id="5" class="ace ace-checkbox-2 checkbox-dia" type="checkbox" />
+                        <span class="lbl"> Viernes</span>
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input name="form-field-checkbox" dia_id="6" class="ace ace-checkbox-2 checkbox-dia" type="checkbox" />
+                        <span class="lbl"> Sábado</span>
+                    </label>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input name="form-field-checkbox" dia_id="7" class="ace ace-checkbox-2 checkbox-dia" type="checkbox" />
+                        <span class="lbl"> Domingo</span>
+                    </label>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="col-xs-12 col-sm-4">
+            <div class="control-group">
+                <label class="control-label bolder blue">Orden</label>
+                
+                <div class="checkbox">
+                    <label>
+                        <input name="form-field-checkbox" class="ace ace-checkbox-2" id="ck-mantener-orden" type="checkbox" />
+                        <span class="lbl"> Mantener el orden</span>
+                    </label>
+                </div>
+               
+            </div>
+        </div>
+        
+    </div>
+
+    <div class="form-actions center">
+        <button type="button" id="btn_confirmarCambios" onclick="Modelo.ConfirmarCambioReparto();" class="btn btn-sm btn-success">
+            Confirmar
+            <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+        </button>
+    </div>
+
+</div>
+
+<script src="~/js/Views/Repartos_CambiosRepartos.js"></script>

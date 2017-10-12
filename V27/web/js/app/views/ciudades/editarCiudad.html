@@ -1,0 +1,84 @@
+﻿
+
+<div id="modal_ciudades">
+    <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <h3 class="header smaller lighter blue">
+                        <span style="margin-left: 10px">{{tituloAccion}}</span>
+                    </h3>
+                    <div class="form-horizontal col-sm-9">
+                        <div class="row" ng-show="mostrarId">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Id </label>
+                                    <div class="col-sm-9">
+                                        <input ng-model="ciudad.id" class="validate form-control col-xs-10 col-sm-10 "
+                                               fieldtype="text" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Ciudad </label>
+                                    <div class="col-sm-9">
+                                        <input ng-model="ciudad.nombreCiudad" class="validate form-control col-xs-10 col-sm-10 "
+                                               fieldtype="text" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Provincia</label>
+                                    <div class="col-sm-9">
+                                        <!--<select ng-model="ciudad.provincia_ids"
+                                                class="input-group col-xs-10 col-sm-8">
+                                            <option ng-repeat="provincia in provincias" value="{{provincia.valor_ids}}">{{provincia.valorTexto}}</option>
+                                        </select>-->
+                                        <!--<select ng-model="selectedProvincia" id="cmbProvincias"
+                                                class="input-group col-xs-10 col-sm-8"
+                                                ng-options="provincia.valorTexto for provincia in provincias">
+                                        </select>-->
+                                        <select class="input-group col-xs-10 col-sm-8" 
+                                                ng-model="ciudad.provincia_ids" 
+                                                ng-options="item.valor_ids as item.valorTexto for item in provincias"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Código Externo </label>
+                                    <div class="col-sm-9">
+                                        <input ng-model="ciudad.codigoExterno" class="validate form-control col-xs-10 col-sm-10 "
+                                               fieldtype="text" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a class="btn btn-warning" type="button" href="javascript:void(0);" ng-click="Cerrar()">
+                            <i class="ace-icon fa fa-arrow-circle-left bigger-110"></i>
+                            Volver
+                        </a>
+
+                        <button class="btn btn-primary pull-right" type="button" ng-click="Save()">
+                            <i class="ace-icon fa fa-save bigger-110"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

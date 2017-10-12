@@ -1,0 +1,78 @@
+﻿<div class="widget-box widget-color-pink">
+    <!-- #section:custom/widget-box.options -->
+    <div class="widget-header">
+        <h5 class="widget-title bigger lighter">
+            <i class="ace-icon fa fa-list-alt"></i>
+            Consumos de puntos de entrega
+        </h5>
+        <div class="widget-toolbar">
+          
+            <select class="form-control"
+                    ng-model="modelo.idClienteSeleccionado" 
+                    ng-options="cliente.cliente_id as cliente.nombreCliente for cliente in modelo.clientesDisponibles"></select>
+
+        </div>
+    </div>
+
+    <!-- /section:custom/widget-box.options -->
+    <div class="widget-body">
+        <div class="widget-main no-padding">
+            
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Remito</th>
+                        <th>Fecha</th>
+                        <th>Cliente</th>
+                        <th>Artículo</th>
+                        <th>Cant</th>
+                        <th>Precio</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="venta in modelo.consumos" 
+                       ng-show="modelo.idClienteSeleccionado == 0 || modelo.idClienteSeleccionado == venta.clienteEntrega_id">
+
+                    <tr>
+                        <td rowspan="{{venta.Articulos.length + 1}}">
+                            <span class="lbl">
+                                <i ng-show="venta.remito_id != null" class="fa fa-file-pdf-o"></i>
+                                <a href="/UsuariosClientes/ObtenerComprobante?tipoComprobante=2&idComprobante={{venta.remito_id}}" target="_blank">
+                                    {{venta.nroRemito}}
+                                </a>
+                            </span>
+                        </td>
+                        <td rowspan="{{venta.Articulos.length + 1}}">
+                            <span>
+                                {{venta.fechaVenta.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                            </span>
+                        </td>
+                        <td>
+                            <strong>{{venta.clienteEntrega}}</strong>
+                        </td>
+                        <td colspan="3">
+                            &nbsp;
+
+                        </td>
+                        <td>
+                            <strong>
+                                ${{venta.montoTotalVenta}}
+                            </strong>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="articuloVenta in venta.Articulos">
+                        <td></td>
+                        <td>{{articuloVenta.nombreArticulo}}</td>
+                        <td>{{articuloVenta.cantidad}}</td>
+                        <td>${{articuloVenta.precioUnitario}}</td>
+                        <td>${{obtenerSubtotal(articuloVenta)}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,503 @@
+﻿
+<div ng-app="mainApp" ng-controller="repCajaDiariaController">
+
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">
+                Reporte Caja Diaria de Reparto
+            </h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <ctr-periodo fechas-periodo="desdeHasta" titulo="Periodo"></ctr-periodo>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <ctr-seleccionar-repartidor repartidor-seleccionado="repartidorSeleccionado"></ctr-seleccionar-repartidor>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <ctr-seleccionar-reparto reparto-seleccionado="repartoSeleccionado"></ctr-seleccionar-reparto>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-sm-4">
+                        
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right center">Agrupado</label>
+                                <div class="col-sm-9">
+                                    <div class="clearfix">
+
+                                        <select ng-model="agrupador" class="input-group col-sm-9">
+                                            <option value="porDia" selected>Por día</option>
+                                            <option value="porMes">Por mes</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                   
+                </div>
+
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+            <span ng-show="ventasPorRubro!=null">
+                {{cajasDeRepartos.length}} registros encontrados.
+            </span>
+            <button type="button" ng-disabled="descangando" ng-click="descargarExcel()" class="btn btn-sm btn-success pull-right" style="margin-left: 10px">
+                <i class="ace-icon fa fa-file-excel-o icon-on-right bigger-110"></i>
+                {{descangando?'Descargando archivo...':'Descargar Excel'}}
+            </button>
+            <button type="button" ng-click="buscar()" class="btn btn-sm btn-primary pull-right" style="margin-left: 10px">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar
+            </button>
+          
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+
+            <table ng-if="agrupador=='porDia'"
+                   class="table table-striped table-bordered"
+                   st-table="displayCajasDeRepartos"
+                   st-safe-src="cajasDeRepartos">
+                <thead>
+                    <tr>
+                        <th class="center" st-sort="fechaRuta">
+                            Fecha
+                        </th>
+                        <th st-sort="nombreReparto">
+                            Reparto
+                        </th>
+                        <th st-sort="repartidor">
+                            Repartidor
+                        </th>
+                        <th st-sort="totalCobros">
+                            Total
+                        </th>
+                        <th st-sort="montoEfectivoDeclarado">
+                            Declarado
+                        </th>
+                        <th st-sort="diferenciaEnEfectivo">
+                            Diferencia
+                        </th>
+                        <th st-sort="montoEnEfectivo">
+                            Efectivo
+                        </th>
+                        <th st-sort="montoEnTarjeta">
+                            Tarjeta
+                        </th>
+                        <th st-sort="montoEnCheques">
+                            Cheques
+                        </th>
+                        <th st-sort="montoEnDepositos">
+                            Depositos
+                        </th>
+                        <th st-sort="montoEnRetenciones">
+                            Retenciones
+                        </th>
+                        <th st-sort="totalGastos">
+                            Gastos
+                        </th>
+                    </tr>
+
+                </thead>
+                <tbody ng-repeat="caja in displayCajasDeRepartos">
+                    <tr>
+                        <td>
+                            <a title="Ver detalles" class="hasTooltip" ng-click="mostrarDetallesDeCaja(caja)"
+                               href="javascript:void(0);">
+                                <i class="btn_icono ace-icon fa fa-chevron-{{caja.mostrarDetalles?'down':'right'}}"></i>
+                            </a>
+                            {{caja.fechaRuta.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            {{caja.nombreReparto}}
+                        </td>
+                        <td>
+                            {{caja.repartidor}}
+                        </td>
+                        <td>
+                            ${{caja.totalCobros}}
+                        </td>
+                        <td>
+                            ${{caja.montoEfectivoDeclarado}}
+                        </td>                      
+                        <td>
+                            ${{caja.diferenciaEnEfectivo}}
+                        </td>
+                        <td>
+                            ${{caja.montoEnEfectivo}}
+                        </td>
+                        <td>
+                            ${{caja.montoEnTarjeta}}
+                        </td>
+                        <td>
+                            ${{caja.montoEnCheques}}
+                        </td>
+                        <td>
+                            ${{caja.montoEnDepositos}}
+                        </td>
+                        <td>
+                            ${{caja.montoEnRetenciones}}
+                        </td>
+                        <td>
+                            ${{caja.totalGastos}}
+                        </td>
+                    </tr>
+                    <tr ng-if="caja.mostrarDetalles" style=" background: #5f9ea0 !important;">
+                        <td colspan="11">
+                            <div class="row">
+
+                                <div class="col-sm-6">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="10">Cheques recibidos</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Cod</th>
+                                                <th>N° de Cheque</th>
+                                                <th>Banco</th>
+                                                <th>Cliente</th>
+                                                <th>Importe</th>
+                                                <th>Imputado Temp</th>
+                                                <th>Imputado Real</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="cheque in caja.detalle.cheques"
+                                                style="{{obtenerEstiloPorDiferencias (cheque)}}">
+                                                <td>{{cheque.id}}</td>
+                                                <td>{{cheque.nroCheque}}</td>
+                                                <td>{{cheque.banco}}</td>
+                                                <td>{{cheque.nombreCliente}}</td>
+                                                <td>${{cheque.importe}}</td>
+                                                <td>${{cheque.totalUtilizadoTemporal}}</td>
+                                                <td>${{cheque.totalUtilizado}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="10">Gastos</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Tipo</th>
+                                                <th>Descripción</th>
+                                                <th>Importe</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="gasto in caja.detalle.gastos">
+                                                <td>{{gasto.tipoGasto}}</td>
+                                                <td>{{gasto.descripcionGasto}}</td>
+                                                <td>${{gasto.monto}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="10">Depósitos recibidos</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Cod</th>
+                                                <th>Comprobante</th>
+                                                <th>Banco</th>
+                                                <th>Cliente</th>
+                                                <th>Importe</th>
+                                                <th>Imputado Temp</th>
+                                                <th>Imputado Real</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="deposito in caja.detalle.depositos" 
+                                                style="{{obtenerEstiloPorDiferencias (deposito)}}">
+                                                <td>{{deposito.id}}</td>
+                                                <td>{{deposito.nroDeComprobante}}</td>
+                                                <td>{{deposito.banco}}</td>
+                                                <td>{{deposito.nombreCliente}}</td>
+                                                <td>${{deposito.importe}}</td>
+                                                <td>${{deposito.totalUtilizadoTemporal}}</td>
+                                                <td>${{deposito.montoUtilizado}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="col-sm-3">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="10">Efectivo</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Denominación</th>
+                                                <th>Cantidad</th>
+                                                <th>Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="billete in caja.detalle.billetes">
+                                                <td>{{billete.valorDisplay}}</td>
+                                                <td>{{billete.cantidad}}</td>
+                                                <td>${{billete.subtotal}}</td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="10">Retenciones</th>
+                                            </tr>
+                                            <tr>
+                                                <th>Retención</th>
+                                                <th>Importe</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>IVA</td>
+                                                <td>${{caja.detalle.retenciones.retencionIVA}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>IIBB</td>
+                                                <td>${{caja.detalle.retenciones.retencionIngresosBrutos}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>SUSS</td>
+                                                <td>${{caja.detalle.retenciones.retencionSUSS}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ganancias</td>
+                                                <td>${{caja.detalle.retenciones.retencionGanancias}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Com e Ind</td>
+                                                <td>${{caja.detalle.retenciones.retencionComInd}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Otras</td>
+                                                <td>${{caja.detalle.retenciones.retencionOtras}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                   
+                </tbody>
+                <tbody>
+                    <tr style="background: rgb(251, 193, 139)">
+                        <td class="text-center" colspan="3">
+                            <strong>Totales</strong>
+                        </td>
+
+                        <td class="text-center">
+                            <strong>${{totales.totalCobros}}</strong>
+                        </td>
+
+                        <td class="text-center">
+                            <strong>${{totales.montoEfectivoDeclarado}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.diferenciaEnEfectivo}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.montoEnEfectivo}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.montoEnTarjeta}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.montoEnCheques}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.montoEnDepositos}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.montoEnRetenciones}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.totalGastos}}</strong>
+                        </td>
+
+                    </tr>
+                </tbody>
+                
+                <tfoot>
+                    <tr>
+                        <td colspan="11" class="text-center">
+                            <div st-pagination="" st-items-by-page="15" st-displayed-pages="8"></div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        
+            <table ng-if="agrupador=='porMes'"
+                   class="table table-striped table-bordered"
+                   st-table="displayCajasDeRepartosMensual"
+                   st-safe-src="cajasDeRepartosMensual">
+                <thead>
+                    <tr>
+                        <th class="center" st-sort="periodo">
+                            Mes
+                        </th>
+                        <th st-sort="nombreReparto">
+                            Reparto
+                        </th>
+                        <th st-sort="totalCobros">
+                            Total
+                        </th>
+                        <th st-sort="montoEfectivoDeclarado">
+                            Declarado
+                        </th>
+                        <th st-sort="diferenciaEnEfectivo">
+                            Diferencia
+                        </th>
+                        <th st-sort="montoEnEfectivo">
+                            Efectivo
+                        </th>
+                        <th st-sort="montoEnTarjeta">
+                            Tarjeta
+                        </th>
+                        <th st-sort="montoEnCheques">
+                            Cheques
+                        </th>
+                        <th st-sort="montoEnDepositos">
+                            Depositos
+                        </th>
+                        <th st-sort="montoEnRetenciones">
+                            Retenciones
+                        </th>
+                        <th st-sort="totalGastos">
+                            Gastos
+                        </th>
+                    </tr>
+
+                </thead>
+                <tbody ng-repeat="caja in displayCajasDeRepartosMensual">
+                    <tr>
+                        <td>
+                            {{caja.periodo}}
+                        </td>
+                        <td>
+                            {{caja.nombreReparto}}
+                        </td>
+                        <td>
+                            ${{caja.totalCobros}}
+                        </td>
+                        <td>
+                            ${{caja.montoEfectivoDeclarado}}
+                        </td>
+                        <td>
+                            ${{caja.diferenciaEnEfectivo}}
+                        </td>
+                        <td>
+                            ${{caja.montoEnEfectivo}}
+                        </td>
+                        <td>
+                            ${{caja.montoEnTarjeta}}
+                        </td>
+                        <td>
+                            ${{caja.montoEnCheques}}
+                        </td>
+                        <td>
+                            ${{caja.montoEnDepositos}}
+                        </td>
+                        <td>
+                            ${{caja.montoEnRetenciones}}
+                        </td>
+                        <td>
+                            ${{caja.totalGastos}}
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr style="background:  rgb(251, 193, 139)">
+                        <td class="text-center" colspan="2">
+                            <strong>Totales</strong>
+                        </td>
+
+                        <td class="text-center">
+                           <strong> ${{totales.totalCobros}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.montoEfectivoDeclarado}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.diferenciaEnEfectivo}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.montoEnEfectivo}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.montoEnTarjeta}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.montoEnCheques}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.montoEnDepositos}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.montoEnRetenciones}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>${{totales.totalGastos}}</strong>
+                        </td>
+
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="11" class="text-center">
+                            <div st-pagination="" st-items-by-page="15" st-displayed-pages="8"></div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div><!-- /.span -->
+    </div>
+
+
+</div>
+
+<script src="~/js/app/controllers/reportes/appReportes.js"></script>
+<script src="~/js/app/controllers/reportes/directivesReportes.js"></script>
+<script src="~/js/app/controllers/reportes/repCajaDiariaRepartos.js"></script>
+<script src="~/js/app/app_directives.js"></script>

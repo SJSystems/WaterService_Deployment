@@ -1,0 +1,137 @@
+﻿<style>
+    @media print
+{
+    #pager,
+    form,
+    .no-print
+    {
+        display: none !important;
+        height: 0;
+    }
+
+
+    .no-print, .no-print *{
+        display: none !important;
+        height: 0;
+    }
+}
+</style>
+
+<div class="row">
+    <div class="col-sm-4">
+        <div class="profile-user-info">
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Cliente </div>
+                <div class="profile-info-value">
+                    <strong>{{servicioTecnico.nombreCliente}}</strong>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Domicilio </div>
+                <div class="profile-info-value">
+                    <strong>{{servicioTecnico.domicilioCompleto}}</strong>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Estado </div>
+                <div class="profile-info-value">
+                    <strong>{{servicioTecnico.estadoServicioTecnico}}</strong>
+                </div>
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Síntoma </div>
+                <div class="profile-info-value">
+                    <span>{{servicioTecnico.sintoma}}</span>
+                </div>
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Ubicación </div>
+                <div class="profile-info-value">
+                    <span>{{servicioTecnico.sectorUbicacion}}</span>
+                </div>
+            </div>
+
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Responsable en cliente </div>
+                <div class="profile-info-value">
+                    <span>{{servicioTecnico.responsableEnCliente}}. tel:{{servicioTecnico.telefonoResponsable}} </span>
+                </div>
+            </div>
+            
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Comentarios </div>
+                <div class="profile-info-value">
+                    <span>{{servicioTecnico.comentarios}}</span>
+                </div>
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Fecha planificada </div>
+                <div class="profile-info-value">
+                    <span>
+                        {{servicioTecnico.fechaVisitaPlanificada.slice(6, -2)  |  date:'dd/MM/yyyy'}} 
+                    </span>
+                    <span class="text-danger" 
+                          ng-if="fechaDeVisitaActual!=null && fechaDeVisitaActual != servicioTecnico.fechaVisitaPlanificada">
+                        <i class="fa fa-calendar  bigger-110"></i> Replanificada
+                    </span>
+                </div>
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Franja horaria </div>
+                <div class="profile-info-value">
+                    <span>{{servicioTecnico.franjaHoraria}}</span>
+                </div>
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Comentarios </div>
+                <div class="profile-info-value">
+                    <span>{{servicioTecnico.comentarios}}</span>
+                </div>
+            </div>
+
+            <div class="profile-info-row no-print" ng-if="servicioTecnico.estadoServicioTecnico_ids==2 && allowEdit == 'true'" >
+                <div class="profile-info-name">  </div>
+
+                <div class="profile-info-value">
+                    <a href="javascript:void(0)" ng-click="replanificar()"><i class="fa fa-calendar bigger-110"></i> Replanificar</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-sm-7">
+        
+        <dispensers-asociados-a-servicio-tecnico servicio-tecnico="servicioTecnico"
+                                                 dispensers="dispensersAsociadosDeFabrica"
+                                                 de-cliente="false",
+                                                 solo-lectura="true"
+                                                 permitir-edicion="permitirEdicion"></dispensers-asociados-a-servicio-tecnico>
+
+
+        <dispensers-asociados-a-servicio-tecnico servicio-tecnico="servicioTecnico"
+                                                 dispensers="dispensersAsociadosDeCliente"
+                                                 de-cliente="true" ,
+                                                 solo-lectura="true"
+                                                 permitir-edicion="permitirEdicion"></dispensers-asociados-a-servicio-tecnico>
+        
+        <h3 class="no-print">
+            <a ng-if="allowEdit == 'true'" href="/ServiciosTecnicos/Crear?id={{servicioTecnico.id}}" target="_blank">
+                <span class="text-warning">Ir al servicio técnico</span>
+                <i class="fa fa-arrow-right bigger-110"></i>
+            </a>
+        </h3>
+        <h5 class="no-print"  ng-show="servicioTecnico.archivoFirmaComprobanteDeServicio!= null && servicioTecnico.archivoFirmaComprobanteDeServicio!=''">
+            <a href="/Archivos/ComprobantesDeTrabajo/{{servicioTecnico.archivoFirmaComprobanteDeServicio}}" target="_blank">
+                <i class="fa fa-file-pdf-o bigger-110"></i>
+                <span class="text-warning">Ver comprobante</span>                
+            </a>
+        </h5>
+    </div>
+</div>

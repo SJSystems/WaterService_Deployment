@@ -1,0 +1,165 @@
+﻿@model WaterService.Common.Entities.DTOs.ClienteDTO
+
+@{
+    var urlActual = Request.Url.AbsolutePath;
+    
+    }
+
+<div id="fuelux-wizard" data-target="#step-container">
+     	<!-- #section:plugins/fuelux.wizard.steps -->
+
+    <div class="page-header">
+	    <h1>
+		    @Model.nombreCliente
+		    
+			    <i class="ace-icon fa fa-angle-double-right"></i>
+
+                @if (Model.clientePadre.HasValue)
+                {
+                    <small>Sucursal de @Model.ClientePadreNombre</small> 
+                    <a href="/Clientes/EditCliente/@Model.clientePadre.Value" class="btn btn-xs btn-danger">						
+                        Ir a principal
+                        <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                    </a>
+                }
+                else
+                {
+                     <a href="/Clientes/HistorialMovimientos/@Model.id"><i class="ace-icon fa fa-bar-chart-o bigger-130 red hasTooltip" title="Ir a la cuenta"></i></a>
+                     <i class="ace-icon fa fa-building-o bigger-130 blue hasTooltip" title="Cliente principal"></i>
+                }
+                
+            @if (!Model.datosCompletos)
+            {
+                <i class="ace-icon fa fa-exclamation-triangle bigger-130 orange hasTooltip" title="Datos incompletos"></i>
+                <button class="pull-right btn btn-white btn-default btn-round" onclick="CompletarCliente(@Model.id)">
+				    <i class="ace-icon fa fa-check-square-o red2"></i>
+				    Completar cliente
+			    </button>
+            }
+	        <a href="javascript:AbrirLogs('CLIENTES', @Model.id)">
+	            <i class="ace-icon fa fa-clock-o bigger-130 brown hasTooltip" title="Ver historial"></i>
+	        </a>
+		   
+	    </h1>
+    </div>
+
+	<ul class="wizard-steps">
+
+		<li data-target="#step1" class="complete"> 
+			<a href="/Clientes/EditCliente/@Model.id">   
+             <span class="step" style="@(urlActual.ToUpper().Contains("CLIENTES/EDITCLIENTE") ? "border-color: rgb(0, 211, 27);" : "")">1</span>
+			    <span class="title">Datos Principales</span> 
+            </a>           
+		</li>
+
+		<li data-target="#step2" class="@(Model.domicilio_id.HasValue ? "complete" : "")">
+             <a href="/Clientes/EditDomicilio/@Model.id">
+			    <span class="step" style="@(urlActual.ToUpper().Contains("CLIENTES/EDITDOMICILIO") ? "border-color: rgb(0, 211, 27);" : "")">2</span>
+			    <span class="title">Domicilio</span>
+            </a>
+		</li>
+
+        <li data-target="#step2" class="active">
+             <a href="/Clientes/EditReparto/@Model.id">
+			    <span class="step" style="@(urlActual.ToUpper().Contains("CLIENTES/EDITREPARTO") ? "border-color: rgb(0, 211, 27);" : "")">3</span>
+			    <span class="title">Reparto</span>
+            </a>
+		</li>
+
+        @if (Model.clientePadre == null || !Model.clientePadre.HasValue)
+        {
+ 		<li data-target="#step3" class="@(Model.datosFacturacion_id.HasValue ? "complete" : "")">
+            <a href="/Clientes/DatosFacturacion/@Model.id">
+			    <span class="step" style="@(urlActual.ToUpper().Contains("CLIENTES/DATOSFACTURACION") ? "border-color: rgb(0, 211, 27);" : "")">4</span>
+			    <span class="title">Facturación</span>
+            </a>
+		</li>   
+        }
+
+        <li data-target="#step4" class="active">
+            <a href="/Clientes/EditContactos/@Model.id">
+			    <span class="step" style="@(urlActual.ToUpper().Contains("CLIENTES/EDITCONTACTOS") ? "border-color: rgb(0, 211, 27);" : "")">5</span>
+			    <span class="title">Contactos</span>
+            </a>
+		</li>
+
+        <li data-target="#step2" class="active">
+             <a href="/Clientes/EditComodatos/@Model.id">
+			    <span class="step" style="@(urlActual.ToUpper().Contains("CLIENTES/EDITCOMODATOS") ? "border-color: rgb(0, 211, 27);" : "")">6</span>
+			    <span class="title">Comodatos</span>
+            </a>
+		</li>
+
+        @if (Model.clientePadre == null || !Model.clientePadre.HasValue)
+        {
+            <li data-target="#step2" class="active">
+                <a href="/Clientes/EditAbonos/@Model.id">
+                    <span class="step" style="@(urlActual.ToUpper().Contains("CLIENTES/EDITABONO") ? "border-color: rgb(0, 211, 27);" : "")">7</span>
+                    <span class="title">Abonos</span>
+                </a>
+            </li>
+            
+            <li data-target="#step2" class="active">
+                 <a href="/Clientes/EditDispensers/@Model.id">
+			        <span class="step" style="@(urlActual.ToUpper().Contains("CLIENTES/EDITDISPENSERS") ? "border-color: rgb(0, 211, 27);" : "")">8</span>
+			        <span class="title">Dispensers</span>
+                </a>
+		    </li>
+
+            <li data-target="#step2" class="active">
+                <a href="/Clientes/Precios/@Model.id">
+                    <span class="step" style="@(urlActual.ToUpper().Contains("CLIENTES/PRECIOS") ? "border-color: rgb(0, 211, 27);" : "")">9</span>
+                    <span class="title">Precios</span>
+                </a>
+            </li>
+        }
+
+@*       <li data-target="#step2" class="active">
+             <a href="/Clientes/HistorialMovimientos/@Model.id">
+			    <span class="step" style="@(urlActual.ToUpper().Contains("CLIENTES/HISTORIALMOVIMIENTOS")?"border-color: rgb(0, 211, 27);":"" )">8</span>
+			    <span class="title">Cuenta</span>
+            </a>
+		</li>*@
+
+	</ul>
+
+	<!-- /section:plugins/fuelux.wizard.steps -->
+</div>
+
+<script>
+
+    function CompletarCliente(cliente_id) {
+
+         try {
+
+             ShowLoader();
+             $.ajax({
+                 cache: false,
+                 async: true,
+                 type: "POST",
+                 url: GetUrlForService("/Clientes/CompletarCliente"),
+                 data: {cliente_id:cliente_id},
+                 success: function (data) {
+
+                     if (data.error == "0") {
+
+                         HideLoader();
+                         ShowMessageBox(messageType_Success, "Exitoso: ", data.message);                        
+                     }
+                     else {
+
+                         HideLoader();
+                         ShowMessageBox(messageType_Error, "Error al completar el cliente: ", data.message);
+                     }
+                 }
+                 , error: function (data) {
+                     HideLoader();
+                 }
+             });
+
+         } catch (e) {
+             HideLoader();
+         }
+     }
+
+</script>

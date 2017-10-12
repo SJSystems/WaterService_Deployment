@@ -1,0 +1,45 @@
+﻿@model System.Collections.Generic.List<WaterService.Common.Entities.DTOs.VIEW_Devoluciones_DTO>
+
+@{
+    Layout = null;
+}
+
+<table class="table">
+    <thead>
+        <th></th>
+        <th>n°</th>
+        <th>Fecha</th>
+        <th>Motivo</th>
+        <th>Artículo</th>
+        <th>Cantidad</th>
+        <th>Monto</th>
+        <th>Nota de crédito</th>
+
+    </thead>
+    <tbody>
+        
+       @foreach (var item in Model)
+       {
+           <tr>
+               <td></td>
+               <td>DEV-@item.id</td>
+               <td>@item.fechaDevolucion.ToString("dd/MM/yyyy")</td>
+               <td>@item.motivoDevolucion</td>
+               <td>(@item.codigoInterno) @item.nombreArticulo</td>
+               <td>@item.cantidadDevuelta</td>
+               <td>$@item.montoAcreditado</td>
+               <td>
+                   @if (item.notaDeCredito_id.HasValue)
+                   {
+                       @("NDC-" + item.notaDeCredito_id)
+                   }
+                   else
+                   {
+                       <i class="menu-icon fa fa-refresh"></i>
+                   }
+               </td>
+           </tr>
+       }
+
+    </tbody>
+</table>

@@ -1,0 +1,149 @@
+﻿<div class="row">
+    
+    <div class="col-sm-8">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Articulo</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="articulo in operaciones.Articulos">
+                    <td>
+                        {{articulo.nombreArticulo}}
+                    </td>
+                    <td>
+                        {{articulo.cantidad}}
+                    </td>
+                    <td>
+                        ${{articulo.precio}}
+                    </td>
+                    <td>
+                        ${{articulo.cantidad*articulo.precio}}
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+<div class="row" ng-if="operaciones.CobrosConsumos!=null && operaciones.CobrosConsumos.length>0">
+    <div class="col-sm-6">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Medio</th>
+                    <th>Cobro consumos</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cobroConsumo in operaciones.CobrosConsumos">
+                    <td>
+                        {{cobroConsumo.formaDePago}}
+                    </td>
+                    <td>
+                        ${{cobroConsumo.monto}}
+                    </td>
+
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    
+    <div class="col-sm-6" ng-if="operaciones.Envases!=null && operaciones.Envases.length>0">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Articulo</th>
+                    <th>Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="articulo in operaciones.Envases">
+                    <td>
+                        {{obtenerTipoDeEvento(articulo.tipoEvento_ids)}}
+                    </td>
+                    <td>
+                        {{articulo.nombreArticulo}}
+                    </td>
+                    <td>
+                        {{articulo.cantidad}}
+                    </td>
+
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    
+    <div class="col-sm-5" ng-if="(operaciones.CobrosFacturas!=null && operaciones.CobrosFacturas.length>0) || operaciones.VentaVisita.montoCobroACuenta>0">
+
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Factura</th>
+                    <th>Monto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cobroFactura in operaciones.CobrosFacturas">
+                    <td>
+                        {{cobroFactura.tipoFactura}} {{cobroFactura.puntoDeVenta}}-{{cobroFactura.numeroComprobante}}
+                    </td>
+                    <td>
+                        ${{cobroFactura.monto}}
+                    </td>
+                </tr>
+                <tr ng-show="operaciones.VentaVisita.montoCobroACuenta>0">
+                    <td><strong>A cuenta</strong></td>
+                    <td>${{operaciones.VentaVisita.montoCobroACuenta}}</td>
+                </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+    
+     <div class="col-sm-5" ng-if="operaciones.Devoluciones!=null && operaciones.Devoluciones.length>0">
+         
+         <table class="table table-striped table-bordered table-hover" >
+             <thead>
+                 <tr>
+                     <th>Devolución</th>
+                     <th>Cantidad</th>
+                     <th>Motivo</th>
+                     <th>Cambio directo</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 <tr ng-repeat="devolucion in operaciones.Devoluciones">
+                     <td>
+                         {{devolucion.nombreArticulo}}
+                     </td>
+                     <td>
+                         {{devolucion.cantidad}}
+                     </td>
+                     <td>
+                         {{devolucion.motivoDevolucion_ids}}
+                     </td>
+                      <td>
+                         {{devolucion.esCambioDirecto?'si':'no'}}
+                     </td>
+                 </tr>
+             </tbody>
+
+         </table>
+         
+     </div>
+
+</div>

@@ -1,0 +1,83 @@
+﻿<div ng-app="mainApp" ng-controller="cambioPasswordDeUsuario">
+    <titulo-cliente cliente="cliente"></titulo-cliente>
+    
+    <div class="user-profile row">
+        <div class="col-sm-offset-1 col-sm-10">
+
+            <div class="space"></div>
+
+            <form class="form-horizontal">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs padding-16">
+
+                        <li class="active">
+                            <a data-toggle="tab" href="#edit-password" aria-expanded="true">
+                                <i class="blue ace-icon fa fa-key bigger-125"></i>
+                                Cambio de contraseña
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content profile-edit-tab-content">
+                
+                        <div id="edit-password" class="tab-pane active">
+                            <div class="space-10"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-pass1">Usuario</label>
+
+                                <div class="col-sm-9">
+                                    <input type="text" readonly value="{{cliente.cliente_id}}" >
+                                </div>
+                            </div>
+                            <div class="space-4"></div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-pass1">Contraseña actual</label>
+
+                                <div class="col-sm-9">
+                                    <input type="password" id="form-field-pass1" ng-model="modelo.currentPassword">
+                                </div>
+                            </div>
+
+                            <div class="space-4"></div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right"  for="form-field-pass1">New Password</label>
+
+                                <div class="col-sm-9">
+                                    <input type="password" id="form-field-pass1" ng-model="modelo.newPassword">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-pass2">Confirm Password</label>
+
+                                <div class="col-sm-9">
+                                    <input type="password" id="form-field-pass2" ng-model="modelo.newPasswordRep">
+                                </div>
+                            </div>
+
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button class="btn btn-danger" type="button" ng-click="confirmarCambioDePassword()">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>
+                                        Confirmar cambio de contraseña
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+            </form>
+        </div><!-- /.span -->
+    </div>
+
+</div>
+
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/usuariosClientesControllers.js"></script>

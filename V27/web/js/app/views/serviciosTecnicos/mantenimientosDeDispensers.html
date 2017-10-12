@@ -1,0 +1,30 @@
+﻿<div id="div_mantenimientos">
+    <table class="dynamicDataTable  table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Técnico</th>
+                <th>Síntoma</th>
+                <th>Actividad</th>
+                <th>Cliente</th>
+                <th>Estado</th>
+                <th>Comentarios</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in mantenimientos">
+
+                <td>{{item.fechaHora.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                <td>{{item.tecnico}} </td>
+                <td>{{item.sintomaReal}}</td>
+                <td>{{item.accionPrincipal}}</td>
+                <td>
+                    <a href="/Clientes/EditCliente/{{item.clienteInstalado_id}}">{{item.clienteInstalado}}</a>
+                </td>
+                <td>{{item.estadoDispenserActual}}</td>
+                <td>{{item.comentarios}}</td>
+              
+            </tr>
+        </tbody>
+    </table>
+</div>

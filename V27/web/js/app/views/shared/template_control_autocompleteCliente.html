@@ -1,0 +1,33 @@
+﻿<div class="form-group">
+    <label class="col-sm-3 control-label no-padding-right center">Cliente</label>
+    <div class="col-sm-9">
+
+        <span class="input-icon input-icon-right " style=" width: 100% ">
+            <input type="text" class="col-sm-12"
+                   style="width: 100%;"
+                   placeholder="{{placeholder}}"
+                   uib-typeahead="clt as (clt.nombreCliente +' ('+clt.cliente_id+'). '+ clt.domicilioCompleto)  for clt in buscarClientes($viewValue)"
+                   typeahead-loading="buscandoCliente"
+                   typeahead-no-results="noResults"
+                   typeahead-editable="false"
+                   typeahead-wait-ms="300"
+                   ng-model="ngClienteSeleccionado" />
+            <i class="ace-icon fa fa-check green"
+               ng-show="ngClienteSeleccionado!=null && !buscandoCliente"
+               uib-tooltip="Cliente seleccionado"
+               tooltip-placement="right"></i>
+            <i class="ace-icon fa fa-refresh blue"
+               ng-show="buscandoCliente"
+               uib-tooltip="Buscando..."
+               tooltip-placement="right"></i>
+            <i class="ace-icon fa fa-times red"
+               ng-show="ngClienteSeleccionado==null && !buscandoCliente"
+               uib-tooltip="No hay cliente seleccionado"
+               tooltip-placement="right"></i>
+        </span>
+
+        <div ng-show="noResults">
+            <i class="glyphicon glyphicon-remove"></i> Sin resultados
+        </div>
+    </div>
+</div>

@@ -1,0 +1,189 @@
+﻿
+<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+    <div class="widget-box ui-sortable-handle">
+
+        <div class="widget-header">
+            <h4 class="widget-title">Historial de consumos</h4>
+            <div class="widget-toolbar">
+            </div>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main" id="div_buscarArticulosVendidos">
+
+                <div class="row">
+
+                    <div class="col-sm-3">
+                        <label class="control-label col-sm-4 padding-right">Desde</label>
+                        <div class="input-group">
+                            <input class="validate form-control date-picker col-xs-10 col-sm-5 "
+                                   placeholder="dd/mm/yyyy"
+                                   type="text"
+                                   ng-model="modeloConsumos.desde">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="control-label col-sm-4 padding-right">Hasta</label>
+                        <div class="input-group">
+                            <input class="validate form-control date-picker col-xs-10 col-sm-8 "
+                                   placeholder="dd/mm/yyyy"
+                                   ng-model="modeloConsumos.hasta"
+                                   type="text">
+
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <select class="form-control" 
+                                ng-model="modeloConsumos.idClienteSeleccionado" ng-options="cliente.cliente_id as cliente.nombreCliente for cliente in modeloConsumos.clientesDisponibles" 
+                                style="">
+                        </select>
+                        
+                    </div>
+
+                    <div class="col-sm-3">
+                        <select class="form-control"
+                                ng-model="modeloConsumos.idArticuloSeleccionado" ng-options="art.articulo_id as art.nombreArticulo for art in modeloConsumos.articulosDisponibles"
+                                style=""></select>
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-pink btn-xs" ng-click="modeloConsumos.descargarRemitosSeleccionados()">
+                            <i class="ace-icon fa fa-download icon-on-right bigger-110"></i>                            
+                        </button>           
+                    </div>
+
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-danger btn-sm " ng-click="modeloConsumos.facturarVentas()">
+                            <i class="ace-icon fa fa-bolt icon-on-right bigger-110"></i>
+                            Facturar ventas seleccionadas
+                        </button>                       
+                    </div>
+
+                    <div class="col-sm-1">
+                        <br />
+                        <strong>${{modeloConsumos.obtenerTotalSeleccionado()}}</strong>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-warning btn-sm " ng-click="modeloConsumos.facturarArticulosSeleccionados()">
+                            <i class="ace-icon fa fa-bolt icon-on-right bigger-110"></i>
+                            Facturar artículos seleccionados 
+                        </button>                       
+                    </div>
+                    
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-purple btn-sm " ng-click="modeloConsumos.buscar()">
+                            <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                            Buscar
+                        </button>                        
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <label class="middle">
+                    <input class="ace"
+                           type="checkbox"
+                           ng-model="modeloConsumos.seleccionarTodosRemitos"
+                           ng-click="modeloConsumos.seleccionarTodosParaDescargaDeRemitos()">
+                    <span class="lbl"></span>
+                </label>
+            </th>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Artículo</th>
+            <th>Cant</th>
+            <th>Precio</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody ng-repeat="venta in modeloConsumos.ventas" 
+           ng-show="modeloConsumos.idClienteSeleccionado == 0 || modeloConsumos.idClienteSeleccionado == venta.clienteEntrega_id"
+           style="{{venta.seleccionada?'background: bisque;':''}}">
+        <tr>
+            <td rowspan="{{venta.Articulos.length + 1}}">
+
+                <label class="middle">
+                    <input class="ace"
+                           type="checkbox"
+                           ng-model="venta.descargarRemito">
+                    <span class="lbl"></span>
+                </label>
+                
+                <a href="/VentasEntregas/ObtenerRemitoPorVenta?idVenta={{venta.id}}" target="_blank">
+                    {{venta.id}}
+                </a>                
+            </td>
+            <td rowspan="{{venta.Articulos.length + 1}}">
+
+                <i ng-show="venta.factura_id != null" class="fa fa-file-pdf-o"></i>
+
+                <label class="middle" ng-click="modeloConsumos.onSeleccionarVenta(venta)">
+                    <input class="ace" ng-if="venta.factura_id == null"
+                           type="checkbox"
+                           ng-model="venta.seleccionada">
+                    <span class="lbl"></span>
+                </label>
+
+                <span ng-show="venta.hojaRuta_id==null">
+                    {{venta.fechaVenta.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                </span>
+                <a ng-show="venta.hojaRuta_id!=null" href="/HojasDeRuta?hojaDeRutaId={{venta.hojaRuta_id}}" target="_blank">
+                    {{venta.fechaVenta.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                </a>
+            </td>
+            <td>
+                <strong>{{venta.clienteEntrega}}</strong>
+            </td>
+            <td colspan="3">
+                &nbsp;
+                
+            </td>
+            <td>
+                <strong>
+                    ${{venta.montoTotalVenta}}
+                </strong>
+            </td>
+        </tr>
+        <tr ng-repeat="articuloVenta in venta.Articulos" 
+            ng-show="modeloConsumos.idArticuloSeleccionado == 0 || modeloConsumos.idArticuloSeleccionado == articuloVenta.articulo_id"
+            style="{{  articuloVenta.seleccionado?  'background: lightyellow;':''}}">
+            <td>
+                <label class="middle pull-right" ng-click="modeloConsumos.onSeleccionarArticuloVendido(venta)">
+                    <input class="ace" ng-if="venta.factura_id == null && articuloVenta.facturaDeItem_id == null"
+                           type="checkbox"
+                           ng-model="articuloVenta.seleccionado">
+                    <span class="lbl">
+                        <i ng-show="venta.factura_id != null || articuloVenta.facturaDeItem_id != null" class="fa fa-file-pdf-o"></i>
+                    </span>
+                </label>
+            </td>
+            <td>
+                {{articuloVenta.nombreArticulo}}
+                <editar-consumo item-vendido="articuloVenta" on-confirmar-edicion="modeloConsumos.buscar"></editar-consumo>
+            </td>
+            <td>{{articuloVenta.cantidad}}</td>
+            <td>${{articuloVenta.precioUnitario}}</td>
+            <td>${{modeloConsumos.obtenerSubtotal(articuloVenta)}}</td>
+        </tr>
+
+    </tbody>
+</table>

@@ -1,0 +1,163 @@
+﻿
+<div ng-app="mainApp" ng-controller="pedidosCreateCtrl">
+    
+@*    <div class="page-header">
+        <h1>Nuevo pedido
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Complete los datos del pedido
+            </small>
+        </h1>
+    </div>*@
+
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4 class="widget-title">Pedido del cliente </h4>
+        </div>
+
+        <div class="widget-body">
+            <dv class="widget-main no-padding">
+
+                <form name="mainForm" class="form-horizontal" novalidate>
+                                        <!-- <legend>Form</legend> -->
+                    <fieldset>
+                        
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" for="email">Cliente a entregar:</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input required ng-model="PedidoModelo.clienteTexto"
+                                               auto-complete="autoCompleteModel" name="txt_cliente" type="text"
+                                               class="col-xs-12 col-sm-11">
+                                    </div>
+                                    <div ng-show="PedidoModelo.clienteSelected==null" class="help-block" style="color: #d16e6c">Seleccione un cliente de la lista</div>
+                                </div>
+                            </div>
+                        
+                        <div class="col-sm-6">
+                          
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" >Tipo de pedido:</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        
+                                        <select class="form-control" required 
+                                                ng-model="PedidoModelo.tipoPedidoSelected" 
+                                                name="cmb_tipoPedido" class="col-xs-12 col-sm-11" 
+                                                ng-options="tipo.valorTexto for tipo in PedidoModelo.tiposPedidosDisponibles" >
+                                            <option >-- Seleccione un tipo de pedido --</option>
+                                        </select>
+                                    </div>
+                                    <div ng-show="PedidoModelo.tipoPedidoSelected==null" class="help-block" style="color: #d16e6c">Seleccione un tipo de pedido</div>
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" >Estado de pedido:</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        
+                                        <select class="form-control" required 
+                                                ng-model="PedidoModelo.estadoSelected" 
+                                                name="cmb_estadoPedido" class="col-xs-12 col-sm-11" 
+                                                ng-options="tipo.valorTexto for tipo in PedidoModelo.estadosDisponibles" >
+                                            <option >-- Seleccione un estado disponible --</option>
+                                        </select>
+                                    </div>
+                                    <div ng-show="PedidoModelo.estadoSelected==null" class="help-block" style="color: #d16e6c">Seleccione un tipo de pedido</div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" >Comentarios:</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <textarea class="form-control limited" ng-model="PedidoModelo.comentarios" maxlength="3000"></textarea>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right">Usuario Responsable</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+
+                                        <select ng-model="usuarioResponsableSelected" ng-options="u.userName for u in usuarios"
+                                                class="input-group col-xs-10 col-sm-8"></select>
+                                    </div>
+                                    <div ng-show="PedidoModelo.estadoSelected==null" class="help-block" style="color: #d16e6c">Seleccione un tipo de pedido</div>
+                                </div>
+                            </div>                          
+
+                        </div>
+
+                        <div class="col-sm-6">
+                            
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" ></label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        
+                                        <label class="inline">
+                                            <input type="checkbox" class="ace" ng-model="PedidoModelo.asignarHojaDeRuta">
+                                            <span class="lbl"> Planificar</span>
+                                        </label>
+
+                                    </div>
+                                </div>
+                            </div>
+                              
+                            <div ng-show="PedidoModelo.asignarHojaDeRuta" class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" >Reparto:</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        
+                                        <select class="form-control" required 
+                                                ng-model="PedidoModelo.repartoSelected" 
+                                                name="cmb_reparto" class="col-xs-12 col-sm-11" 
+                                                ng-options="tipo.nombreReparto for tipo in PedidoModelo.repartosDisponibles" >
+                                            <option >-- Seleccione un reparto --</option>
+                                        </select>
+                                    </div>
+                                    <div ng-show="PedidoModelo.repartoSelected==null && PedidoModelo.asignarHojaDeRuta" class="help-block" style="color: #d16e6c">Seleccione un tipo de pedido</div>
+                                </div>
+                            </div>
+                         
+                               
+                            <div class="form-group" ng-show="PedidoModelo.asignarHojaDeRuta">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right" >Fecha de visita</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <div class="input-group col-sm-8">
+                                            <input class="form-control date-picker" required  name="txt_fechaPlanificadaAtencion"
+                                                   ng-model="PedidoModelo.fechaPlanificadaAtencion" 
+                                                type="text" data-date-format="dd-mm-yyyy">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                     <div ng-show="mainForm.txt_fechaPlanificadaAtencion.$error.required && PedidoModelo.asignarHojaDeRuta" class="help-block" style="color: #d16e6c">Seleccione una fecha válida</div>
+                                </div>
+                            </div>
+                              
+                        </div>
+                         
+                    </fieldset>
+                    
+                    <div class="form-actions center">
+                        <button type="button" ng-disabled="!validarPedido().isValid" ng-click="registrarPedido()" class="btn btn-sm btn-success">
+                            Guardar
+                            <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<script src="~/js/app/controllers/PedidosControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

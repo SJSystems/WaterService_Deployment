@@ -1,0 +1,102 @@
+﻿
+
+@model WaterService.FrontEnd.WebUI.Models.Pages.TablasSatelites_Index
+
+@{
+    Layout = null;
+}
+
+
+<div class="row">
+
+    <div class="col-xs-12">
+        
+        <!-- <div class="table-responsive"> -->
+
+        <!-- <div class="dataTables_borderWrap"> -->
+        <div>
+            <table id="tb_resultado" class=" dynamicDataTable  table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>                        
+                        <th>ID valor</th>
+                        <th>Texto</th>
+                        <th>Código Externo </th>
+                        <th>Código </th>
+                        <th>Descripción </th>
+                        <th>Grupo Tabla </th>
+
+                        <th>Acciones </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                    @if (Model!=null )
+                    {
+                        foreach (var item in Model.ListaBuscarValores)
+                        {
+                            <tr>
+                                <td>@item.valor_ids </td>
+                                <td>@item.valorTexto </td>
+                                <td>@item.codigoExterno </td>
+                                <td>@item.codigo </td>
+                                <td>@item.descripcion </td>
+                                <td>@item.tablaSatelites_id </td>
+
+                                <td>
+                                    <div class="hidden-sm hidden-xs action-buttons">
+                                        @*<a class="blue" href="#">
+                                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                                            	<div class="btn-group">
+                                        </a>*@
+                                        
+											<div class="btn-group">
+												<button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+													Acciones
+													<span class="ace-icon fa fa-caret-down icon-on-right"></span>
+												</button>
+
+												<ul class="dropdown-menu dropdown-inverse">
+                                                                        
+													<li>
+														<a href="/TablasSatelites/Edit/@item.id">Ver detalles</a>
+													</li>
+                                                    
+                                                    <li class="divider"></li>
+
+													<li>
+														<a href="/TablasSatelites/Edit/@item.id">Editar</a>
+													</li>
+                                                                                                  
+                                                    <li class="divider"></li>
+
+                                                    <li>
+													    <a  href="javascript:Modelo.Eliminar(@item.id);"><i class="fa fa-trash"></i>Eliminar </a>
+													</li>                                                    
+
+												</ul>
+											</div><!-- /.btn-group -->
+										
+
+                                        <a class="green" href="/TablasSatelites/Edit/@item.id">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                        </a>
+
+                                        <a class="red" href="javascript:Modelo.Eliminar(@item.id);">
+                                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                        </a>
+                                        
+                                    </div>
+
+                                </td>
+                       
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,7 @@
+﻿@model List<WaterService.FrontEnd.WebUI.Models.OptionItem_Model>
+@{Layout = null;}
+@if (Model!=null)
+{
+    foreach (var item in Model)
+    {<option @(item.attributes) value="@item.id">@item.text</option>}
+}

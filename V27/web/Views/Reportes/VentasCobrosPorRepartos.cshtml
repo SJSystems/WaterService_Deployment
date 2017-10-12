@@ -1,0 +1,186 @@
+﻿<div ng-app="mainApp" ng-controller="repVentasCobrosPorRepartosController">
+
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">
+                Ventas y cobros por repartos y tipos de clientes
+            </h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+
+                <div class="row">
+
+                    <div class="col-sm-4">
+
+                        <ctr-periodo fechas-periodo="periodo" titulo="Periodo"></ctr-periodo>
+
+                    </div>
+
+                    <div class="col-sm-4">
+
+                        <div class="form-group" style="    margin-top: 18px;">
+                            <label class="col-sm-3 control-label no-padding-right center">Repartos</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-repartos dir-model="busqueda.repartos" multiple="true" allow-clear="true"></ui-seleccionar-repartos>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+
+            <button type="button" ng-disabled="descangando" ng-click="descargarExcel()" class="btn btn-sm btn-success pull-right" style="margin-left: 10px">
+                <i class="ace-icon fa fa-file-excel-o icon-on-right bigger-110"></i>
+                {{descangando?'Descargando archivo...':'Descargar Excel'}}
+            </button>
+            <button type="button" ng-click="buscar()" class="btn btn-sm btn-primary pull-right" style="margin-left: 10px">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar
+            </button>
+
+        </div>
+    </div>
+
+    <table class="table table-striped table-bordered table-hover"
+           st-table="displayItems"
+           st-safe-src="datos.items">
+        <thead>
+            <tr>
+                <th colspan="10">
+                    <input st-search="" class="form-control" placeholder="Buscar en esta tabla" type="text" />
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    
+                </th>
+
+                <th  class="text-center" colspan="3">
+                    Vendido 
+                </th>
+                <th class="text-center" colspan="3">
+                    Cobrado
+                </th>
+                
+                <th>
+                    
+                </th>
+
+            </tr>
+            <tr>
+                <th st-sort="reparto">
+                    Reparto
+                </th>
+
+                <th class="text-center"  st-sort="totalVendidoFamilia">
+                    Fam
+                </th>
+                <th class="center" st-sort="totalVendidoEmpresa">
+                    Emp
+                </th>
+                <th class="text-center" st-sort="totalVendido">
+                    Vendido
+                </th>
+
+                <th class="text-center" st-sort="totalCobradoFamilia">
+                    Fam
+                </th>
+                <th class="text-center" st-sort="totalCobradoEmpresa">
+                    Emp
+                </th>
+                <th class="text-center" st-sort="totalCobrado">
+                    Cobrado
+                </th>
+
+                <th class="text-center" st-sort="diferencia">
+                    Dif
+                </th>
+
+            </tr>
+            
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in displayItems">
+                <td>
+                    {{item.reparto}}
+                </td>
+                <td>
+                    ${{item.totalVendidoFamilia}}
+                </td>
+                <td>
+                    ${{item.totalVendidoEmpresa}}
+                </td>
+                <td>
+                    ${{item.totalVendido}}
+                </td>
+                <td>
+                    ${{item.totalCobradoFamilia}}
+                </td>
+                <td>
+                    ${{item.totalCobradoEmpresa}}
+                </td>
+                <td>
+                    ${{item.totalCobrado}}
+                </td>
+                <td>
+                    ${{item.diferencia}}
+                </td>
+
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <strong class="pull-right">TOTAL</strong>
+                </td>
+                <td>
+                    ${{datos.totales.totalVendidoFamilia}}
+                </td>
+                <td>
+                    ${{datos.totales.totalVendidoEmpresa}}
+                </td>
+                <td>
+                    ${{datos.totales.totalVendido}}
+                </td>
+                <td>
+                    ${{datos.totales.totalCobradoFamilia}}
+                </td>
+                <td>
+                    ${{datos.totales.totalCobradoEmpresa}}
+                </td>
+                <td>
+                    ${{datos.totales.totalCobrado}}
+                </td>
+                <td>
+                    ${{datos.totales.diferencia}}
+                </td>
+            </tr>
+        </tfoot>
+        <tfoot>
+            <tr>
+                <td colspan="8" class="text-center">
+                    <div st-pagination="" st-items-by-page="30" st-displayed-pages="20"></div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+</div>
+
+<script src="~/js/app/controllers/reportes/appReportes.js"></script>
+<script src="~/js/app/controllers/reportes/directivesReportes.js"></script>
+<script src="~/js/app/controllers/reportes/repVentasCobrosPorRepartos.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<style>
+    .btn-default, .btn-default:focus, .btn:focus {
+        background-color: #5aa9d9 !important;
+        border-color: #031d2d;
+    }
+</style>

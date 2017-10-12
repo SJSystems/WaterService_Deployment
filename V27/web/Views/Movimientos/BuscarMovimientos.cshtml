@@ -1,0 +1,106 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Movimientos_Buscar
+
+@{
+    Layout = null;
+}
+
+
+<div>
+
+
+    <div class="widget-box">
+        <div class="widget-header">
+            <h5 class="widget-title">Historial de Movimientos</h5>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                @using (Html.BeginForm("BuscarMovimientos", "Movimientos", FormMethod.Post, new { id = "form_buscar", name = "form_buscar", @class = "form-horizontal", role = "form" }))
+                {
+
+                    @Html.HiddenFor(x => x.ClienteModelo.id)
+
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <label class="control-label col-sm-4 padding-right">Desde</label>
+                            <div class="input-group">
+                                @Html.TextBoxFor(x => x.fechaDesde,
+                                    new
+                                    {
+                                        fieldType = "text",
+                                        errorMessage = "Ingrese el sector de la empresa",
+                                        @class = "validate form-control date-picker col-xs-10 col-sm-5 ",
+                                        placeholder = "dd/mm/yyyy",
+                                        @id = "txt_FechaDesde"
+                                    })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label class="control-label col-sm-4 padding-right">Hasta</label>
+                            <div class="input-group">
+                                @Html.TextBoxFor(x => x.fechaHasta,
+                                    new
+                                    {
+                                        fieldType = "text",
+                                        errorMessage = "Ingrese el sector de la empresa",
+                                        @class = "validate form-control date-picker col-xs-10 col-sm-8 ",
+                                        placeholder = "dd/mm/yyyy",
+                                        @id = "txt_FechaHasta"
+                                    })
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <button id="btn_buscarMovimientos" type="button" class="btn btn-purple btn-sm "
+                                    onclick="MovimientosModelo.BuscarMovimientos()">
+                                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                                Buscar
+                            </button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button id="btn_buscarMovimientos" type="button" class="btn btn-warning btn-sm "
+                                    onclick="MovimientosModelo.GenerarResumenDeCuenta()">
+                                <i class="ace-icon fa fa-download icon-on-right bigger-110"></i>
+                                Descargar resumen de cuenta
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="widget-toolbox padding-8 clearfix">
+
+            <div class="row">
+                
+                <div class="col-sm-3">
+                    Saldo Consumos: <strong>$@Model.SaldoConsumos</strong>
+                </div>
+                
+                <div class="col-sm-3">
+                    Saldo Facturacion: <strong>$@Model.SaldoFacturacion</strong>
+                </div>
+                
+                <div class="col-sm-3">
+                    Saldo Final: <strong class="text-info">$@(Model.SaldoFacturacion + Model.SaldoConsumos)</strong>
+                </div>
+                
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+    

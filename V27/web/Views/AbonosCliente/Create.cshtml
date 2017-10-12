@@ -1,0 +1,115 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.AbonosCliente_Create
+
+@{
+    Layout = null;
+}
+
+
+
+@using (Html.BeginForm("Create", "AbonosCliente", FormMethod.Post, new { id = "form_createAbono", name = "form_createAbono", @class = "form-horizontal", role = "form" }))
+ {
+    
+    @Html.Partial("_StaticMessageBox")
+    
+    @Html.HiddenFor(x => x.AbonoModelo.id);
+    @Html.HiddenFor(x => x.AbonoModelo.cliente_id);
+    @Html.HiddenFor(x => x.Cliente_id);
+    
+    <fieldset>
+
+            <div class="form-group">
+		        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Leyenda en facturación</label>
+		        <div class="col-xs-12 col-sm-9">
+			        <div class="clearfix">
+				        @Html.TextBoxFor(x=>x.AbonoModelo.leyendaFactura, new { fieldType="text", errorMessage="Ingrese precio del producto", @class="validate col-xs-12 col-sm-12 ", placeholder="ej: abono mensual",type="text"})
+                    </div>                                
+                    <div class="mensajeValidacion help-block"></div>
+		        </div>
+	        </div>
+
+            <div class="form-group">
+					<label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha de vigencia desde</label>
+					<div class="col-xs-12 col-sm-8">
+						<div class="clearfix">
+							<div class="input-group">
+									@Html.TextBoxFor(x=>x.AbonoModelo.fechaVigencia, new { errorMessage="Ingrese la fecha de vigencia", fieldType="text", @class="validate form-control date-picker col-xs-10 col-sm-5", placeholder="dd/mm/yyyy"})
+								<span class="input-group-addon">
+									<i class="fa fa-calendar bigger-110"></i>
+								</span>
+							</div>                                   
+                        </div>                                
+                        <div class="mensajeValidacion help-block"></div>
+					</div>
+				</div>
+        
+
+        <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha de vigencia hasta</label>
+            <div class="col-xs-12 col-sm-8">
+                <div class="clearfix">
+                    <div class="input-group">
+                        @Html.TextBoxFor(x => x.AbonoModelo.fechaVigenciaHasta, new { errorMessage = "Ingrese la fecha de vigencia hasta (opcional)", fieldType = "text", @class = "form-control date-picker col-xs-10 col-sm-5", placeholder = "dd/mm/yyyy" })
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="mensajeValidacion help-block"></div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Precio del abono $</label>
+            <div class="col-xs-12 col-sm-8">
+                <div class="clearfix">
+                    @Html.TextBoxFor(x=>x.AbonoModelo.precio, new {fieldType="text", @class=" validate col-xs-10 col-sm-3 decimalFormat", errorMessage="Ingrese un valor", placeholder="ej: $150"})
+                </div>                                
+                <div class="mensajeValidacion help-block"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Cantidad de abonos</label>
+            <div class="col-xs-12 col-sm-8">
+                <div class="clearfix">
+                    @Html.TextBoxFor(x=>x.AbonoModelo.cantidadAbonos, new {fieldType="text", value="1", maxlength="3", @class=" validate col-xs-10 col-sm-3 input-mini spinner-input form-control numericControl", errorMessage="Ingrese un valor", placeholder=""})
+                </div>                                
+                <div class="mensajeValidacion help-block"></div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo de IVA no excentos</label>
+            <div class="col-xs-12 col-sm-8">
+                <div class="clearfix">
+                    @Html.DropDownListFor(x => x.AbonoModelo.ivaNoExcentos,
+                        new SelectList(Model.TiposDeIva, "id", "tipoDeIva"),
+                        new { @class = "input-group col-xs-10 col-sm-8" })
+                </div>
+                <div class="mensajeValidacion help-block"></div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo de IVA excentos</label>
+            <div class="col-xs-12 col-sm-8">
+                <div class="clearfix">
+                    @Html.DropDownListFor(x => x.AbonoModelo.ivaExcentos,
+                                                            new SelectList(Model.TiposDeIva, "id", "tipoDeIva"),
+                                                            new { @class = "input-group col-xs-10 col-sm-8" })
+                </div>
+                <div class="mensajeValidacion help-block"></div>
+            </div>
+        </div>
+
+    </fieldset>
+    
+    <div class="form-actions center">
+		<button type="button" id="btn_guardarAbono" onclick="Modelo.GuardarAbono();" class="btn btn-sm btn-success">
+			Guardar
+			<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+		</button>
+	</div>
+    
+ }

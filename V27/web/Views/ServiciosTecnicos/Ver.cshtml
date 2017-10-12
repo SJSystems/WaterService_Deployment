@@ -1,0 +1,116 @@
+﻿<div ng-app="mainApp" ng-controller="verServicioTecnico">
+    <div class="page-header">
+        <h1>
+            Ver Detalle Soporte Técnico - ID {{servicioTecnico.id}}
+        </h1>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-input-readonly"> Usuario Técnico </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.usuarioTecnico}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-field-1"> Fecha Visita Planificada </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.fechaVisitaPlanificada.slice(6, -2)  |  date:'dd/MM/yyyy'}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-field-1"> Fecha Visita Real </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.fechaVisitaReal.slice(6, -2)  |  date:'dd/MM/yyyy'}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-field-1"> Síntoma </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.sintoma}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <div class="checkbox">
+                <label class="block">
+                    <input name="form-field-checkbox" ng-model="servicioTecnico.esSanitizacionPlanificada" disabled="" type="checkbox" class="ace">
+                    <span class="lbl"> Sanitización Planificada </span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <h4 class="header blue">Cliente</h4>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-input-readonly"> Cliente </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.nombreCliente}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-input-readonly"> Domicilio </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.domicilioCompleto}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-input-readonly"> Responsable Cliente </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.responsableEnCliente}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-input-readonly"> Télefono Responsable </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.telefonoResponsable}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <h4 class="header blue">Dispenser</h4>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-input-readonly"> N° Interno </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.dispenserNumeroInterno}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-input-readonly"> N° de Serie </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.dispenserNumeroSerie}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-input-readonly"> Marca </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.marcaDispenser}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-input-readonly"> Sector/Ubicación </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.sectorUbicacion}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-input-readonly"> Cantidad </label>
+            <div class="col-sm-7">
+                <input value="{{servicioTecnico.cantidadDispensers}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-sm-6">
+            <label class="col-sm-5 control-label no-padding-right" for="form-input-readonly"> Comentarios de Cierre </label>
+            <div class="col-sm-7">
+                <textarea class="form-control" style="height:176px;" disabled="true" id="form-field-8">{{servicioTecnico.comentariosDeCierre}}</textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

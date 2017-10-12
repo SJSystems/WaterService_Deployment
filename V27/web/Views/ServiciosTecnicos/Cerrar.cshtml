@@ -1,0 +1,66 @@
+﻿<div ng-app="mainApp" ng-controller="cerrarServicioTecnico">
+    <div class="page-header">
+        <h1>
+            Cerrar Soporte Técnico - ID {{servicioTecnico.id}}
+        </h1>
+    </div>
+
+    <div class="form-horizontal">
+        @*<div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Técnico </label>
+            <div class="col-sm-9">
+                <select class="col-sm-8" ng-model="servicioTecnico.usuarioTecnicoId"
+                        ng-options="tecnico.usuario_id as tecnico.nombreApellido for tecnico in tecnicos"></select>
+            </div>
+        </div>*@
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Cliente </label>
+            <div class="col-sm-9">
+                <label type="text" placeholder="Username" class="col-xs-10 col-sm-12">{{servicioTecnico.nombreCliente}} </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Lugar </label>
+            <div class="col-sm-9">
+                <label type="text" class="col-xs-10 col-sm-12">{{servicioTecnico.domicilioCompleto}} </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Comentarios de Cierre </label>
+            <div class="col-sm-6">
+                <div class="clearfix">
+                    <textarea class="form-control limited" ng-model="servicioTecnico.comentariosDeCierre" maxlength="3000"></textarea>
+                </div>
+            </div>
+        </div>
+        @*<div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Soluciones </label>
+            <div class="col-sm-6">
+                <multiple-select codigo="soluciones" placeholder="Soluciones" />
+            </div>
+        </div>*@
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Motivo de Cierre </label>
+            <div class="col-sm-9">
+                <select class="col-sm-8" ng-model="servicioTecnico.motivoDeCierre_ids"
+                        ng-options="motivoDeCierre.valor_ids as motivoDeCierre.valorTexto for motivoDeCierre in motivosDeCierre"></select>
+            </div>
+        </div>
+        <div class="clearfix form-actions">
+            <div class="col-md-offset-3 col-md-9">
+                <button class="btn btn-success" type="button" ng-click="Cerrar()">
+                    <i class="ace-icon fa fa-check bigger-110"></i>
+                    Cerrar Servicio Técnico
+                </button>
+                <a class="btn btn-danger" type="button" href="/ServiciosTecnicos/Crear?id={{servicioTecnico.id}}">
+                    <i class="ace-icon fa fa-arrow-circle-left bigger-110"></i>
+                    Ir al servicio técnico
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

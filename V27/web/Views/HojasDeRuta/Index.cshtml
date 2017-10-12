@@ -1,0 +1,709 @@
+﻿@{
+    ViewBag.Title = "Buscar Hojas de Rutas";
+}
+
+<div ng-app="mainApp" ng-controller="hojasDeRutaCtrl">
+    <div class="form-horizontal">
+        <fieldset>
+
+            <div class="col-xs-8">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+
+                                    <div class="input-group">
+                                        <input ng-model="fechaHojaDeRuta" class="validate form-control date-picker col-xs-10 col-sm-5 " errormessage="Ingrese el sector de la empresa" fieldtype="text" id="txt_Fecha" name="txt_Fecha" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Reparto</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <select ng-model="repartoSeleccionado" ng-options="reparto.nombreReparto for reparto in repartosDisponibles"
+                                            class="input-group col-xs-10 col-sm-8">
+                                        <option value="" selected="selected">Todos</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form class="form-search">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control search-query"
+                                               ng-model="clienteBuscado"
+                                               ng-change="buscarClientesEnHojaDeRuta()"
+                                               placeholder="Filtrar clientes dentro de las hojas de ruta">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-warning btn-sm"
+                                                    ng-click="mostrarTodosLosClientes()">
+                                                <i class="ace-icon fa fa-times icon-on-right bigger-110"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="middle">
+                            <input class="ace" type="checkbox" ng-model="verDetalles">
+                            <span class="lbl">
+                                Ver detalles
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+
+                @*<div class="col-sm-6">
+
+                    <span class="help-inline col-xs-12 col-sm-7">
+                        <label class="middle">
+                            <input class="ace" type="checkbox" ng-model="clientesVisitados" id="id-disable-check">
+                            <span class="lbl"> <i class="fa fa-check green hasTooltip" title="Visitado"></i></span>
+                        </label>
+                    </span>
+
+                    <span class="help-inline col-xs-12 col-sm-7">
+                        <label class="middle">
+                            <input class="ace" type="checkbox" ng-model="clientesNoVisitados" id="id-disable-check">
+                            <span class="lbl">   <i class="fa fa-times red hasTooltip" title="No visitado"></i></span>
+                        </label>
+                    </span>
+
+                    <span class="help-inline col-xs-12 col-sm-7">
+                        <label class="middle">
+                            <input class="ace" type="checkbox" ng-model="clientesSinGestiones" id="id-disable-check">
+                            <span class="lbl">
+                                <i class="fa fa-exclamation-circle orange hasTooltip" title="Sin gestionaes"></i>
+                            </span>
+                        </label>
+                    </span>
+
+                    <span class="help-inline col-xs-12 col-sm-7">
+                        <label class="middle">
+                            <input class="ace" type="checkbox" ng-model="clientesAusentes" id="id-disable-check">
+                            <span class="lbl"> <i class="fa fa-coffee red hasTooltip" title="Ausente"></i></span>
+                        </label>
+                    </span>
+
+                    <span class="help-inline col-xs-12 col-sm-7">
+                        <label class="middle">
+                            <input class="ace" type="checkbox" ng-model="clientesVentasEntregas" id="id-disable-check">
+                            <span class="lbl"> <i class="fa fa-shopping-cart green hasTooltip" title="Venta-entrega"></i></span>
+                        </label>
+                    </span>
+
+                </div>
+
+                <div class="col-sm-6">
+
+                    <span class="help-inline col-xs-12 col-sm-7">
+                        <label class="middle">
+                            <input class="ace" type="checkbox" ng-model="clientesCobrosConsumos" id="id-disable-check">
+                            <span class="lbl"> <i class="fa fa-money blue hasTooltip" title="Cobro de consumos"></i></span>
+                        </label>
+                    </span>
+
+                    <span class="help-inline col-xs-12 col-sm-7">
+                        <label class="middle">
+                            <input class="ace" type="checkbox" ng-model="clientesCobrosFacturas" id="id-disable-check">
+                            <span class="lbl"> <i class="fa fa-file-text-o blue hasTooltip" title="Cobro de facturas"></i></span>
+                        </label>
+                    </span>
+
+                    <span class="help-inline col-xs-12 col-sm-7">
+                        <label class="middle">
+                            <input class="ace" type="checkbox" ng-model="clientesDevolucionesEnvases" id="id-disable-check">
+                            <span class="lbl"> <i class="fa fa-reply blue hasTooltip" title="Devolución de envases"></i></span>
+                        </label>
+                    </span>
+
+                    <span class="help-inline col-xs-12 col-sm-7">
+                        <label class="middle">
+                            <input class="ace" type="checkbox" ng-model="clientesPrestamosEnvases" id="id-disable-check">
+                            <span class="lbl"> <i class="fa fa-share blue hasTooltip" title="Préstamo de envases"></i></span>
+                        </label>
+                    </span>
+
+                    <span class="help-inline col-xs-12 col-sm-7">
+                        <label class="middle">
+                            <input class="ace" type="checkbox" ng-model="clientesCambiosArticulos" id="id-disable-check">
+                            <span class="lbl">  <i class="fa fa-retweet red hasTooltip" title="Devolución de artículo"></i></span>
+                        </label>
+                    </span>
+
+                </div>*@
+
+            </div>
+        </fieldset>
+
+        <div class="form-actions center">
+
+            <button type="button" ng-click="BuscarHojaDeRuta()" class="btn btn-sm btn-primary">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar hojas de ruta
+            </button>
+
+            <div class="col-sm-6 pull-right">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Acciones:</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            <div class="input-group">
+                                <select ng-model="accionSeleccionada">
+                                    <option value="0" selected>--Seleccione--</option>
+                                    <option value="20">Enviar a móvil</option>
+                                    <option value="30">Descargar del móvil</option>
+                                    <option value="50">Cerrar ruta</option>
+                                    <option value="100">Generar remitos</option>
+                                </select>
+                                <button type="button" ng-click="ejecutarAccion()" class="btn btn-sm btn-danger pull-right">
+                                    <i class="ace-icon fa fa-bolt icon-on-right bigger-110"></i>
+                                    Ejecutar acción
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" ng-click="generarHojaDeRuta()" class="btn btn-sm btn-danger pull-left">
+                Generar hoja de ruta
+                <i class="ace-icon fa fa-truck icon-on-right bigger-110"></i>
+            </button>
+            
+            <a href="/HojasDeRuta/UbicacionesDeRepartos" class="btn btn-sm btn-warning pull-left" style="margin-left: 10px">
+                Ubicación de repartos
+                <i class="ace-icon fa fa-map-marker icon-on-right bigger-110"></i>
+            </a>
+            
+        </div>
+    </div>
+
+
+    <div class="tabbable">
+
+        <ul class="nav nav-tabs" id="myTab">
+            <li class="active">
+                <a data-toggle="tab" href="#div_clientes">
+                    <i class="green ace-icon fa fa-home bigger-120"></i>
+                    Clientes
+                </a>
+            </li>
+            <li class="" ng-if="verDetalles">
+                <a data-toggle="tab" href="#div_articulos">
+                    Articulos
+                </a>
+            </li>
+            <li class="" ng-if="verDetalles">
+                <a data-toggle="tab" href="#div_cobrosConsumos">
+                    Cobros consumos
+                </a>
+            </li>
+            <li class="" ng-if="verDetalles">
+                <a data-toggle="tab" href="#div_cobrosFacturas">
+                    Cobros facturas
+                </a>
+            </li>
+            <li class="" ng-if="verDetalles">
+                <a data-toggle="tab" href="#div_envases">
+                    Envases
+                </a>
+            </li>
+            <li class="" ng-if="verDetalles">
+                <a data-toggle="tab" href="#div_devoluciones">
+                    Devoluciones
+                </a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+
+            <div id="div_clientes" class="tab-pane fade active in">
+
+                <table id="tb_hojasDeRutas" class="table table-striped table-bordered table-hover">
+
+                    <thead>
+                        <tr>
+                            <th style="width: 30px">
+                                <span class="help-inline col-xs-12 col-sm-7" ng-click="seleccionTodos(seleccionarTodos)">
+                                    <label class="middle hasTooltip" title="Seleccionar todos">
+                                        <input class="ace" type="checkbox" ng-model="seleccionarTodos">
+                                        <span class="lbl">  </span>
+                                    </label>
+                                </span>
+                            </th>
+                            <th>Fecha</th>
+                            <th>Día</th>
+                            <th>Reparto</th>
+                            <th>Repartidor</th>
+                            <th>Móvil</th>
+                            <th>Estado</th>
+                            <th>Cobrado</th>
+                            <th>Declarado</th>
+                            <th>Dif</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody ng-repeat="hojadeRuta in hojasDeRutas">
+                        <tr>
+                            <td>
+                                <a title="Ver clientes" class="hasTooltip" ng-click="mostrarClientesDeHojaDeRuta(hojadeRuta)"
+                                   href="javascript:return false;">
+                                    <i class="btn_icono ace-icon fa fa-chevron-{{hojadeRuta.mostrarClientes?'down':'up'}}"></i>
+                                </a>
+
+                                <span class="" ng-show="mostrarSeleccion(hojadeRuta)">
+                                    <label class="middle hasTooltip" title="Seleccionar hoja de ruta">
+                                        <input class="ace" type="checkbox" ng-model="hojadeRuta.seleccionada">
+                                        <span class="lbl">  </span>
+                                    </label>
+                                </span>
+
+                                <i ng-show="hojadeRuta.proccessError!=null && hojadeRuta.proccessError!='' "
+                                   class="fa fa-exclamation-triangle red hasTooltip"
+                                   title="{{hojadeRuta.proccessError}}"></i>
+                            </td>
+                            <td>{{hojadeRuta.fechaRuta.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                            <td>{{hojadeRuta.dia}}</td>
+                            <td>{{hojadeRuta.nombreReparto}}</td>
+                            <td>{{hojadeRuta.nombreRepartidor}}</td>
+                            <td>
+                                {{hojadeRuta.descripcionMovil}}
+                                <a href="javascript:void(0)" ng-click="asignarMovilAHojaDeRuta(hojadeRuta)">
+                                    <i class="ace-icon fa fa-phone-square bigger-130"></i>
+                                </a>
+                                <br/>
+                                {{hojadeRuta.nombreVehiculo}}
+                            </td>
+                            <td>{{hojadeRuta.estadoHojaDeRuta}}</td>
+                            <td>${{hojadeRuta.totalCobrado}}</td>
+                            <td class="col-sm-2">
+                                {{hojadeRuta.montoEfectivoDeclarado==0?"":"$"+hojadeRuta.montoEfectivoDeclarado}}
+                            </td>
+                            <td>${{hojadeRuta.diferencia}}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                                        Acciones
+                                        <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                    </button>
+
+                                    <ul class="dropdown-menu dropdown-inverse">
+                                        <li>
+                                            <a href="/HojasDeRuta/LiquidacionHojaDeRuta?hojaDeRutaId={{hojadeRuta.id}}">
+                                                Liquidación
+                                            </a>
+                                        </li>
+                                        <li ng-hide="hojadeRuta.estadoHojaDeRuta_ids==50">
+                                            <a href="javascript:return false;"
+                                               ng-click="agregarClienteVentaExtra(hojadeRuta.nombreReparto,hojadeRuta.id )">
+                                                Agregar venta extra
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/HojasDeRuta/MapaHojaDeRuta?hojaDeRutaId={{hojadeRuta.id}}" target="_blank">
+                                                Ver clientes en mapa
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/HojasDeRuta/MapaDeRecorridoReal?hojaDeRutaId={{hojadeRuta.id}}" target="_blank">
+                                                Ver recorrido real de móvil
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="/HojasDeRuta/OrdenarClientes?hojaDeRutaId={{hojadeRuta.id}}" target="_blank">
+                                                Ordenar clientes
+                                            </a>
+                                        </li>
+
+
+                                        <li ng-show="hojadeRuta.estadoHojaDeRuta_ids==30 || hojadeRuta.estadoHojaDeRuta_ids==20">
+                                            <a href="javascript:return false;"
+                                               ng-click="resetearVentas(hojadeRuta.nombreReparto,hojadeRuta.id )">
+                                                Resetear hoja de ruta
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="javascript:return false;"
+                                               ng-click="cargarHojaDeRutaAMovil(hojadeRuta.id)">
+                                                Cargar a movil
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="javascript:return false;"
+                                               ng-click="DescargarHojaDeRutaAMovil(hojadeRuta.id)">
+                                                Descargar del movil
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a href="/HojasDeRuta/DetallesDeClientes?hojaDeRutaId={{hojadeRuta.id}}" target="_blank">
+                                                Imprimir respaldo papel
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" ng-click="generarResumenesDeCuenta(hojadeRuta)">
+                                                Resumen de cuenta
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" 
+                                               ng-hide="hojadeRuta.generandoFacturas"
+                                               ng-click="generarFacturas(hojadeRuta)">
+                                                Generar Facturas
+                                            </a>
+                                            <img src="/Images/waiting.gif" style="width: 20px;" ng-show="hojadeRuta.generandoFacturas" />
+                                            <span ng-show="hojadeRuta.generandoFacturas">
+                                                Generando facturas...
+                                            </span>
+                                        </li>
+                                        <li>
+                                            <a href="/Reportes/ObtenerPdfAlertasClientesHojaDeRutas?hojaDeRutaId={{hojadeRuta.id}}" target="_blank">
+                                                PDF de Alarmas
+                                            </a>
+                                        </li>
+                                        
+                                    </ul>
+                                </div>
+                                <a href="javascript:void(0)" ng-click="verAlertas(hojadeRuta)">
+                                    <i class="ace-icon fa fa-bell icon-animated-bell"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr ng-show="hojadeRuta.mostrarClientes">
+                            <td colspan="11">
+                                <table id="tb_hojasDeRutas" class="table table-striped  table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th></th>
+                                            <th>Visita</th>
+                                            <th>Código</th>
+                                            <th>Cliente</th>
+                                            <th>Origen</th>
+                                            <th>Tipo</th>
+                                            <th>Domicilio</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody ng-repeat="cliente in hojadeRuta.Clientes" ng-show="cliente.visible==null || cliente.visible">
+                                        <tr>
+                                            <td title="{{cliente.id}}">
+                                                {{cliente.orden}}
+                                                <a ng-show="cliente.visitado"
+                                                   title="Ver operaciones con el cliente" class="hasTooltip"
+                                                   ng-click="verOperacionesConCliente(cliente)" href="javascript:void(0);">
+                                                    <i class="btn_icono ace-icon fa fa-chevron-{{cliente.mostrarOperaciones?'down':'up'}}"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                @*<i ng-show="cliente.esPedido" class="fa fa-phone-square blue hasTooltip" title="Es pedido"></i>*@
+                                                <i ng-show="cliente.liquidada" class="fa fa-check-circle-o green hasTooltip" title="Venta liquidada"></i>
+                                                <i ng-show="cliente.mensajeProcesoCierre!=null && cliente.mensajeProcesoCierre!=''"
+                                                   class="fa fa-exclamation-triangle orange hasTooltip" title="{{cliente.mensajeProcesoCierre}}"></i>
+                                            </td>
+                                            <td>
+                                                <i ng-show="!cliente.visitado" class="fa fa-times red hasTooltip" title="No visitado"></i>
+                                                <i ng-show="cliente.visitado" class="fa fa-check green hasTooltip" title="Visitado"></i>
+
+                                                <i ng-show="cliente.visitado && !cliente.ausente && !cliente.ventaEntrega && !cliente.cobroConsumo && !cliente.cobroFactura && !cliente.devolucionEnvases && !cliente.prestamoEnvases && !cliente.devolucionArticulo"
+                                                   class="fa fa-exclamation-circle orange hasTooltip" title="Sin gestionaes"></i>
+
+                                                <i ng-show="cliente.ausente" class="fa fa-coffee red hasTooltip" title="Ausente"></i>
+
+                                                <a ng-show="cliente.ventaEntrega" href="/Archivos/Remitos/Entregas/{{cliente.cliente_id}}_{{hojadeRuta.id}}.pdf" target="_blank">
+                                                    <i class="fa fa-shopping-cart green hasTooltip" title="Venta-entrega y remito"></i>
+                                                </a>
+
+                                                <i ng-show="cliente.cobroConsumo" class="fa fa-money blue hasTooltip" title="Cobro de consumos"></i>
+                                                <i ng-show="cliente.cobroFactura" class="fa fa-file-text-o blue hasTooltip" title="Cobro de facturas"></i>
+                                                <i ng-show="cliente.devolucionEnvases" class="fa fa-reply blue hasTooltip" title="Devolución de envases"></i>
+                                                <i ng-show="cliente.prestamoEnvases" class="fa fa-share blue hasTooltip" title="Préstamo de envases"></i>
+                                                <i ng-show="cliente.devolucionArticulo" class="fa fa-retweet red hasTooltip" title="Devolución de artículo"></i>
+                                                <span ng-show="cliente.visitado">{{cliente.visita_fechaHora | dformat | date: 'HH:mm' }}</span>
+                                            </td>
+                                            <td>
+                                                <a href="/Clientes/EditCliente/{{cliente.cliente_id}}">{{cliente.cliente_id}}</a>
+                                            </td>
+                                            <td>
+                                                <a href="/TransaccionesTemporales/Create?clienteId={{cliente.cliente_id}}&hojaDeRutaId={{hojadeRuta.id}}" class="hasTooltip" title="Venta al cliente" target="_blank">
+                                                    {{cliente.nombreCliente}}
+                                                </a>
+                                                <button class="btn btn-danger btn-xs hasTooltip" title="Quitar venta extra"
+                                                        ng-show="cliente.esVentaExtra && !cliente.liquidada"
+                                                        ng-click="quitarVentaExtra(cliente,hojadeRuta.id)">
+                                                    <i class="ace-icon fa fa-times  bigger-110 icon-only"></i>
+                                                </button>
+                                                <a href="javascript:void(0)"
+                                                   ng-show="cliente.tieneAlarmas"
+                                                   ng-click="verAlertasDeCliente(cliente, hojadeRuta)" class="">
+                                                    <i class="ace-icon fa fa-bell icon-animated-bell red"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <p ng-if="cliente.servicioTecnico_id != null">
+                                                    <a href="javascript:void(0);">
+                                                        <i class="fa fa-ambulance red hasTooltip" title="Es Servicio técnico"></i>
+                                                        {{cliente.sintomaServicioTecnico}}
+                                                    </a>
+
+                                                    <a title="Ver detalle de serivicio técnico" class="hasTooltip"
+                                                       ng-click="cliente.mostrarServicioTecnico= !cliente.mostrarServicioTecnico" 
+                                                       href="javascript:void(0);">
+                                                        <i class="btn_icono ace-icon fa fa-chevron-{{cliente.mostrarServicioTecnico?'down':'up'}}"></i>
+                                                    </a>
+                                                </p>
+
+                                                <p ng-if="cliente.esPedido">
+                                                    <a href="javascript:void(0);">
+                                                        <i class="fa fa fa-phone-square orange hasTooltip" title="Es pedido"></i>
+                                                    </a>
+                                                </p>
+
+                                                <p ng-if="cliente.esVentaExtra">
+                                                    <i  class="fa fa-plus-circle green hasTooltip" title="Es venta extra"></i>
+
+                                                </p>
+                                                <p ng-if="cliente.servicioTecnico_id == null && !cliente.esPedido && !cliente.esVentaExtra">
+                                                    <a href="javascript:void(0);">
+                                                        <i class="fa fa fa-truck green hasTooltip" title="Visita normal"></i>
+                                                    </a>
+                                                </p>
+                                            </td>
+                                            <td>
+                                                {{cliente.tipoCliente}}
+                                            </td>
+                                            <td>
+                                                {{cliente.domicilioCompleto}}
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="cliente.mostrarServicioTecnico">
+                                            <td colspan="8">
+                                                <detalle-servicio-tecnico servicio-tecnico-id="cliente.servicioTecnico_id" fecha-de-visita-actual="hojadeRuta.fechaRuta" allow-edit="true"/>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="cliente.mostrarOperaciones">
+                                            <td colspan="8">
+                                                <operaciones-temp-con-cliente operaciones="cliente.operaciones" />
+                                            </td>
+                                        </tr>                                        
+                                    </tbody>
+                                    
+                                </table>
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="div_articulos" class="tab-pane fade" ng-if="verDetalles">
+
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Reparto</th>
+                            <th>Cliente</th>
+                            <th>Articulo</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="articulo in operaciones.Articulos">
+                            <td>{{articulo.nombreReparto}}</td>
+                            <td>{{articulo.nombreCliente}}</td>
+                            <td>{{articulo.nombreArticulo}}</td>
+                            <td>{{articulo.cantidad}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="div_cobrosConsumos" class="tab-pane fade" ng-if="verDetalles">
+
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Reparto</th>
+                            <th>Cliente</th>
+                            <th>Cobro consumos</th>
+                            <th>Cobro a cuenta</th>
+                            <th>Forma de pago</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cobro in operaciones.CobrosConsumosACuenta">
+                            <td>{{cobro.nombreReparto}}</td>
+                            <td>{{cobro.nombreCliente}}</td>
+                            <td>{{cobro.montoCobroConsumos}}</td>
+                            <td>{{cobro.montoCobroACuenta}}</td>
+                            <td>{{cobro.formaDePago}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="div_cobrosFacturas" class="tab-pane fade" ng-if="verDetalles">
+
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Reparto</th>
+                            <th>Cliente</th>
+                            <th>Factura</th>
+                            <th>Cobro</th>
+                            <th>Forma de pago</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cobro in operaciones.CobrosFacturas">
+                            <td>{{cobro.nombreReparto}}</td>
+                            <td>{{cobro.nombreCliente}}</td>
+                            <td>{{cobro.nroFactura}}</td>
+                            <td>{{cobro.monto}}</td>
+                            <td>{{cobro.formaDePago}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="div_envases" class="tab-pane fade" ng-if="verDetalles">
+
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Reparto</th>
+                            <th>Cliente</th>
+                            <th>Evento</th>
+                            <th>Articulo</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="envase in operaciones.Envases">
+                            <td>{{envase.nombreReparto}}</td>
+                            <td>{{envase.nombreCliente}}</td>
+                            <td>{{envase.tipoEvento_ids | operacionEnvase}}</td>
+                            <td>{{envase.nombreArticulo}}</td>
+                            <td>{{envase.cantidad}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="div_devoluciones" class="tab-pane fade" ng-if="verDetalles">
+
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Reparto</th>
+                            <th>Cliente</th>
+                            <th>Articulo</th>
+                            <th>Cantidad</th>
+                            <th>Reutilizable</th>
+                            <th>Cambio directo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="devolucion in operaciones.Devoluiones">
+                            <td>{{devolucion.nombreReparto}}</td>
+                            <td>{{devolucion.nombreCliente}}</td>
+                            <td>{{devolucion.nombreArticulo}}</td>
+                            <td>{{devolucion.cantidad}}</td>
+                            <td>{{devolucion.esReutilizable===true?"Si":"No"}}</td>
+                            <td>{{devolucion.esCambioDirecto===true?"Si":"No"}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="input-group" id="popup">
+        <input ng-model="clienteAgregado.textoClienteBuscar"
+               ng-escape="cerrarPopup()"
+               auto-complete="clienteAgregado.autoCompleteModel"
+               name="txt_cliente" type="text" id="txt_buscarClienteAgregar"
+               class="col-xs-12 col-sm-11" style="border-color: rgb(60, 28, 153);">
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-purple btn-sm" ng-click="cerrarPopup()">
+                <i class="ace-icon fa fa-times white"></i>
+            </button>
+        </span>
+
+    </div>
+
+    <div id="div_agregarClienteVentaExtra" title=" Agregar venta extra en hoja de ruta">
+        <form name="mainForm" class="form-horizontal" novalidate>
+
+            <fieldset>
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="email">Cliente a agregar</label>
+                    <div class="col-xs-12 col-sm-10">
+                        <div class="clearfix">
+                            <input required ng-model="clienteAgregado.textoClienteBuscar"
+                                   auto-complete="clienteAgregado.autoCompleteModel"
+                                   name="txt_cliente" type="text"
+                                   class="col-xs-12 col-sm-11">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+        </form>
+    </div>
+
+</div>
+
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/hojasDeRutaControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/reportes/directivesReportes.js"></script>
+<script src="~/js/app/controllers/resumenDeCuentaControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/controllers/dispensersController.js"></script>
+<script src="~/assets/js/flot/jquery.flot.min.js"></script>
+<script src="~/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="~/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="~/assets/js/jquery.easypiechart.min.js"></script>
+<script src="~/assets/js/jquery.sparkline.min.js"></script>

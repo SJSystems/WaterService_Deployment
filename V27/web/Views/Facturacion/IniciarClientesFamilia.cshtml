@@ -1,0 +1,24 @@
+﻿@model System.Collections.Generic.List<string>
+
+<h2>Errores de inicialización de clientes familia</h2>
+
+<table>
+    <thead>
+        <tr>
+            <td>
+                Error
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var error in Model)
+        {
+            <tr>
+                <td>
+                    @(error)
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

@@ -1,0 +1,218 @@
+﻿<div class="tabbable">
+
+    <ul class="nav nav-tabs" id="myTab">
+
+        <li class="active">
+            <a data-toggle="tab" href="#div_comodatos">
+                Comodatos y provisorios
+            </a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#div_movimientos_envases">
+                Historial de prestamos y devoluciones
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+
+        <div id="div_comodatos" class="tab-pane fade active in">
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h4 class="widget-title">Comodatos Activos</h4>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main no-padding">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Artículo</th>
+                                                        <th>Cantidad</th>
+                                                        <th>Alta</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <tr ng-repeat="item in comodatos">
+                                                        <td>{{item.nombreArticulo}}</td>
+                                                        <td>{{item.cantidad}}</td>
+                                                        <td>{{item.fechaAlta.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-6">
+
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h4 class="widget-title">Provisorios</h4>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main no-padding">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Artículo</th>
+                                                        <th>Cantidad</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <tr ng-repeat="item in prestamosAcumulados">
+                                                        <td>{{item.nombreArticulo}}</td>
+                                                        <td>{{item.cantidadAdeudada}}</td>
+                                                        <td>
+                                                            <button class="btn btn-xs btn-danger" ng-click="crearNuevaSolicitud(item)">
+                                                                <i class="ace-icon fa fa-bolt bigger-110"></i>
+                                                                Comodato
+                                                                <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="widget-box">
+                        <div class="widget-header">
+                            <h4 class="widget-title">Prestamos pendientes</h4>
+                        </div>
+                        <div class="widget-body">
+                            <div class="widget-main no-padding">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div>
+                                            <table class="table table-striped table-bordered table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Artículo</th>
+                                                        <th>Prestados</th>
+                                                        <th>Devueltos</th>
+                                                        <th>Adeudados</th>
+                                                        <th>Fecha</th>
+                                                        <th>Vencimiento</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+
+                                                    <tr ng-repeat="item in prestamosPendientes">
+                                                        <td>{{item.nombreArticulo}}</td>
+                                                        <td>{{item.cantidad}}</td>
+                                                        <td>{{item.cantidadDevueltos}}</td>
+                                                        <td>{{item.cantidad - item.cantidadDevueltos}}</td>
+                                                        <td>{{item.fechaHora.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                                        <td>{{item.fechaVencimiento.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div id="div_movimientos_envases" class="tab-pane fade in">
+
+            <div class="row">
+
+                <div class="col-sm-3">
+                    <label class="control-label col-sm-4 padding-right">Desde</label>
+                    <div class="input-group">
+                        <input class="validate form-control date-picker col-xs-10 col-sm-5 "
+                               placeholder="dd/mm/yyyy" type="text" ng-model="ModeloBuscarEnvases.desde">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <label class="control-label col-sm-4 padding-right">Hasta</label>
+                    <div class="input-group">
+                        <input class="validate form-control date-picker col-xs-10 col-sm-8 " placeholder="dd/mm/yyyy"
+                               ng-model="ModeloBuscarEnvases.hasta">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <button type="button" class="btn btn-purple btn-sm " ng-click="buscarEnvases()">
+                        <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                        Buscar
+                    </button>
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+
+            <br />
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Evento </th>
+                        <th>Artículo</th>
+                        <th>Cantidad</th>
+                        <th>Repartidor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in ModeloBuscarEnvases.envasesResultado">
+
+                        <td>{{item.fechaHora.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                        <td>{{item.evento + (item.esAjusteEnComodato ? ' (Ajuste de Comodato Aprobado)' :'')}}</td>
+                        <td>{{item.nombreArticulo}}</td>
+                        <td>{{item.cantidad}}</td>
+                        <td>{{item.usuarioEvento}}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>

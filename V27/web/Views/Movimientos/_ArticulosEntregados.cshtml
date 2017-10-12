@@ -1,0 +1,29 @@
+﻿@model  List<WaterService.Common.Entities.DTOs.VIEW_ArticulosXVentasEntregas_DTO>
+@{
+    Layout = null;
+}
+
+  <table class="table">
+      <thead>
+           <th>Fecha</th>
+          <th>Cant</th>
+          <th>Artículo</th>
+          <th>Precio</th>
+          <th>Subtotal</th>
+      </thead>
+    <tbody>
+        
+       @foreach (var item in Model)
+       {
+           <tr>
+               <td>@item.fechaVenta.ToString("dd/MM/yyyy")</td>
+               <td>@item.cantidad</td>
+               <td>@item.nombreArticulo</td>
+               <td>$@item.precioUnitario</td>
+               <td>$@(item.cantidad*item.precioUnitario)</td>
+           </tr>
+
+       }
+
+    </tbody>
+</table>

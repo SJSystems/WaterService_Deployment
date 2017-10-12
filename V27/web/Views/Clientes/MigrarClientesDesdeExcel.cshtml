@@ -1,0 +1,44 @@
+﻿@model System.Collections.Generic.List<WaterService.Common.Entities.DTOs.ResultadoDeMigracionDeCliente>
+
+
+<h2>Resultado de migración</h2>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Cliente</th>
+            <th>IdGenerado</th>
+            <th>MensajeError</th>
+            <th>TablaClientes</th>
+            <th>TablaDomicilios</th>
+            <th>TablaVisitas</th>
+            <th>TablaFacturacion</th>
+            <th>TablaContactos</th>
+            <th>TablaAbonos</th>
+            <th>TablaComodatos</th>
+            <th>Migrado</th>
+            <th>MigradoExitoso</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.NumeroExterno</td>
+                <td>@r.NombreCliente</td>
+                <td>@r.IdGenerado</td>
+                <td>@r.MensajeError</td>
+                <td>@r.TablaClientes</td>
+                <td>@r.TablaDomicilios</td>
+                <td>@r.TablaVisitas</td>
+                <td>@r.TablaFacturacion</td>
+                <td>@r.TablaContactos</td>
+                <td>@r.TablaAbonos</td>
+                <td>@r.TablaComodatos</td>
+                <td>@r.Migrado</td>
+                <td>@r.MigradoExitoso</td>
+            </tr>
+        }
+    </tbody>
+</table>

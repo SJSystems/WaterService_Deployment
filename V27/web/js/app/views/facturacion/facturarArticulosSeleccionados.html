@@ -1,0 +1,77 @@
+﻿<div id="divFacturarArticulosSeleccionados">
+    <div class="col-xs-12 col-sm-12 widget-container-col">
+
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <h3 class="header smaller lighter blue">
+                        <span style="margin-left: 10px">Facturar artículos seleccionados</span>
+                    </h3>
+                    <div class="form-horizontal col-sm-9">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"> Fecha de factura </label>
+                            <div class="col-sm-4">
+                                <input ng-model="fecha" class="validate form-control date-picker col-sm-4" fieldtype="text" type="text">
+                            </div>
+                        </div>
+                        
+                        <div class="space-10"></div>
+                       
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Artículo</th>
+                                    <th>Cant</th>
+                                    <th>Precio</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="articulo in articulosResumen">
+                                <tr>
+                                    <td>{{articulo.nombreArticulo}}</td>
+                                    <td>{{articulo.cantidad}}</td>
+                                    <td>${{articulo.precioUnitario}}</td>
+                                    <td>${{articulo.subtotal}}</td>
+                                </tr>
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3">
+                                        <strong class="pull-right">Total</strong>
+                                    </td>
+                                    <td>
+                                        <strong>${{total}}</strong>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="widget-toolbox padding-8 clearfix">
+                <button class="btn btn-sm btn-danger pull-left" ng-click="cerrar()">
+                    <i class="ace-icon fa fa-times"></i>
+                    <span class="bigger-110">Cancelar</span>
+                </button>
+
+                <button class="btn btn-sm btn-success pull-right" ng-click="confirmarFacturacion()">
+                    <span class="bigger-110">Confirmar facturación</span>
+
+                    <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

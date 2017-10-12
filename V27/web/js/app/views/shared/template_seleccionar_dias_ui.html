@@ -1,0 +1,22 @@
+﻿<ui-select ng-model="dirModel.diasSelected"
+           theme="bootstrap"
+           ng-if="multiple!='true'">
+    <ui-select-match placeholder="Seleccione día" allow-clear="{{allowClear}}">
+        {{$select.selected.nombre}}
+    </ui-select-match>
+    <ui-select-choices repeat="dia in optionItems | propsFilter: {nombre: $select.search}">
+        <div ng-bind-html="dia.nombre | highlight: $select.search"></div>
+    </ui-select-choices>
+</ui-select>
+
+<ui-select multiple
+           ng-model="dirModel.diasSelected"
+           ng-if="multiple=='true'"
+           theme="bootstrap">
+    <ui-select-match placeholder="Seleccione días" allow-clear="{{allowClear}}">
+        {{$item.nombre}}
+    </ui-select-match>
+    <ui-select-choices repeat="dia in optionItems | propsFilter: {nombre: $select.search}">
+        <div ng-bind-html="dia.nombre | highlight: $select.search"></div>
+    </ui-select-choices>
+</ui-select>

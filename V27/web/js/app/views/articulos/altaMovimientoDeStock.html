@@ -1,0 +1,84 @@
+﻿<div class="row">
+    <div class="col-sm-12">
+
+        <div class="page-header">
+            <h1>
+                Nuevo movimiento de Stock de Artículo
+            </h1>
+        </div>
+
+
+        <div class="form-horizontal">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Artículo </label>
+
+                <div class="col-sm-9">
+                    Código:
+                    <strong>
+                        {{articulo.codigoInterno}}
+                    </strong>
+                    <br />
+                    Nombre:
+                    <strong>
+                        {{articulo.nombreArticulo}}
+                    </strong>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Motivo</label>
+                <div class="col-sm-3">
+                    <select ng-model="movimiento.motivoMovimiento_ids"
+                             ng-options="motivo.valor_ids as motivo.valorTexto for motivo in motivos"></select>
+                </div>
+            </div>
+
+            <div class="hr hr-18 dotted hr-double"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Cantidad</label>
+                <div class="col-sm-9">
+                    <input ng-model="movimiento.cantidad" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Precio</label>
+                <div class="col-sm-9">
+                    <input ng-model="movimiento.costo" />
+                </div>
+            </div>
+
+            <div class="hr hr-18 dotted hr-double"></div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Comentarios</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control"
+                              ng-model="movimiento.comentarios"
+                              placeholder="Comentarios del movimiento"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="clearfix form-actions">
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-3">
+                    <button class="btn btn-info" type="button" ng-click="guardar()">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        Guardar
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-danger" type="button" ng-click="cancelar()">
+                        <i class="ace-icon fa fa-times bigger-110"></i>
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

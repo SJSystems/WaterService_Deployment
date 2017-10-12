@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "title";
+}
+
+<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable" style="min-height: 109px;"
+     ng-app="mainApp" ng-controller="ordenarServiciosTecnicosController">
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">Ordenar Visitas/Planificar Servicios Técnicos</h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+
+            <button class="btn btn-white btn-default btn-round" ng-click="AsignarOrden()">
+                <i class="ace-icon fa fa-bolt red2"></i>
+                Asignar Orden
+            </button>
+            
+        </div>
+    </div>
+    
+    <div class="dd dd-draghandle" id="list_Ordenados" style="overflow-y:scroll; height:420px; max-width:none;">
+        <div class="dd-empty" ng-if="serviciosTecnicos.length == 0"></div>
+        <ol class="dd-list" ng-if="serviciosTecnicos.length != 0">
+            <li class="dd-item item-blue2 row_cliente" ng-repeat="cliente in clientes | orderBy:'+orden'" data-id="{{cliente.cliente_id}}">
+                <div class="dd-handle registroCliente">
+                    <strong></strong>
+                    <h4>
+                        <span class="hasTooltip" title="">[{{cliente.orden}}]</span>
+                        <span class="hasTooltip" title="">({{cliente.cliente_id}})</span> -  {{cliente.nombreCliente}}
+                        <a href="/Clientes/EditCliente/{{cliente.cliente_id}}" target="_blank" class="hasTooltip" title="">
+                            <i class="ace-icon fa fa-pencil-square-o  green"></i>
+                        </a>
+                    </h4>
+                    <h5 class="text-warning bigger-110 orange hasTooltip" title="" data-original-title="Domicilio">
+                        <i class="ace-icon fa fa-home red "></i>
+                        {{cliente.domicilioCompleto}}
+                    </h5>
+                </div>
+            </li>
+        </ol>
+
+
+    </div>
+
+</div>
+<script src="~/assets/js/jquery.nestable.min.js"></script>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

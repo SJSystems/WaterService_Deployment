@@ -1,0 +1,291 @@
+﻿
+<div ng-app="mainApp" ng-controller="repEnvasesPorHojaDeRutaController">
+
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">
+                Reporte de envases por Reparto
+            </h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <ctr-periodo fechas-periodo="desdeHasta" titulo="Periodo"></ctr-periodo>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <ctr-seleccionar-repartidor repartidor-seleccionado="repartidorSeleccionado"></ctr-seleccionar-repartidor>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <ctr-seleccionar-reparto reparto-seleccionado="repartoSeleccionado"></ctr-seleccionar-reparto>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-4">
+
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right center">Agrupado</label>
+                                <div class="col-sm-9">
+                                    <div class="clearfix">
+
+                                        <select ng-model="agrupador" class="input-group col-sm-9">
+                                            <option value="porDia" selected>Por día</option>
+                                            <option value="porMes">Por mes</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+            <span ng-show="ventasPorRubro!=null">
+                {{cajasDeRepartos.length}} registros encontrados.
+            </span>
+            <button type="button" ng-disabled="descangando" ng-click="descargarExcel()" class="btn btn-sm btn-success pull-right" style="margin-left: 10px">
+                <i class="ace-icon fa fa-file-excel-o icon-on-right bigger-110"></i>
+                {{descangando?'Descargando archivo...':'Descargar Excel'}}
+            </button>
+            <button type="button" ng-click="buscar()" class="btn btn-sm btn-primary pull-right" style="margin-left: 10px">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar
+            </button>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+
+            <table ng-if="agrupador=='porDia'"
+                   class="table table-striped table-bordered"
+                   st-table="displayPorDia"
+                   st-safe-src="reporte.registros">
+                <thead>
+                    <tr>
+                        <th class="center" st-sort="fecha">
+                            Fecha
+                        </th>
+                        <th st-sort="nombreReparto">
+                            Reparto
+                        </th>
+                        <th class="center" colspan="5" ng-repeat="articulo in reporte.articulos" style="border-right: 2px solid !important;">
+                            {{articulo.nombreArticulo}} ({{articulo.codigoInterno}})
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="2"></th>
+                        <th class="center" ng-repeat-start="articulo in reporte.articulos">
+                            PRE
+                        </th>
+                        <th class="center" >
+                            DEV
+                        </th>
+                        <th class="center" style="border-right-color: #ea2ce5 !important;">
+                            REL
+                        </th>
+                        <th class="center">
+                            ALT
+                        </th>
+                        <th ng-repeat-end class="center" style="border-right: 2px solid !important;">
+                            BAJ
+                        </th>
+
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr style="background: rgb(251, 193, 139)">
+                        <td class="text-center" colspan="2">
+                            <strong>Totales</strong>
+                        </td>
+                        <td class="text-center" ng-repeat-start="art in reporte.totales">
+                            <strong>{{art.prestados}}</strong>
+                        </td>
+                        <td class="text-center" >
+                            <strong>{{art.devueltos}}</strong>
+                        </td>
+                        <td class="text-center" style="border-right-color: #ea2ce5 !important;">
+                            <strong>{{art.relevados}}</strong>
+                        </td>
+                        <td class="text-center" >
+                            <strong>{{art.solicitudesStockAlta}}</strong>
+                        </td>
+                        <td ng-repeat-end class="text-center" style="border-right: 2px solid !important;">
+                            <strong>{{art.solicitudesStockBaja}}</strong>
+                        </td>
+
+                    </tr>
+                </tbody>
+                <tbody ng-repeat="item in displayPorDia">
+                    <tr >
+                        <td>
+                            {{item.fecha.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            {{item.nombreReparto}}
+                        </td>
+                        <td class="center" ng-repeat-start="art in item.cantidades">
+                            {{art.prestados}}
+                        </td>
+                        <td class="center" >
+                            {{art.devueltos}}
+                        </td>
+                        <td class="center" style="border-right-color: #ea2ce5 !important;">
+                            {{art.relevados}}
+                        </td>
+                        <td class="center">
+                            {{art.solicitudesStockAlta}}
+                        </td>
+                        <td ng-repeat-end class="center" style="border-right: 2px solid !important;">
+                            {{art.solicitudesStockBaja}}
+                        </td>
+
+                    </tr>
+
+                </tbody>
+                
+                <tfoot>
+                    <tr>
+                        <td colspan="10" class="text-center">
+                            <div st-pagination="" st-items-by-page="20" st-displayed-pages="8"></div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <table ng-if="agrupador=='porMes'"
+                   class="table table-striped table-bordered"
+                   st-table="displayPorMes"
+                   st-safe-src="reporte.registrosPorPeriodo">
+                <thead>
+                    <tr>
+
+                        <th class="center" st-sort="periodo">
+                            Periodo
+                        </th>
+                        <th st-sort="nombreReparto">
+                            Reparto
+                        </th>
+                        <th class="center" colspan="5" 
+                            ng-repeat="articulo in reporte.articulos" 
+                            style="border-right: 2px solid !important;">
+                            {{articulo.nombreArticulo}} ({{articulo.codigoInterno}})
+                        </th>
+
+                    </tr>
+                    
+                    <tr>
+
+                        <th colspan="2">
+
+                        </th>
+                        <th class="center" ng-repeat-start="articulo in reporte.articulos">
+                            PRE
+                        </th>
+                        <th class="center">
+                            DEV
+                        </th>
+                        <th class="center" style="border-right-color: #ea2ce5 !important;">
+                            REL
+                        </th>
+                        <th class="center">
+                            ALT
+                        </th>
+                        <th ng-repeat-end class="center" style="border-right: 2px solid !important;">
+                            BAJ
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+                    <tr style="background: rgb(251, 193, 139)">
+                        <td class="text-center" colspan="2">
+                            <strong>Totales</strong>
+                        </td>
+
+                        <td class="text-center" ng-repeat-start="art in reporte.totales">
+                            <strong>{{art.prestados}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>{{art.devueltos}}</strong>
+                        </td>
+                        <td class="text-center" style="border-right-color: #ea2ce5 !important;">
+                            <strong>{{art.relevados}}</strong>
+                        </td>
+                        <td class="text-center">
+                            <strong>{{art.solicitudesStockAlta}}</strong>
+                        </td>
+                        <td ng-repeat-end class="text-center" style="border-right: 2px solid !important;">
+                            <strong>{{art.solicitudesStockBaja}}</strong>
+                        </td>
+
+                    </tr>
+                </tbody>
+                
+                <tbody ng-repeat="item in displayPorMes">
+                    <tr>
+                        <td>
+                            {{item.periodo}}
+                        </td>
+                        <td>
+                            {{item.nombreReparto}}
+                        </td>
+                        <td class="center" ng-repeat-start="art in item.cantidades">
+                            {{art.prestados}}
+                        </td>
+                        <td class="center">
+                            {{art.devueltos}}
+                        </td>
+                        <td class="center" style="border-right-color: #ea2ce5 !important;">
+                            {{art.relevados}}
+                        </td>
+                        <td class="center">
+                            {{art.solicitudesStockAlta}}
+                        </td>
+                        <td ng-repeat-end class="center" style="border-right: 2px solid !important;">
+                            {{art.solicitudesStockBaja}}
+                        </td>
+
+                    </tr>
+
+                </tbody>
+                
+                <tfoot>
+                    <tr>
+                        <td colspan="10" class="text-center">
+                            <div st-pagination="" st-items-by-page="20" st-displayed-pages="8"></div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div><!-- /.span -->
+    </div>
+
+
+</div>
+
+<script src="~/js/app/controllers/reportes/appReportes.js"></script>
+<script src="~/js/app/controllers/reportes/directivesReportes.js"></script>
+<script src="~/js/app/controllers/reportes/repEnvasesPorHojaDeRuta.js"></script>
+<script src="~/js/app/app_directives.js"></script>

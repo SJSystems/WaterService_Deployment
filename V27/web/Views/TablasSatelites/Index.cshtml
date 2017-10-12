@@ -1,0 +1,63 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.TablasSatelites_Index
+
+@{
+    ViewBag.Title = "Buscar Valores de Tablas";
+}
+
+<script src="~/js/Views/TablasSatelites_Index.js"></script>
+
+<h2>Buscar Valores de Tablas</h2>
+
+@using (Html.BeginForm("Buscar", "TablasSatelites", FormMethod.Post, new { id = "form_buscar", name = "form_buscar", @class = "form-horizontal", role = "form" }))
+{                    
+    <fieldset>
+
+        <div class="col-sm-6">
+
+            @* valorTexto *@
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Texto</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        @Html.TextBoxFor(   x => x.ValoresModelo.valorTexto,
+                                            new { fieldType = "text", errorMessage = "Ingrese el nombre de la calle", 
+                                                  @class = " col-xs-10 col-sm-8 ", placeholder = "nombre de la calle", type = "text" })
+                    </div>
+                    <div class="mensajeValidacion help-block"></div>
+                </div>
+            </div>
+
+            @*TablasSatelites*@
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Grupo Tabla</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        @Html.DropDownListFor(  x => x.ValoresModelo.tablaSatelites_id, 
+                                                new SelectList(Model.TablasSatelites, "id", "nombreTabla"), 
+                                                new { @class = "input-group col-xs-10 col-sm-8" })
+                    </div>
+                    <div class="mensajeValidacion help-block"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </fieldset>                    
+                    
+    <div class="form-actions center">
+
+        <button type="button" id="btn_buscar" class="btn btn-sm btn-primary">
+            Buscar valor
+			<i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+        </button>
+
+        <a href="/TablasSatelites/Create" id="btn_nueva" class="btn btn-sm btn-success">
+            Nuevo valor
+		    <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+        </a>
+
+    </div>
+}
+
+<div id="div_resultadoBusqueda">
+</div>

@@ -1,0 +1,64 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Calle_Index
+
+@{
+    ViewBag.Title = "Buscar Calles";
+}
+
+<script src="~/js/Views/Calles_Index.js"></script>
+
+<h2>Buscar Calles</h2>
+
+@using (Html.BeginForm("BuscarCalles", "Calles", FormMethod.Post, new { id = "form_buscar", name = "form_buscar", @class = "form-horizontal", role = "form" }))
+{                    
+    <fieldset>
+
+        <div class="col-sm-6">
+
+            @* nombreCalle *@
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Nombre calle</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        @Html.TextBoxFor(   x => x.CalleModelo.nombreCalle,
+                                            new { fieldType = "text", errorMessage = "Ingrese el nombre de la calle", 
+                                                  @class = " col-xs-10 col-sm-8 ", placeholder = "nombre de la calle", type = "text" })
+                    </div>
+                    <div class="mensajeValidacion help-block"></div>
+                </div>
+            </div>
+
+            @*Ciudad*@
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Ciudad</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        @Html.DropDownListFor(  x => x.CalleModelo.ciudad_id, 
+                                                new SelectList(Model.Ciudades, "id", "nombreCiudad"), 
+                                                new { @class = "input-group col-xs-10 col-sm-8" })
+                    </div>
+                    <div class="mensajeValidacion help-block"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </fieldset>                    
+                    
+    <div class="form-actions center">
+
+        <button type="button" id="btn_buscarCalles" class="btn btn-sm btn-primary">
+            Buscar Calles
+			<i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+        </button>
+
+        <a href="/Calles/Create" id="btn_nuevaCalle" class="btn btn-sm btn-success">
+            Nueva Calle
+		    <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+        </a>
+
+    </div>
+}
+
+<div id="div_resultadoBusqueda">
+</div>
+

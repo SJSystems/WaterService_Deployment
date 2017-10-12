@@ -1,0 +1,191 @@
+﻿<div ng-app="mainApp" ng-controller="planificacionDeCargaController" id="div_pantalla">
+    
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">
+                Planificación de carga
+            </h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+           
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center">
+                                <strong>Fecha</strong>
+                            </label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" 
+                                               ng-model="fechaAPlanificar" 
+                                               ng-change="onFechaAPlanificarChange()"
+                                               fieldtype="text" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center">Factor</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <input class="validate form-control col-xs-10 col-sm-5" style="width: 100px"
+                                           smart-float
+                                           ng-model="factor" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-4">
+                        <button class="btn btn-white btn-default btn-round" ng-click="agregarFechasDeReferencia()">
+                            <i class="ace-icon fa fa-plus blue"></i>
+                            Agregar fechas de referencia
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col-sm-3" ng-repeat="fechaDeReferencia in fechasDeReferencia track by $index" style="margin-top: 5px">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center">
+                                Fecha {{$index+1}}
+                                <a href="javascript:void(0)" ng-click="quitarFecha($index)" ng-show="$index>0">
+                                    <i class="fa fa-times red"></i>
+                                </a>
+                            </label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <input class="validate form-control date-picker col-xs-10 col-sm-5"
+                                           ng-model="fechaDeReferencia" fieldtype="text"
+                                           placeholder="dd/mm/yyyy" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+
+                <div class="row container" style="margin-top: 10px">
+                    <button class="btn btn-danger" ng-click="generarPlanificacion()">
+                        <i class="ace-icon fa fa-bolt "></i>
+                        Generar Planificación
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+            
+            <div class="col-sm-4">
+
+                <div class="input-group">
+                    <input class="validate form-control date-picker col-xs-10 col-sm-5"
+                           ng-model="fechaBuscada" fieldtype="text" placeholder="dd/mm/yyyy" type="text">
+                    <span class="input-group-addon">
+                        <i class="fa fa-calendar bigger-110"></i>
+                    </span>
+                </div>
+
+            </div>
+
+            <button type="button" style="margin-left: 10px" ng-click="obtenerPlanificacion()" class="btn btn-sm btn-primary pull-right">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Obtener planificación existente
+            </button>
+          
+        </div>
+    </div>
+    
+    <div id="div_planificacion">
+
+        <h4 class="blue" ng-show="datosDePlanificacion!=null">
+            <i class="ace-icon fa fa-check bigger-110"></i>
+            Fecha: {{datosDePlanificacion.fechaDeCarga.slice(6, -2)   |  date:'dd/MM/yyyy'}}.
+            <small>Factor: {{datosDePlanificacion.factor}}. Generada: {{datosDePlanificacion.fechaDeGeneracion.slice(6, -2)   |  date:'dd/MM/yyyy'}}</small>
+            <button type="button" style="margin-left: 10px; margin-bottom: 5px" ng-click="guardarModificaciones()" class="btn btn-sm btn-success pull-right">
+                <i class="ace-icon fa fa-bolt icon-on-right bigger-110"></i>
+                Guardar modificaciones
+            </button>
+            
+            <button type="button" style="margin-left: 10px; margin-bottom: 5px" ng-click="imprimir()" class="btn btn-sm btn-pink pull-right">
+                <i class="ace-icon fa fa-print icon-on-right bigger-110"></i>
+                Imprimir
+            </button>
+        </h4>
+
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Artículo</th>
+                    <th>Cant</th>
+                    <th ng-repeat="reparto in repartos">
+                        {{reparto.nombreReparto}}
+                        <br/>
+                        <small class="text-danger" ng-show="reparto.vehiculo!=null">
+                            {{reparto.vehiculo.nombreVehiculo}} ({{reparto.vehiculo.kilosDeCarga}}kg)
+                        </small>
+                    </th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr>
+                    <th>Peso en kilos</th>
+                    <th></th>
+                    <th ng-repeat="reparto in repartos" class="center"
+                        style="{{reparto.vehiculo!=null && reparto.vehiculo.kilosDeCarga < reparto.totalPeso?  'background: red;':''}}">
+                        {{reparto.totalPeso}}
+                    </th>
+                </tr>
+                <tr ng-repeat="articulo in articulos">
+                    <td>({{articulo.codigoInterno}}) {{articulo.nombreArticulo}} ({{articulo.pesoKilos}}kg) </td>
+                    <td class="center"><strong>{{articulo.cantidadTotal}}</strong> </td>
+                    <td ng-repeat="reparto in repartos" class="itemdiv center">
+                        <span ng-hide="articulo.repartos[$index].editando">
+                            {{articulo.repartos[$index].cantidadActual}}
+                        </span>
+
+                        <div class="input-group" ng-show="articulo.repartos[$index].editando">
+                            <input type="text" class="form-control search-query"
+                                   style="width: 60px"
+                                   ng-model="articulo.repartos[$index].cantidadEditada">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-success btn-sm"
+                                        ng-click="confirmarEdicion(articulo.repartos[$index])">
+                                    <i class="ace-icon fa fa-check icon-on-right bigger-110"></i>
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm"
+                                        ng-click="cancelarEdicion(articulo.repartos[$index])">
+                                    <i class=" ace-icon fa fa-times icon-on-right bigger-110"></i>
+                                </button>
+                            </span>
+                        </div>
+
+                        <div class="tools" style="z-index: 999" ng-show="!editandoCantidad">
+                            <button type="button" class="btn btn-minier btn-success" title="Editar"
+                                    ng-click="editarCantidad(articulo.repartos[$index])">
+                                <i class="icon-only ace-icon fa fa-pencil warning"></i>
+                            </button>
+                        </div>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/planificacionDeCargaControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/Scripts/jquery.printElement.min.js"></script>

@@ -1,0 +1,288 @@
+﻿
+<div id="div-nuevo-cliente" class="widget-box" style="margin-top: 0px ;margin-bottom:0px ">
+    <div class="widget-header">
+        <h4 class="widget-title">Crear Nunevo Cliente</h4>
+        <div class="widget-toolbar">
+            <a href="javascript:void(0)" ng-click="cancelar()">
+                <i class="ace-icon fa fa-times"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-main">
+
+            <div class="form-horizontal" role="form">
+                
+                <div class="space-4"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" > Nombre o Razón Social </label>
+
+                    <div class="col-sm-9">
+                        <input ng-model="cliente.nombre" type="text"  class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" > Tipo de Cliente</label>
+
+                    <div class="col-sm-9">
+                        <select class="form-control"
+                                ng-model="cliente.tipoDeCliente"
+                                ng-options="item as item.valorTexto for item in tiposDeClientes"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> Condición de IVA </label>
+
+                    <div class="col-sm-9">
+                        <select class="form-control"
+                                ng-model="cliente.condicionIva"
+                                ng-options="item as item.valorTexto for item in condicionesDeIva"></select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" > DNI / CUIT </label>
+
+                    <div class="col-sm-9">
+                        <input ng-model="cliente.dniCuit" type="text"  class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> Actividad</label>
+
+                    <div class="col-sm-9">
+                        <select class="form-control"
+                                ng-model="cliente.actividad"
+                                ng-options="item as item.valorTexto for item in actividades"></select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" > Teléfono </label>
+
+                    <div class="col-sm-9">
+                        <input ng-model="cliente.telefono" type="text" class="form-control">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" > Email </label>
+
+                    <div class="col-sm-9">
+                        <input ng-model="cliente.email" type="text" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" > Barrio y Ciudad</label>
+
+                    <div class="col-sm-9">
+                        <select class="form-control chosen-select"
+                                ng-model="cliente.domicilio.barrio"
+                                ng-change="onBarrioSeleccionado()"
+                                ng-options="item as item.barrioCiudadProvincia for item in barrios"></select>
+                    </div>
+                </div>
+                
+                <div class="form-group" ng-show="cliente.domicilio.barrio!=null">
+                    <label class="col-sm-3 control-label no-padding-right"> Calle </label>
+
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            
+                            <input type="text" class="form-control"
+                                   ng-model="cliente.domicilio.calle"
+                                   uib-typeahead="calle as calle.nombreCalle for calle in buscarCalles($viewValue)"
+                                   typeahead-loading="buscandoCalle"
+                                   typeahead-wait-ms="200"
+                                   typeahead-editable="false">
+                            
+                            <span class="input-group-btn">
+                                
+                                <span class="btn btn-white">
+                                    <i class="ace-icon fa fa-check green"
+                                       ng-if="cliente.domicilio.calle!=null"
+                                       uib-tooltip="Calle seleccionada"></i>
+
+                                    <i class="ace-icon fa fa-times red2"
+                                       ng-if="cliente.domicilio.calle==null"
+                                       uib-tooltip="Calle no seleccionada"></i>
+
+                                </span>
+                            </span>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" ng-show="cliente.domicilio.barrio!=null">
+                    <label class="control-label col-xs-12 col-sm-3 no-padding-right">Nº Puerta</label>
+                    <div class="col-xs-12 col-sm-4">
+                        <div class="clearfix">
+
+                            <div class="input-group">
+                                <input class="form-control" ng-model="cliente.domicilio.puerta" type="text">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-sm btn-yellow" type="button" ng-click="obtenerCoordenadasPorDomicilio()">
+                                        <i class="ace-icon fa fa-map-marker red2"></i>
+                                    </button>
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" > Observaciones </label>
+
+                    <div class="col-sm-9">
+                        <input ng-model="cliente.domicilio.observaciones" type="text" class="form-control">
+                    </div>
+                </div>
+
+                
+                <div class="row">
+                    
+                    <div class="col-sm-6">
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Piso</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        <input class=" col-xs-10 col-sm-12 " fieldtype="text" type="text"
+                                               ng-model="cliente.domicilio.piso">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Depto</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        <input class=" col-xs-10 col-sm-12" type="text"
+                                               ng-model="cliente.domicilio.depto">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Torre</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        <input class=" col-xs-10 col-sm-12" type="text"
+                                               ng-model="cliente.domicilio.torre">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">CP</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        <input class=" col-xs-10 col-sm-12" type="text"
+                                               ng-model="cliente.domicilio.cp">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Lote</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        <input class=" col-xs-10 col-sm-12" type="text"
+                                               ng-model="cliente.domicilio.lote">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Manzana</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        <input class=" col-xs-10 col-sm-12" type="text"
+                                               ng-model="cliente.domicilio.manzana">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Latitud</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        <input class=" col-xs-10 col-sm-12" type="text"
+                                               ng-model="cliente.domicilio.latitud">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Longitud</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        <input class=" col-xs-10 col-sm-12" type="text"
+                                               ng-model="cliente.domicilio.longitud">
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                
+                                <div class="col-xs-12 col-sm-12">
+                                    <div class="clearfix">
+                                        <button class="btn btn-white btn-default btn-round" type="button" ng-click="obtenerCoordenadasPorPosicion()">
+                                            <i class="ace-icon fa fa-map-marker red2"></i>
+                                            Obtener coordenadas
+                                        </button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                    <div class="col-sm-6">
+                        <div id="div_map" style="width: 100%; height: 300px;"></div>
+                    </div>
+
+                </div>
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button class="btn btn-info" type="button" ng-click="guardarCliente()" ng-disabled="guardandoCliente">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            {{guardandoCliente?'Guardando':'Crear Cliente'}}
+                        </button>
+
+                        &nbsp; &nbsp; &nbsp;
+
+                        <button class="btn" type="button" ng-click="cancelar()" ng-disabled="guardandoCliente">
+                            <i class="ace-icon fa fa-times bigger-110"></i>
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

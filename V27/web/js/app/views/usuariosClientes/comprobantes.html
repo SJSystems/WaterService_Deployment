@@ -1,0 +1,95 @@
+﻿
+<div class="widget-box widget-color-blue3">
+    <!-- #section:custom/widget-box.options -->
+    <div class="widget-header">
+        <h5 class="widget-title bigger lighter">
+            <i class="ace-icon fa fa-list-alt"></i>
+            Comprobantes
+        </h5>
+
+    </div>
+
+    <!-- /section:custom/widget-box.options -->
+    <div class="widget-body">
+        <div class="widget-main no-padding">
+
+            <table class="table table-bordered ">
+                <thead class="thin-border-bottom">
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Tipo</th>
+                        <th>Descripción</th>
+                        <th>Importe</th>
+                        <th>Vencimiento</th>
+                        <th>Saldo</th>         
+                        <th></th>         
+                    </tr>
+                </thead>
+
+                <tbody  ng-repeat="comprobante in comprobantes" style="background-color: aliceblue; margin-bottom:10px">
+
+                    <tr>
+                        <td>
+                            
+                            {{comprobante.fecha.slice(6,-2) | date : 'dd/MM/yyyy'}}
+                            <a href="javascript:void(0)"
+                               ng-show="comprobante.esFactura"
+                               ng-click="comprobante.mostrarCobros=!comprobante.mostrarCobros" 
+                               uib-tooltip="Ver detalles">
+                                <i class="ace-icon fa {{comprobante.mostrarCobros?'fa-arrow-down':'fa-arrow-up'}}"></i>
+                            </a>
+                        </td>
+                        <td>{{comprobante.tipo}}</td>
+                        <td>{{comprobante.descripcion}}</td>
+                        <td><i ng-show="comprobante.esFactura" class="ace-icon fa fa-dollar red"></i><i ng-show="!comprobante.esFactura" class="ace-icon fa fa-dollar green"></i> {{comprobante.importe}}</td>
+                        <td>
+                            {{comprobante.vencimiento.slice(6,-2) | date : 'dd/MM/yyyy'}} 
+                            <span class="label label-success arrowed arrowed-right" ng-show="comprobante.estado=='No vencida'">{{comprobante.estado}}</span>
+                            <span class="label label-danger arrowed arrowed-right" ng-show="comprobante.estado=='Vencida'">{{comprobante.estado}}</span>   
+                            <span class="label label-warning arrowed arrowed-right" ng-show="comprobante.estado=='Pago parcial'">{{comprobante.estado}}</span>
+                        </td>
+                        <td>
+                            <span ng-show="comprobante.saldo>0" class="label label-danger arrowed"> ${{comprobante.saldo}}</span>
+                            <span ng-hide="comprobante.saldo>0 || comprobante.saldo == null"> ${{comprobante.saldo}}</span>
+                            
+                        </td>
+                        <th>
+                            <a href="/UsuariosClientes/ObtenerComprobante?tipoComprobante={{comprobante.esFactura? (comprobante.tipo=='Factura'?1:5):5}}&idComprobante={{comprobante.idComprobante}}" 
+                               target="_blank" class="btn btn-xs btn-info" uib-tooltip="Descargar comprobante">
+                                <i class="ace-icon fa fa-download bigger-120"></i>
+                            </a>
+                        </th>      
+                    </tr>
+
+                    <tr ng-show="comprobante.mostrarCobros">
+                        <td colspan="8">{{comprobante.remitosAsociados}}</td>
+                    </tr>
+
+                    <tr  ng-show="comprobante.mostrarCobros" ng-repeat="cobro in comprobante.cobros">
+                        <td>{{cobro.fecha.slice(6,-2) | date : 'dd/MM/yyyy'}}</td>
+                        <td>{{cobro.formaDePago}}</td>
+                        <td>REC-{{cobro.descripcion}}</td>                        
+                        <td><i class="ace-icon fa fa-dollar green"></i> {{cobro.importe}}</td>
+                        <td colspan="2">{{cobro.infoCobro}}</td>
+                        <td>
+                            <a href="/UsuariosClientes/ObtenerComprobante?tipoComprobante=3&idComprobante={{cobro.idRecibo}}"
+                               uib-tooltip="Descargar recibo"
+                               target="_blank" class="btn btn-xs btn-success">
+                                <i class="ace-icon fa fa-download bigger-120"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr ng-show="comprobante.mostrarCobros">
+                        <td colspan="8"  style="background-color: white"></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,90 @@
+﻿@model List<WaterService.Common.Entities.DTOs.VIEW_Clientes_DTO>
+@{
+    Layout = null;
+}
+
+<div class="row">
+
+    <div class="col-xs-12">
+        
+        <!-- <div class="table-responsive"> -->
+
+        <!-- <div class="dataTables_borderWrap"> -->
+        <div>
+            <table id="tb_resultadoClientes" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="checkbox">
+                                <label>
+                                    <input name="form-field-checkbox" id="ck-seleccionar-todos" class="ace ace-checkbox-2" type="checkbox" />
+                                    <span class="lbl"> </span>
+                                </label>
+                            </div>          
+                        </th>                        
+                        <th>ID</th>
+                        <th>Nombre / Razón Social</th>
+                        <th>Tipo </th>
+                        <th>Domicilio</th>
+                        <th>Reparto</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                    @if (Model!=null )
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input name="form-field-checkbox" class="ace ace-checkbox-2 seleccionar-cliente" cliente_id="@item.cliente_id" type="checkbox" />
+                                            <span class="lbl"> </span>
+                                        </label>
+                                    </div>          
+                                </td>
+                                <td>@item.cliente_id</td>
+                                <td>
+                                    @item.nombreCliente 
+                                    @if (!item.datosCompletos)
+                                    {
+                                        <span class="label label-warning">
+                                            <i class="ace-icon fa fa-exclamation-triangle bigger-120"></i>
+                                        </span>
+                                    }
+                                </td>
+                                <td>@item.tipoCliente</td>
+                                <td>@item.domicilioCompleto</td>
+                                <td>@item.nombreReparto</td>
+                                <td>@item.estadoCliente</td>
+                                <td>
+                                    <div class="hidden-sm hidden-xs action-buttons">
+                                        @*<a class="blue" href="#">
+                                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                                            	<div class="btn-group">
+                                        </a>*@
+                       
+                                        <a class="green" href="/Clientes/EditCliente/@item.cliente_id">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                        </a>
+
+                                      
+                                        
+                                    </div>
+
+                                </td>
+                       
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

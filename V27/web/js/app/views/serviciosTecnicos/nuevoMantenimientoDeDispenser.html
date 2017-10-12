@@ -1,0 +1,224 @@
+﻿<style>
+    .bootbox {
+        z-index:99999
+    }
+</style>
+<div class="row">
+    <div class="col-sm-12">
+        
+        <div class="page-header">
+            <h1>
+                Nuevo Mantenimiento
+            </h1>
+        </div>
+        
+        <uib-tabset active="activeJustified" justified="true">
+            <uib-tab index="0" heading="Datos principales">
+
+                <div class="form-horizontal">
+
+                    <autocomplete-seleccionar-dispenser ng-hide="(provieneDeServicioTecnico || mantenimiento.dispenser_id > 0)" 
+                                                        ng-dispenser-seleccionado="dispenserSeleccionado"></autocomplete-seleccionar-dispenser>
+
+                    <div class="form-group" ng-show="(provieneDeServicioTecnico || mantenimiento.dispenser_id > 0)">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Dispenser </label>
+
+                            <div class="col-sm-9">
+                                Nro interno:
+                                <strong>
+                                    {{dispenserSeleccionado.numeroInterno}}
+                                </strong>
+                                <br />
+                                Serie:
+                                <strong>
+                                    {{dispenserSeleccionado.numeroSerie}}
+                                </strong>
+                                <br />
+                                Marca y color:
+                                <strong>
+                                    {{dispenserSeleccionado.marcaDispenser}} - {{dispenserSeleccionado.color}}
+                                </strong>                               
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right">Técnico</label>
+                        <div class="col-sm-3">
+                            <select ng-model="mantenimiento.tecnico_id" 
+                                    ng-disabled="provieneDeServicioTecnico && servicioTecnico.usuarioTecnicoId!=null" style="width: 200px"
+                                    ng-options="tecnico.usuario_id as tecnico.nombreApellido for tecnico in tecnicosBuscar"></select>
+                        </div>
+                        <label class="col-sm-3 control-label no-padding-right"> Fecha: {{mantenimiento.fechaHora |date:'dd-MM-yyyy HH:mm:ss'}}</label>
+                    </div>-->
+
+                    <div class="hr hr-18 dotted hr-double"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> Acción principal</label>
+                        <div class="col-sm-9">
+                            <select class="col-sm-8" 
+                                    ng-model="mantenimiento.accionPrincipal_ids"
+                                    ng-change="onAccionPrincipalChange()"
+                                    ng-options="accion.valor_ids as accion.valorTexto for accion in accionesPrincipales"></select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="mostrarSintomaReal()">
+                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Síntoma real </label>
+                        <div class="col-sm-9">
+                            <select class="col-sm-8" ng-model="mantenimiento.sintomaReal_ids"
+                                    ng-options="sintoma.valor_ids as sintoma.valorTexto for sintoma in sintomas"></select>
+                        </div>
+                    </div>
+
+                    <div class="hr hr-18 dotted hr-double"></div>
+
+                    <div class="form-group" ng-show="provieneDeServicioTecnico">
+                        <label class="col-sm-3 control-label no-padding-right"> Servicio Tecnico </label>
+                        <label class="col-sm-3 control-label no-padding-right"> Síntoma: <strong>{{servicioTecnico.sintoma}}</strong> </label>
+                        <label class="col-sm-4 control-label no-padding-right"> Fecha Creación: <strong>{{servicioTecnico.fechaCreacion.slice(6, -2) | date:'dd-MM-yyyy HH:mm:ss'}}</strong> </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">  </label>
+                        <div class="col-sm-9">
+                            <label>
+                                <input name="form-field-checkbox" ng-model="mantenimiento.esCobrable" type="checkbox" class="ace">
+                                <span class="lbl"> <strong style="color: red">Daños o desperfectos atribuídos al cliente</strong> </span>
+                            </label>
+                        </div>
+                    </div>
+                                      
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right"> Comentarios</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control"
+                                      ng-model="mantenimiento.comentarios"
+                                      placeholder="{{mantenimiento.esCobrable?'Describa los daños o desperfectos atribuídos al cliente':''}}"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </uib-tab>
+            <uib-tab index="1" heading="Actividades y repuestos">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th>Tipo</th>
+                            <th>Cantidad</th>
+                            <th>Precio</th>
+                            <th>Subtotal</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="item in repuestosYActividades">
+                        <tr>
+                            <td>
+                                <select ng-if="item.tipoArticulo_ids==3" class="col-sm-12" 
+                                        ng-model="item.articuloSeleccionado"
+                                        ng-options="repuesto as repuesto.nombreArticulo for repuesto in repuestos"></select>
+
+                                <select ng-if="item.tipoArticulo_ids==4" class="col-sm-12"
+                                        ng-model="item.articuloSeleccionado"
+                                        ng-disabled="item.esPrincipal"
+                                        ng-options="actividad as actividad.nombreArticulo for actividad in actividades"></select>
+                            </td>
+                            <td>
+                                <strong>{{item.articuloSeleccionado.tipoArticulo}}</strong>
+                            </td>
+                            <td>
+                                <input ng-if="item.tipoArticulo_ids==3" ng-model="item.cantidad" type="text" >
+                            </td>
+                            <td>
+                                <strong>
+                                    ${{item.articuloSeleccionado.precioMaximo}}
+                                </strong>
+                            </td>
+                            <td>
+                                <strong>
+                                    ${{( (item.cantidad * 1)  * item.articuloSeleccionado.precioMaximo )}}
+                                </strong>
+                            </td>
+                            <td>
+                                <a ng-hide="item.esPrincipal" 
+                                   href="javascript:void(0)" 
+                                   ng-click="quitarItemDeDetalle($index)">
+                                    <i class="ace-icon fa fa-trash-o"></i>
+                                </a>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="2">Repuestos</td>
+                            <td colspan="2">
+                                <strong>
+                                    ${{obtenerTotalRepuestos()}}
+                                </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="2">Mano de obra</td>
+                            <td colspan="2">
+                                <strong>
+                                    ${{obtenerTotalActividades()}}
+                                </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="2">Total</td>
+                            <td colspan="2">
+                                <strong>
+                                    ${{obtenerTotalActividades() + obtenerTotalRepuestos()}}
+                                </strong>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <p>
+                    <a href="javascript:void(0)" ng-click="agregarRepuesto()">
+                        <i class="ace-icon fa fa-plus"></i> Repuesto
+                    </a>
+                    <strong>|</strong>
+                    <a href="javascript:void(0)" ng-click="agregarActividad()">
+                        <i class="ace-icon fa fa-plus"></i> Actividad
+                    </a>
+                </p>
+
+            </uib-tab>
+        </uib-tabset>
+
+        <div class="clearfix form-actions">
+            <div class="row">
+
+                <div class="col-md-4"  ng-show="esTaller">
+                    <button class="btn btn-success" type="button" ng-click="guardar(true)">
+                        <i class="ace-icon fa fa-flask bigger-110"></i>
+                        Guardar y observar dispenser
+                    </button>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-3">
+                    <button class="btn btn-info" type="button" ng-click="guardar(false)">
+                        <i class="ace-icon fa fa-check bigger-110"></i>
+                        {{esTaller?"Solo guardar":"Guardar"}}
+                    </button>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-danger" type="button" ng-click="cancelar()">
+                        <i class="ace-icon fa fa-times bigger-110"></i>
+                        Cancelar
+                    </button>
+                </div>
+                </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,124 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.TablasSatelites_Edit
+
+<script src="~/js/Views/TablasSatelites_Edit.js"></script>
+
+<div class="widget-box">
+    <div class="widget-header">
+        <h4 class="widget-title">Datos principales: @Model.ValoresModelo.valorTexto</h4>
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-main no-padding">
+
+            @using (Html.BeginForm("Edit", "TablasSatelites", FormMethod.Post, new { id = "form_edit", name = "form_edit", @class = "form-horizontal", role = "form" }))
+            {
+                @Html.HiddenFor(x => x.ValoresModelo.id)
+
+                <fieldset>
+
+
+
+                    <div class="col-sm-6">
+
+                        @* valorTexto *@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Texto</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.ValoresModelo.valorTexto, 
+                                                        new { fieldType = "text", errorMessage = "Ingrese el Texto ", 
+                                                                @class = "validate col-xs-10 col-sm-8 ", 
+                                                                placeholder = "Texto del valor", type = "text" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @* valor_ids *@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">ID Valor</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.ValoresModelo.valor_ids,
+                                                        new { fieldType = "text", errorMessage = "Ingrese el ID del valor", 
+                                                              @class = "validate col-xs-10 col-sm-8 ", 
+                                                              placeholder = "ID del valor", type = "text" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @* Código externo *@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Código externo</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.ValoresModelo.codigoExterno, 
+                                                        new { fieldType = "text", errorMessage = "Ingrese el código externo ", 
+                                                              @class = "validate col-xs-10 col-sm-8 ", 
+                                                              placeholder = "código externo del valor", type = "text" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                                            
+                    <div class="col-sm-6">
+
+                        @* Código  *@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Código </label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.ValoresModelo.codigo, 
+                                                        new { fieldType = "text", errorMessage = "Ingrese el código", 
+                                                              @class = "validate col-xs-10 col-sm-8 ", 
+                                                              placeholder = "código del valor", type = "text" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @* Descripción  *@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Descripción </label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.ValoresModelo.descripcion, 
+                                                        new { fieldType = "text", errorMessage = "Ingrese el código", 
+                                                              @class = "col-xs-10 col-sm-8 ", 
+                                                              placeholder = "Descripción del valor", type = "text" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @* Tablas *@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Grupo Tabla</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(  x => x.ValoresModelo.tablaSatelites_id, 
+                                                            new SelectList(Model.TablasSatelites, "id", "nombreTabla"), 
+                                                            new { @class = "input-group col-xs-10 col-sm-8" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </fieldset>                
+                <div class="form-actions center">
+                    <button type="button" id="btn_guardar" class="btn btn-sm btn-success">
+                        Guardar
+							<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

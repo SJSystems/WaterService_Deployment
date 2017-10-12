@@ -1,0 +1,76 @@
+﻿<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCrFetYLnnlcxcJjEhP79agcSbKo1_mAGg"></script>
+@{
+    ViewBag.Title = "Mapa de Servicios Técnicos";
+}
+
+<style>
+    .mapa-clientes {
+        width: 50%;
+        height: 650px;
+        position: fixed !important;
+        top: 100px;
+    }
+</style>
+
+<div class="row" ng-app="mainApp" ng-controller="verClientesEnMapaController">
+    <div class="col-sm-5">
+
+        <div class="widget-box transparent">
+            <div class="widget-header widget-header-small">
+                <h4 class="widget-title blue smaller">
+                    <i class="ace-icon fa fa-users orange"></i>
+                    Clientes
+                </h4>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main padding-8">
+                    <!-- #section:pages/profile.feed -->
+                    <div id="profile-feed-1" class="profile-feed">
+
+                        <div class="profile-activity clearfix" ng-repeat="cliente in clientes">
+                            <div>
+                                <i class="pull-left thumbicon fa fa-user btn-pink no-hover"></i>
+                                {{cliente.cliente_id}} -
+                                <a class="user" href="/Clientes/EditCliente/{{cliente.cliente_id}}" target="_blank">
+                                  {{cliente.nombreCliente}}
+                                </a>
+                                <br/>
+                                {{cliente.domicilioCompleto}} 
+                                <i ng-show="cliente.altitud != null && cliente.altitud != ''" 
+                                   uib-tooltip="Con ubicación establecida"
+                                   class="ace-icon fa fa-map-marker bigger-110 orange"></i>
+                                
+                            </div>
+
+                            <div class="tools action-buttons">
+                                <a href="/Clientes/EditDomicilio/{{cliente.cliente_id}}" class="blue" target="_blank">
+                                    <i class="ace-icon fa fa-pencil bigger-125"></i>
+                                </a>
+
+                                <a href="/Clientes/HistorialMovimientos/{{cliente.cliente_id}}" class="red" target="_blank">
+                                    <i class="ace-icon fa fa-bar-chart-o bigger-125"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- /section:pages/profile.feed -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-7">
+
+        <div id="div_map_clientes" class="mapa-clientes"></div>
+
+    </div>
+</div>
+
+
+<script src="~/assets/js/jquery.nestable.min.js"></script>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/clientesControllers.js"></script>

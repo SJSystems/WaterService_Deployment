@@ -1,0 +1,164 @@
+﻿@model WaterService.Common.Entities.DTOs.ClienteDTO
+@{
+    ViewBag.Title = "Precios";
+}
+
+@Html.HiddenFor(x => x.id)
+
+@Html.Partial("_PasosCliente", Model)
+
+<div ng-app="mainApp" ng-controller="preciosClientesController">
+    
+    <br />
+    <br />
+
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4 class="widget-title">
+                Lista de Precios
+
+                <a href="javascript:;">
+                    <i title="editar" class="ace-icon fa fa-pencil bigger-110 " ng-click="cambiarLista=true"></i>
+                    <i title="editar" class="ace-icon fa fa-times bigger-130 red " ng-if="hayLista" ng-click="quitarLista()"></i>
+                </a>
+
+            </h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="row" ng-hide="cambiarLista" ng-if="hayLista">
+                                    <div class="col-sm-6">
+                                        <input ng-disabled="true" type="text" class="col-sm-12"
+                                               value="{{listaAsignada.nombre}}  Tipo:  {{listaAsignada.tipoDeListaDePrecios}}" />
+                                    </div>
+                                </div>
+
+                                <div class="row" ng-show="cambiarLista">
+                                    <div class="col-sm-6">
+                                        <input class="form-control" type="text" ng-model="listaSelected"
+                                               uib-typeahead="  lista as ( lista.nombre + ' - Tipo: ' + lista.tipoDeListaDePrecios ) for lista in listasDePrecios | filter:$viewValue " />
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-white btn-default btn-round pull_right" ng-click="asignarLista()" type="button">
+                                            <i class="ace-icon fa fa-floppy-o green"></i>
+                                            Asignar
+                                        </button>
+                                    </div>
+                                </div>
+                            </th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4 class="widget-title">
+                Precios especiales activos
+                <i class="ace-icon fa fa-check bigger-130 green"></i>
+
+                <button class="btn btn-white btn-default btn-round pull_right" ng-click="abrirAgregarPrecio()" type="button">
+                    <i class="ace-icon fa fa-plus green"></i>
+                    Agregar precio especial
+                </button>
+
+            </h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Artículo</th>
+                            <th>Precio</th>
+                            <th>Alta</th>
+                            <th>Usuario</th>
+                            <th>Ajuste masivo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr ng-repeat="precio in precios | filter:{ activo: true }">
+                            <td>{{precio.codigoInterno}} - {{precio.nombreArticulo}}</td>
+                            <td>${{precio.precio}}</td>
+                            <td>{{precio.fechaAlta | dformat | date : 'dd/MM/yyyy'}}</td>
+                            <td>{{precio.usuario}}</td>
+                            <td>{{precio.esAjusteMasivoDePrecios?'Si':'No'}}</td>
+                            <td>
+                                <a class="red" href="javascript: void(0);" ng-click="inactivarPrecio(precio)">
+                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                </a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4 class="widget-title">
+                Precios especiales inactivos
+                <i class="ace-icon fa fa-times bigger-130 red"></i>
+            </h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Artículo</th>
+                            <th>Precio</th>
+                            <th>Alta</th>
+                            <th>Baja</th>
+                            <th>Usuario</th>
+                            <th>Ajuste masivo</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr ng-repeat="precio in precios | filter:{ activo: false }">
+                            <td>{{precio.codigoInterno}} - {{precio.nombreArticulo}}</td>
+                            <td>${{precio.precio}}</td>
+                            <td>{{precio.fechaAlta | dformat | date : 'dd/MM/yyyy'}}</td>
+                            <td>{{precio.fechaInactivo | dformat | date : 'dd/MM/yyyy'}}</td>
+                            <td>{{precio.usuario}}</td>
+                            <td>{{precio.esAjusteMasivoDePrecios?'Si':'No'}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <br />
+    <br />
+
+</div>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/clientesControllers.js"></script>

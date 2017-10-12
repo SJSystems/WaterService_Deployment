@@ -1,0 +1,121 @@
+﻿
+
+@model WaterService.FrontEnd.WebUI.Models.Pages.Dispenser_Index
+
+
+@{
+    Layout = null;
+}
+
+
+<div class="row">
+
+    <div class="col-xs-12">
+        
+        <!-- <div class="table-responsive"> -->
+
+        <!-- <div class="dataTables_borderWrap"> -->
+        <div>
+            <table id="tb_resultado" class=" dynamicDataTable  table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>                        
+                        <th>Nro. Interno</th>
+                        <th>Nro. Serie</th>
+                        <th>Tipo </th>
+                        <th>Marca </th>
+                        <th>Cliente</th>
+                        <th>Estado</th>
+                        <th>Condición</th>
+                        <th>Ubicación</th>
+                       
+                        <th>Acciones </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                    @if (Model!=null )
+                    {
+                        foreach (var item in Model.ListaBuscarDispensers)
+                        {
+                            <tr>
+                                <td>@item.numeroInterno </td>
+                                <td>@item.numeroSerie </td>
+                                <td>@item.tipoDispenser </td>
+                                <td>@item.marcaDispenser </td>
+                                <td>@item.nombreCliente</td>
+                                <td>@item.estadoDispenser </td>
+                                <td>@item.condicionActual</td>
+                                <td>@item.ubicacionActual</td>
+                                
+                                <td>
+                                    <div class="hidden-sm hidden-xs action-buttons">
+                                        @*<a class="blue" href="#">
+                                            <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                                            	<div class="btn-group">
+                                        </a>*@
+                                        
+											<div class="btn-group">
+												<button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+													Acciones
+													<span class="ace-icon fa fa-caret-down icon-on-right"></span>
+												</button>
+
+												<ul class="dropdown-menu dropdown-inverse">
+                                                                        
+													<li>
+														<a href="/Dispensers/Edit/@item.id">Ver detalles</a>
+													</li>
+                                                    
+                                                    <li class="divider"></li>
+
+													<li>
+														<a href="/Dispensers/Edit/@item.id">Editar</a>
+													</li>
+
+                                                    <li class="divider"></li>
+
+                                                    <li>
+                                                        <a href="/ServiciosTecnicos/NuevoMantenimiento?dispenserId=@item.id">Realizar Mantenimiento</a>
+                                                    </li>
+
+                                                    <li class="divider"></li>
+
+                                                    <li>
+                                                        <a href="javascript:Modelo.VerMantenimientos(@item.id)">
+                                                            Ver Historial de Mantenimientos
+                                                        </a>
+                                                    </li>
+                                                                                                  
+                                                    <li class="divider"></li>
+
+                                                    <li>
+													    <a  href="javascript:Modelo.Eliminar(@item.id);"><i class="fa fa-trash"></i>Eliminar </a>
+													</li>                                                    
+
+												</ul>
+											</div><!-- /.btn-group -->
+										
+
+                                        <a class="green" href="/Dispensers/Edit/@item.id">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                        </a>
+
+                                        <a class="red" href="javascript:Modelo.Eliminar(@item.id);">
+                                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                        </a>
+                                        
+                                    </div>
+
+                                </td>
+                       
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,106 @@
+﻿<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+    <div class="widget-box ui-sortable-handle">
+
+        <div class="widget-header">
+            <h4 class="widget-title">Pedidos</h4>
+            <div class="widget-toolbar">
+            </div>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main">
+
+                <div class="row">
+
+                    <div class="col-sm-3">
+                        <label class="control-label col-sm-4 padding-right">Desde</label>
+                        <div class="input-group">
+                            <input class="validate form-control date-picker col-xs-10 col-sm-5 "
+                                   placeholder="dd/mm/yyyy" type="text"
+                                   ng-model="ModeloBuscarPedidos.desde">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="control-label col-sm-4 padding-right">Hasta</label>
+                        <div class="input-group">
+                            <input class="validate form-control date-picker col-xs-10 col-sm-8 "
+                                   placeholder="dd/mm/yyyy"
+                                   ng-model="ModeloBuscarPedidos.hasta">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-purple btn-sm " ng-click="buscarPedidos()">
+                            <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                            Buscar
+                        </button>
+                    </div>
+                    <div class="col-sm-3"></div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>N°</th>
+            <th>Tipo </th>
+            <th>Recepción</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Reparto</th>
+            <th>Registra</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in ModeloBuscarPedidos.pedidosResultado">
+
+            <td>{{item.id}}</td>
+            <td>{{item.tipoPedido}}</td>
+            <td>{{item.fechaRecepcion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+            <td>{{item.estadoPedido}}</td>
+            <td>{{item.fechaPlanificadaAtencion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+            <td>{{item.repartoPlanifiicado}}</td>
+            <td>{{item.nombreApellido}}</td>
+            <td>
+
+                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                        Acciones
+                        <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-inverse">
+                        <li>
+                            <a href="/Clientes/ClienteDisplay/{{item.id}}">Ver detalles</a>
+                        </li>
+                        <li>
+                            <a href="/Clientes/ClienteDisplay/{{item.id}}">Editar</a>
+                        </li>
+                        <li>
+                            <a href="/Clientes/ClienteDisplay/{{item.id}}">Cerrar</a>
+                        </li>
+                        <li>
+                            <a href="/Clientes/ClienteDisplay/{{item.id}}">Cancelar</a>
+                        </li>
+
+                    </ul>
+                </div><!-- /.btn-group -->
+
+            </td>
+
+        </tr>
+    </tbody>
+</table>

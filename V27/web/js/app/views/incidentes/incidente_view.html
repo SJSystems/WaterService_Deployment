@@ -1,0 +1,372 @@
+﻿<div id="dialog_incidente_datos" class="">
+    <div class="modal-header">
+        <strong>Ver Incidente</strong>
+        <button type="button" class="close" ng-click="cerrarPantalla()" aria-hidden="true" style="margin-top: -16px;">x</button>
+    </div>
+
+    <div class="modal-body">
+
+        <uib-tabset>
+            <uib-tab index="0" heading="Incidente">
+
+                <div style="height: 400px">
+                    <div class="form-horizontal col-sm-6">
+                        <div class="profile-user-info profile-user-info-striped">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">Id</div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{incidente.id}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Fecha Registro </div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{incidente.fechaHoraRegistro.slice(6, -2)  |  date:'dd/MM/yyyy'}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Registrado por </div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{incidente.usuarioRegistra}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Cliente </div>
+
+                                <div class="profile-info-value">
+                                    <span class="editable">{{incidente.cliente}}</span>
+                                </div>
+                            </div>
+                            <!--<div class="profile-info-row">
+                                <div class="profile-info-name"> Título </div>
+
+                                <div class="profile-info-value">
+                                    <span class="editable" id="login">{{incidente.titulo}}</span>
+                                </div>
+                            </div>-->
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Descripción </div>
+
+                                <div class="profile-info-value">
+                                    <span class="editable">{{incidente.descripcion}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">Tipo Incidente</div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{incidente.tipoIncidente}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Severidad</div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{incidente.severidad}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Responsable</div>
+                                <div class="profile-info-value">
+                                    <span class="editable" ng-if="incidente.usuarioResponsable!=null"><i class="ace-icon fa fa-user blue"></i>{{incidente.usuarioResponsable}}</span>
+                                    <span class="editable" ng-if="incidente.grupoResponsable!=null"><i class="ace-icon fa fa-users green"></i> {{incidente.grupoResponsable}}</span>
+                                    <a href="javascript:void(0)" ng-click="editandoResponsable=true">
+                                        <i class="ace-icon fa fa-pencil icon-on-right bigger-130 orange"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Fecha Cierre Estimado </div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{incidente.fechaCierreEstimado.slice(6, -2)  |  date:'dd/MM/yyyy'}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Fecha Cierre Real </div>
+
+                                <div class="profile-info-value">
+                                    <span class="editable">{{incidente.fechaCierreReal.slice(6, -2)  |  date:'dd/MM/yyyy'}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Estado </div>
+
+                                <div class="profile-info-value">
+                                    <span class="editable">{{incidente.estadoIncidente}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                  
+
+                    <div class="col-sm-6">
+
+                        <div ng-show="editandoResponsable==true">
+                            <p>
+                                <div class="radio">
+                                    <label>
+                                        <input name="form-field-radio" type="radio" ng-value="1" ng-model="responsable.tipo" class="ace">
+                                        <span class="lbl">
+                                            <i class="ace-icon fa fa-user blue"></i> Usuario
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input name="form-field-radio" type="radio" ng-value="2" ng-model="responsable.tipo" class="ace">
+                                        <span class="lbl">
+                                            <i class="ace-icon fa fa-users green"></i> Grupo
+                                        </span>
+                                    </label>
+                                </div>
+                            </p>
+
+                            <div style="margin-top: 10px; margin-bottom:10px">
+
+                                <select ng-show="responsable.tipo==1" ng-model="edicionDeResponsable.usuarioResponsableSelected" 
+                                        ng-options="u.nombreApellido for u in usuariosReponsables"
+                                        class="input-group col-xs-10 col-sm-8"></select>
+
+                                <select ng-show="responsable.tipo==2" ng-model="edicionDeResponsable.grupoResponsableSelected" 
+                                        ng-options="grupo.valorTexto for grupo in gruposReponsables"
+                                        class="input-group col-xs-10 col-sm-8"></select>
+                                {{usuarioResponsableSelected}}
+                            </div>
+
+                            <p>
+                                <button type="button"
+                                        class="btn btn-sm btn-success" ng-click="guardarEdicionResposnsable()">
+                                    <i class="ace-icon fa fa-check icon-on-right bigger-110">
+                                    </i>
+                                    Confirmar cambio
+                                </button>
+
+                                <button type="button"
+                                        class="btn btn-sm btn-danger" ng-click="editandoResponsable=false">
+                                    <i class="ace-icon fa fa-times icon-on-right bigger-110">
+                                    </i>
+                                    Cancelar
+                                </button>
+                            </p>
+                        </div>
+
+                        <table id="tb_incidentes" class="table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Comentario</th>
+                                    <th>Usuario</th>
+
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="comentario in comentarios">
+                                <tr>
+                                    <td>{{comentario.fechaHora.slice(6, -2)  |  date:'dd/MM/yyyy HH:mm'}}</td>
+                                    <td>{{comentario.mensaje}}</td>
+                                    <td>{{comentario.username}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </uib-tab>
+            <uib-tab index="1" ng-show="incidente.servicioTecnico_id!=null" heading="Servicio Técnico">
+
+                <div style="height: 400px">
+                    <div class="form-horizontal center col-sm-6">
+                        <div class="profile-user-info profile-user-info-striped">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">Id</div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{servicioTecnico.id}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Cant. Dispensers </div>
+                                <div class="profile-info-value">
+                                    <span class="editable" id="city">{{servicioTecnico.cantidadDispensers}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Ubicación </div>
+                                <div class="profile-info-value">
+                                    <span class="editable" id="age">{{servicioTecnico.sectorUbicacion}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">Responsable Cliente </div>
+
+                                <div class="profile-info-value">
+                                    <span class="editable" id="signup">{{servicioTecnico.responsableEnCliente}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Teléfono Responsable </div>
+
+                                <div class="profile-info-value">
+                                    <span class="editable" id="login">{{servicioTecnico.telefonoResponsable}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Comentarios </div>
+
+                                <div class="profile-info-value">
+                                    <span class="editable" id="about">{{servicioTecnico.comentariosDeCierre}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </uib-tab>
+            <uib-tab index="2" ng-show="pedido!=null" heading="Pedido">
+
+                <div style="height: 400px">
+                    <div class="form-horizontal center col-sm-6">
+                        <h4 class="header blue">Pedido actual</h4>
+                        <div class="profile-user-info profile-user-info-striped">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Reparto planificado</div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{pedido.repartoPlanifiicado}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Fecha</div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{pedido.fechaReplanificado != null ? pedido.fechaReplanificado :  (pedido.fechaPlanificadaAtencion.slice(6, -2)  |  date:'dd/MM/yyyy') }}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">Estado</div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{pedido.estadoPedido}}</span>
+                                </div>
+                            </div>
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">Lugar</div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{pedido.domicilioCompleto}}</span>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">Fecha de atención</div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{pedido.fechaRealAtencion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</span>
+                                </div>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <div class="profile-info-name">Reparto que atendió</div>
+                                <div class="profile-info-value">
+                                    <span class="editable">{{pedido.repartoRealAtencion}}</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+
+                        <h4 class="header blue">Replanificar pedido</h4>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label no-padding-right">Nuevo reparto:</label>
+                                    <div class="col-sm-6">
+                                        <select class="form-control" ng-model="replanificacion.nuevoReparto" ng-options="reparto.nombreReparto for reparto in repartos"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label no-padding-right">Nueva fecha:</label>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <input style="position: relative; z-index: 100000;" class="validate form-control date-picker col-xs-10 col-sm-5" 
+                                                   ng-model="replanificacion.nuevaFecha" 
+                                                   fieldtype="text" 
+                                                   placeholder="dd/mm/yyyy" type="text">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-6 control-label no-padding-right"></label>
+                                    <div class="col-sm-6">
+                                        <div class="input-group">
+                                            <button type="button" ng-disabled="ejecutandoReplanificacion" ng-click="replanificar()" class="btn btn-sm btn-primary">
+                                                <i class="ace-icon fa fa-floppy-o icon-on-right bigger-110"></i>
+                                                {{ejecutandoReplanificacion?'Replanificando':'Replanificiar'}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </uib-tab>
+            <uib-tab index="2" ng-show="solicitudCoordenadas!=null" heading="Solicitud de coordenadas" ng-click="mostrarMapa()">
+
+                <div id="div_map" style="width: 100%; height: 400px;"></div>
+
+            </uib-tab>
+        </uib-tabset>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" ng-show="incidente.estadoIncidente_ids==1 || incidente.estadoIncidente_ids==4"
+                class="btn btn-sm btn-info" ng-click="abrirEscribirComentario('comentarios',incidente.id, null)">
+            <i class="ace-icon fa fa-pencil-square icon-on-right bigger-110">
+            </i>
+            Agregar Comentario
+        </button>
+        <button type="button" ng-show="incidente.estadoIncidente_ids==1 || incidente.estadoIncidente_ids==4"
+                class="btn btn-sm btn-danger" ng-click="cerrarIncidente(incidente.id)">
+            <i class="ace-icon fa fa-lock icon-on-right bigger-110">
+            </i>
+            Cerrar
+        </button>
+        <button type="button" ng-show="incidente.estadoIncidente_ids==1 || incidente.estadoIncidente_ids==4"
+                class="btn btn-sm btn-pink" ng-click="cancelarIncidente(incidente.id)">
+            <i class="ace-icon fa fa-times icon-on-right bigger-110">
+            </i>
+            Cancelar
+        </button>
+        <button type="button" ng-show="incidente.estadoIncidente_ids==1"
+                class="btn btn-sm btn-yellow" ng-click="pausarIncidente(incidente.id)">
+            <i class="ace-icon fa fa-pause icon-on-right bigger-110">
+            </i>
+            Pausar
+        </button>
+        <button type="button" ng-show="incidente.estadoIncidente_ids==4"
+                class="btn btn-sm btn-primary"
+                ng-click="abrirIncidente(incidente.id)">
+            <i class="ace-icon fa fa-unlock icon-on-right bigger-110">
+            </i>
+            Abrir
+        </button>
+    </div>
+    <escribir-log codigo="comentarios" entity="INCIDENTES" functionality="Incidente Comentario" title="Agregar Comentario" type="6" />
+
+</div>
+    
+    
+    

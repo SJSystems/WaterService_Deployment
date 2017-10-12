@@ -1,0 +1,87 @@
+﻿
+<div class="widget-box widget-color-blue3">
+    <!-- #section:custom/widget-box.options -->
+    <div class="widget-header">
+        <h5 class="widget-title bigger lighter">
+            <i class="ace-icon fa fa-list-alt"></i>
+            Mensajes
+        </h5>
+
+    </div>
+
+    <!-- /section:custom/widget-box.options -->
+    <div class="widget-body">
+        <div class="widget-main no-padding">
+
+            <table class="table table-bordered ">
+                <thead class="thin-border-bottom">
+                    <tr>
+                        <th>Vig. Desde</th>
+                        <th>Vig. Hasta</th>
+                        <th>Mensaje</th>
+                        <th>Cliente</th>
+                        <th>Recibo</th>
+                        <th>Remito</th>
+                        <th>Factura</th>
+                        <th>Email</th>
+                        <th>Informacion</th>
+                        <th>Activo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody ng-repeat="mensaje in mensajes" style="background-color: aliceblue; margin-bottom:10px">
+
+                    <tr>
+                        <td> {{mensaje.fechaDesde.slice(6,-2) | date : 'dd/MM/yyyy'}}  </td>
+                        <td> {{mensaje.fechaHasta.slice(6,-2) | date : 'dd/MM/yyyy'}}  </td>
+
+                        <td>{{mensaje.mensaje}}</td>
+                        <td>{{mensaje.nombreCliente}}</td>
+
+                        <td>
+                            <span class="label label-success arrowed arrowed-right" ng-show="mensaje.paraRecibos">Si</span>
+                            <span class="label label-danger arrowed arrowed-right" ng-show="!mensaje.paraRecibos">No</span>
+                        </td>
+
+                        <td>
+                            <span class="label label-success arrowed arrowed-right" ng-show="mensaje.paraRemitos">Si</span>
+                            <span class="label label-danger arrowed arrowed-right" ng-show="!mensaje.paraRemitos">No</span>
+                        </td>
+
+                        <td>
+                            <span class="label label-success arrowed arrowed-right" ng-show="mensaje.paraFacturas">Si</span>
+                            <span class="label label-danger arrowed arrowed-right" ng-show="!mensaje.paraFacturas">No</span>
+                        </td>
+
+                        <td>
+                            <span class="label label-success arrowed arrowed-right" ng-show="mensaje.paraEmails">Si</span>
+                            <span class="label label-danger arrowed arrowed-right" ng-show="!mensaje.paraEmails">No</span>
+                        </td>
+
+                        <td>
+                            <span class="label label-success arrowed arrowed-right" ng-show="mensaje.esInformacion">Si</span>
+                            <span class="label label-danger arrowed arrowed-right" ng-show="!mensaje.esInformacion">No</span>
+                        </td>
+
+                        <td>
+                            <span class="label label-success arrowed arrowed-right" ng-show="mensaje.activo">Si</span>
+                            <span class="label label-danger arrowed arrowed-right" ng-show="!mensaje.activo">No</span>
+                        </td>
+
+                        <td>
+                            <a href="javascript:;">
+                                <i title="editar" class="ace-icon fa fa-pencil bigger-130 "  ng-click="abrirDialogoEditar(mensaje)"></i>
+                            </a>
+                            
+                            <a href="javascript:;" >
+                                <i title="eliminar" class="ace-icon fa fa-trash-o bigger-130 red" ng-click="eliminar(mensaje.id)"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

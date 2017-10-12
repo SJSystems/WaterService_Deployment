@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<div ng-app="mainApp" ng-controller="controlDePlayaIndexCtrl">
+    <h2>Controles de Playa</h2>
+
+    <div class="form-horizontal">
+        <fieldset>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha de ruta</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+
+                            <div class="input-group">
+                                <input ng-model="Model.fechaControl" class="validate form-control date-picker col-xs-10 col-sm-5" errormessage="Ingrese la fecha desde" fieldtype="text" placeholder="dd/mm/yyyy" type="text">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-2 no-padding-right">Reparto</label>
+                    <div class="col-xs-12 col-sm-10">
+                        <div class="clearfix">
+                            <select ng-model="Model.repartoSeleccionado" ng-options="reparto.nombreReparto for reparto in Model.repartosDisponibles" class="input-group col-xs-10 col-sm-8"></select>
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+        <div class="form-actions center">
+
+            <button type="button" ng-click="buscarControlesDePlaya()" class="btn btn-sm btn-primary">
+                Buscar controles de playa
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+            </button>
+
+            <a href="/ControlesDePlaya/Create" class="btn btn-sm btn-success">
+                Nuevo control de playa
+                <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+            </a>
+
+        </div>
+    </div>
+
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Cod</th>
+                <th>Fecha</th>
+                <th>Evento</th>
+                <th>Reparto</th>
+                <th>Controla</th>
+                <th>Salida</th>
+                <th>Fecha</th>
+                <th>Controla</th>
+                <th>Estado</th>
+                <th>Confirma</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="control in Model.controlesDePlaya">
+            <tr>
+                <td>
+
+                    <a title="Ver artículos" class="hasTooltip" ng-click="control.mostrarArtculos=!control.mostrarArtculos;"
+                       href="javascript:void(0);">
+                        <i class="btn_icono ace-icon fa fa-chevron-{{control.mostrarArtculos?'down':'up'}}"></i>
+                    </a>
+
+                    <a ng-if="control.estadoControlDePlaya_ids != 1" href="/Reports/Remitos/rep_remitoControlPlaya.aspx?controlRutaId={{control.id}}" target="_blank">
+                        CTR-{{control.id}}
+                    </a>
+
+                    <span ng-if="control.estadoControlDePlaya_ids == 1">
+                        CTR-{{control.id}}
+                    </span>
+                </td>
+                <td>{{control.fechaHora.slice(6, -2)  |  date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{control.evento}}</td>
+                <td>{{control.nombreReparto}} > {{control.fechaRuta.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                <td>{{control.usuarioControlla}}</td>
+                <td>CTR-{{control.controlDePlayaSalida_id}}</td>
+                <td>{{control.fechaHoraSalida.slice(6, -2)  |  date:'dd/MM/yyyy HH:mm'}}</td>
+                <td>{{control.usuarioControlaSalida}}</td>
+                <td>{{control.estadoControlDePlaya}}</td>
+                <td>{{control.usuarioAprueba}}</td>
+                <td>
+                    <a href="/ControlesDePlaya/Create?ControlDePlayaId={{control.id}}" class="btn btn-warning btn-xs">
+                        <i class="ace-icon fa fa-pencil-square-o  bigger-110 icon-only"></i>
+                    </a>
+
+                    <button ng-if="control.estadoControlDePlaya_ids != 1" ng-click="eliminarControl(control.id,$index)" title="Eliminar control de playa" class="btn btn-danger btn-xs hasTooltip">
+                        <i class="ace-icon fa fa-times  bigger-110 icon-only"></i>
+                    </button>
+
+                    <div class="btn-group btn-corner" ng-show="control.estadoControlDePlaya_ids == 2">
+                        <button type="button" class="btn btn-white btn-success btn-xs" ng-click="confirmarControl(control, true)">
+                            <i class="ace-icon fa fa-check green"></i>
+                        </button>
+                        <button type="button" class="btn btn-white btn-danger btn-xs" ng-click="confirmarControl(control, false)">
+                            <i class="ace-icon fa fa-times red2"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-show="control.mostrarArtculos">
+                <td colspan="9">
+
+                    <table class="table table-striped">
+                        <thead>
+                       <tr>
+                           <th>Artículo</th>
+                           <th>Llenos</th>
+                           <th>Vacíos</th>
+                           <th>Fallados</th>
+                       </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="art in control.productos">
+                                <td>{{art.nombreArticulo}}</td>
+                                <td>{{art.cantidadLlenos}}</td>
+                                <td>{{art.cantidadVacios}}</td>
+                                <td>{{art.cantidadFallados}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <br />
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Repuesto</th>
+                                <th>Cantidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="art in control.repuestos">
+                                <td>{{art.nombreArticulo}}</td>
+                                <td>{{art.cantidadLlenos}}</td>                                
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <br />
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nro Interno</th>
+                                <th>Nro Serie</th>
+                                <th>Marca</th>
+                                <th>Tipo</th>
+                                <th>Color</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="dispenser in control.dispensers">
+                                <td>{{dispenser.numeroInterno}}</td>
+                                <td>{{dispenser.numeroSerie}}</td>
+                                <td>{{dispenser.marcaDispenser}}</td>
+                                <td>{{dispenser.tipoDispenser}}</td>
+                                <td>{{dispenser.color}}</td>           
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/controlDePlayaControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

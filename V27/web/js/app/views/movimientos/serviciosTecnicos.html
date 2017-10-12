@@ -1,0 +1,57 @@
+﻿<div ng-controller="serviciosTecnicosDeClienteController">
+
+    <div class="widget-container-col ">
+        <div class="widget-box">
+
+            <div class="widget-header">
+                <h4 class="widget-title">Buscar órdenes de trabajo</h4>               
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main">
+
+                    <div class="row">
+
+                        <div class="col-sm-3">
+                            <label class="control-label col-sm-4 padding-right">Desde</label>
+                            <div class="input-group">
+                                <input class="validate form-control date-picker col-xs-10 col-sm-5 "
+                                       placeholder="dd/mm/yyyy" type="text"
+                                       ng-model="fechaDesde">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <label class="control-label col-sm-4 padding-right">Hasta</label>
+                            <div class="input-group">
+                                <input class="validate form-control date-picker col-xs-10 col-sm-8 "
+                                       placeholder="dd/mm/yyyy"
+                                       ng-model="fechaHasta">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-3">
+                            <button type="button" class="btn btn-purple btn-sm " ng-click="buscarServiciosTecnicos()">
+                                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                                Buscar
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <servicios-tecnicos-cliente desde="fechaDesde" allow-edit="true" hasta="fechaHasta" on-obtener-datos="onBuscarServiciosTecnicos" cliente-id="{{obtenerClienteId()}}"></servicios-tecnicos-cliente>
+
+</div>
+

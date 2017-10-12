@@ -1,0 +1,72 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Cliente_CiclosDeFacturacion
+@{
+    Layout = null;
+}
+
+<div class="alert alert-danger hide" id="div_errorAlert">
+	<strong>
+		<i class="ace-icon fa fa-times"></i>
+		Error: 
+	</strong>
+	 <span id="mensajeResultado"></span>
+	<br>
+</div>
+
+@using (Html.BeginForm("CiclosDeFacturacion", "Clientes", FormMethod.Post, new { id = "form_cicloFacturacion", name = "form_cicloFacturacion", @class = "form-inline", role = "form" }))
+{
+    @Html.HiddenFor(x=> x.DatosFacturacion_id)
+        
+    <table id="tb_resultadoCiclos" class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Día inicio</th>
+                <th>Imputar abonos</th>
+                <th>Facturar abonos</th>
+                <th>Día fin</th>
+                <th>Facturar abonos</th>
+                        
+                <th></th>                        
+            </tr>
+        </thead>
+        <tbody id="tbody_resultado">
+                @Html.EditorFor(x => x.CiclosDeFacturacion)
+
+            <tr  class="hide" id="tr_template">
+                <td> <input class="text-box single-line decimalFormat"  id="CiclosDeFacturacion_{0}__diaInicio" name="CiclosDeFacturacion[{0}].diaInicio" type="number" ></td>
+                <td> <input checked="checked" class="check-box" data-val="true" data-val-required="El campo imputarAbonos es obligatorio." id="CiclosDeFacturacion_{0}__imputarAbonos" name="CiclosDeFacturacion[{0}].imputarAbonos" type="checkbox" value="true"></td>
+                <td> <input class="check-box" id="CiclosDeFacturacion_{0}__facturarAbonoEnInicio" name="CiclosDeFacturacion[{0}].facturarAbonoEnInicio" type="checkbox" value="false"></td>
+
+                <td> <input class="text-box single-line decimalFormat"  id="CiclosDeFacturacion_{0}__diaFin" name="CiclosDeFacturacion[{0}].diaFin" type="number" ></td>
+                <td> <input class="check-box" id="CiclosDeFacturacion_{0}__facturarAbonoEnFin" name="CiclosDeFacturacion[{0}].facturarAbonoEnFin" type="checkbox" value="false"></td>
+
+                <td> 
+                        <input id="CiclosDeFacturacion_{0}__id" name="CiclosDeFacturacion[{0}].id" type="hidden" >
+                        <input  id="CiclosDeFacturacion_{0}__dactosFacturacion_id" name="CiclosDeFacturacion[{0}].dactosFacturacion_id" type="hidden" >
+                        <input class="txt_eliminado" id="CiclosDeFacturacion_{0}__eliminado" name="CiclosDeFacturacion[{0}].eliminado" type="hidden" value="0">
+                             
+                        <button type="button" class="red btn_borrarCiclo" onclick="Modelo.EliminarCiclo(this);" >
+                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                    </button>
+
+                    </td>
+            </tr>
+        </tbody>
+    </table>  
+    
+    <button class="btn btn-white btn-default btn-round" type="button" onclick="Modelo.AgregarCiclo();">
+		<i class="ace-icon fa fa-plus red2"></i>
+		Agregar ciclo
+	</button>
+    
+    <div class="form-actions center">
+
+         <button class="btn btn-white btn-info btn-bold" id="btn_GuardarCiclosFacturacion" onclick="Modelo.GuardarCiclosFacturacion();" type="button">
+			<i class="ace-icon fa fa-floppy-o bigger-120 blue"></i>
+			Guardar cambios
+		</button>
+
+     </div>
+    
+ }
+
+

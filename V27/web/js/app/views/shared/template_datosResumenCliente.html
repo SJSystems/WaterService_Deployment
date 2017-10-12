@@ -1,0 +1,66 @@
+﻿<div class="row" >
+
+    <div class="profile-user-info profile-user-info-striped">
+        <div class="profile-info-row">
+            <div class="profile-info-name"> Cliente </div>
+
+            <div class="profile-info-value">
+                <a href="/Clientes/EditCliente/{{detalleCliente.id}}" target="_blank">{{detalleCliente.nombreCliente}}</a>               
+            </div>
+        </div>
+
+        <div class="profile-info-row">
+            <div class="profile-info-name"> Dirección </div>
+
+            <div class="profile-info-value">
+                <a href="/Clientes/EditDomicilio/{{detalleCliente.id}}" target="_blank">{{detalleCliente.domiclioCompleto}}</a>
+            </div>
+        </div>
+
+        <div class="profile-info-row">
+            <div class="profile-info-name"> Saldos </div>
+
+            <div class="profile-info-value">
+                <a href="/Clientes/HistorialMovimientos/{{detalleCliente.id}}" target="_blank">
+                    Consumos a la fecha: ${{detalleCliente.saldoFacturacion}}
+                    <br />
+                    Facturación: ${{detalleCliente.saldoConsumos}}
+                </a>
+            </div>
+        </div>
+
+        <div class="profile-info-row">
+            <div class="profile-info-name"> Reparto </div>
+
+            <div class="profile-info-value">
+                <a href="/Clientes/EditReparto/{{detalleCliente.id}}" target="_blank">{{detalleCliente.reparto}}</a>
+            </div>
+        </div>
+
+        <div class="profile-info-row">
+            <div class="profile-info-name"> Abonos </div>
+
+            <div class="profile-info-value">
+                <a href="/Clientes/EditAbonos/{{detalleCliente.id}}" target="_blank">
+                    <span ng-repeat="disponible in detalleCliente.disponibles"> {{disponible}}</span>
+                </a>
+            </div>
+        </div>
+        <div class="profile-info-row">
+            <div class="profile-info-name"> Comodatos </div>
+
+            <div class="profile-info-value">
+                <a href="/Clientes/EditComodatos/{{detalleCliente.id}}" target="_blank">
+                    <span ng-repeat="comodato in detalleCliente.comodatos"> {{comodato}}</span>
+                </a>
+            </div>
+        </div>
+        <div class="profile-info-row">
+            <div class="profile-info-name"> <pop-over-cliente cliente-id="detalleCliente.id"></pop-over-cliente> Mas info </div>
+
+            <div class="profile-info-value">
+                
+            </div>
+        </div>
+    </div>
+</div>

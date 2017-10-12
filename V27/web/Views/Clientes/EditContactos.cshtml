@@ -1,0 +1,97 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Cliente_EditContactos
+@{
+    ViewBag.Title = "Contactos";
+}
+@Html.HiddenFor(x => x.ClienteModelo.id)
+
+@Html.Partial("_PasosCliente",Model.ClienteModelo)
+
+<div class="widget-box">
+		<div class="widget-header">
+			<h4 class="widget-title">Contactos del Cliente: @Model.ClienteModelo.nombreCliente</h4>
+		</div>
+
+		<div class="widget-body">
+			<div class="widget-main no-padding">
+               
+<div class="row">
+
+    <div class="col-xs-12">
+
+        <!-- <div class="table-responsive"> -->
+
+        <!-- <div class="dataTables_borderWrap"> -->
+        <div>
+            <table id="tb_resultadoClientes" class="   table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Nombre / Razón Social</th>
+                        <th>Tipo</th>
+                        <th>Sector </th>
+                        <th>Telefonos</th>
+                        <th>Email</th>
+                        <th>Observaciones</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model.ContactosModelo)
+                        {
+                        <tr>
+                            <td>@item.nombrePersona</td>
+                            <td>@item.tipoContacto</td>
+                            <td>@item.sectorContacto</td>
+                            <td>@item.telefono / @item.celular</td>
+                            <td><a href="https://mail.google.com/mail/?view=cm&fs=1&to=@item.email" target="_blank" >@item.email </a>   </td>
+                            <td>@item.observaciones</td>
+                            <td>
+                                <div class="hidden-sm hidden-xs action-buttons">
+                         
+                                    <a class="green" href="#" onclick="Modelo.AbrirDialogoEdit(@item.id)">
+                                        <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                    </a>
+
+                                    <a class="red" href="javascript:Modelo.EliminarContacto(@item.id)">
+                                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                    </a>
+                                </div>
+
+                            </td>
+
+                        </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+   			</div>
+		</div>
+	</div>
+
+<div>
+    
+    <!-- #section:plugins/misc.bootbox -->
+    <p>
+        <button class="btn" id="btn_agregarContacto">Agregar Contacto</button>
+    </p>
+    <!-- /section:plugins/misc.bootbox -->
+</div>
+
+<div id="div_addContact">
+    
+    <div id="div_ContactoContent"></div>
+
+</div>
+
+
+<script src="~/js/Views/Clientes_Contactos.js"></script>

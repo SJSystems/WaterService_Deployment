@@ -1,0 +1,33 @@
+﻿<div ng-show="visible" class="dropdown dropdown-preview" ng-mouseover="onMouseOver()">
+    
+    <ul class="dropdown-menu show" 
+        role="listbox" aria-activedescendant="ui-active-menuitem" style="z-index: 99999"
+        ng-style="{'top':'35px','width':'800px'}"
+        >
+     
+        <li role="menuitem" 
+            ng-repeat="item in autoCompleteModel.dataSource"
+            class="smallSearchResult ui-menu-item {{isSelected($index)?'ui-state-hover':'noSelected'}}">
+            <div class="profile-activity clearfix">
+                       <div>
+                           <i class="pull-left thumbicon fa fa-user btn-success no-hover"></i>
+                           <a class="user" href="/Clientes/EditCliente/{{item.cliente_id}}"> {{item.nombreCliente}} </a> - 
+                            {{item.domicilioCompleto}}
+                           <div class="time">
+                               <i class="ace-icon fa fa-tag bigger-110"></i>
+                              {{item.tipoCliente}} - {{item.nombreReparto}}
+                           </div>
+                       </div>
+
+                       <div class="tools action-buttons">
+                           
+                           <button class="btn btn-white btn-default btn-round" ng-click='select($index)'>
+                               <i class="ace-icon fa fa-truck green"></i>
+                               Agregar
+                           </button>
+
+                       </div>
+                   </div>
+        </li>
+    </ul>
+</div> 

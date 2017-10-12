@@ -1,0 +1,132 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Cliente_EditReparto
+
+@Html.Partial("_PasosCliente",Model.ClienteModelo)
+
+@Html.HiddenFor(x=>x.ClienteModelo.id)
+
+<div ng-app="app" ng-controller="repartosClientesCtrl">
+    
+    @if (Model.VisitasDelCliente!=null)
+    {
+        <div id="tabs_repartos">
+            <ul>
+                <li>
+                    <a href="#tabs-dias-visita">Días de visita</a>
+                </li>
+    
+                @foreach (var item in Model.VisitasDelCliente)
+                {        
+                    <li>
+                        @switch (item.dia_ids)
+                        {
+                            case 1:
+                                <a href="#tabs-@item.dia_ids">Lunes</a>
+                                break;
+                        
+                            case 2:
+                                <a href="#tabs-@item.dia_ids">Martes</a>
+                                break;
+                        
+                            case 3:
+                                <a href="#tabs-@item.dia_ids">Miércoles</a>
+                                break;
+                        
+                            case 4:
+                                <a href="#tabs-@item.dia_ids">Jueves</a>
+                                break;
+                            case 5:
+                                <a href="#tabs-@item.dia_ids">Viernes</a>
+                                break;
+                            case 6:
+                                <a href="#tabs-@item.dia_ids">Sábado</a>
+                                break;
+                            case 7:
+                                <a href="#tabs-@item.dia_ids">Domingo</a>
+                                break;                                                                        
+                            default:
+                                break;
+                        }
+
+                    </li>    
+                }
+
+            </ul>
+        
+            <div id="tabs-dias-visita">
+          
+                <div class="row">
+                
+                    <div class="col-sm-6">
+                        <h2 class="brown">{{modelo.cliente.nombreCliente}}</h2>
+                        <h4 class="blue">{{modelo.cliente.nombreReparto}}</h4>
+                        <h5 class="purple">{{modelo.cliente.domicilioCompleto}}</h5>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <label class="middle">
+                                <input class="ace" type="checkbox" ng-model="modelo.dia_lunes" />
+                                <span class="lbl"> Lunes</span>
+                            </label>
+                        </span>
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <label class="middle">
+                                <input class="ace" type="checkbox" ng-model="modelo.dia_martes"/>
+                                <span class="lbl"> Martes</span>
+                            </label>
+                        </span>
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <label class="middle">
+                                <input class="ace" type="checkbox" ng-model="modelo.dia_miercoles" />
+                                <span class="lbl"> Miércoles</span>
+                            </label>
+                        </span>
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <label class="middle">
+                                <input class="ace" type="checkbox" ng-model="modelo.dia_jueves" />
+                                <span class="lbl"> Jueves</span>
+                            </label>
+                        </span>
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <label class="middle">
+                                <input class="ace" type="checkbox" ng-model="modelo.dia_viernes" />
+                                <span class="lbl"> Viernes</span>
+                            </label>
+                        </span>
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <label class="middle">
+                                <input class="ace" type="checkbox" ng-model="modelo.dia_sabado" >
+                                <span class="lbl"> Sábado</span>
+                            </label>
+                        </span>
+                        <span class="help-inline col-xs-12 col-sm-7">
+                            <label class="middle">
+                                <input class="ace" type="checkbox" ng-model="modelo.dia_domingo" >
+                                <span class="lbl"> Domingo</span>
+                            </label>
+                        </span>
+                        
+                    </div>
+                
+                </div>
+                <br/>  
+
+                <div class="row">
+                    <p class="center">
+                        <button class="btn btn-success" ng-click="guardarCambios()" > Guardar cambios</button>
+                    </p>
+                </div>
+          
+            </div>
+
+            @foreach (var item in Model.VisitasDelCliente)
+            {
+                <div id="tabs-@item.dia_ids">
+                    <iframe src="/Repartos/ConfigurarRuta?reparto_id=@Model.RepartoModelo.id&dia_id=@item.dia_ids&cliente_id=@Model.ClienteModelo.id&layout=onlyplugins" style ="width:100%; border:0px; height:650px"></iframe>
+                </div>
+            }
+        </div>
+    }
+</div>
+<script src="~/js/Views/Clientes_EditRepartos.js"></script>
+<script src="~/js/app/controllers/repartosClientesController.js"></script>

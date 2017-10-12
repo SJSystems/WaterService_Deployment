@@ -1,0 +1,161 @@
+﻿
+<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable" style="min-height: 109px;"
+     ng-app="mainApp" ng-controller="buscarMantenimientosController">
+    <div class="widget-box widget-color-dark ui-sortable-handle">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">Mantenimientos</h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label no-padding-right center">Técnico</label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="tecnicoSeleccionadoId" style="width: 200px"
+                                                ng-options="tecnico.usuario_id as tecnico.nombreApellido for tecnico in tecnicos"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center">Creado Desde</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaCreadoDesde" fieldtype="text" name="fecha" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center">Creado Hasta</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaCreadoHasta" fieldtype="text" name="fecha" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+              
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <div class="checkbox">
+                            <label>
+                                <input name="form-field-checkbox" ng-model="soloPendientes"  type="checkbox" class="ace">
+                                <span class="lbl"> Solo pendientes</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="checkbox">
+                            <label>
+                                <input name="form-field-checkbox" ng-model="soloAtribuidosAlCliente" type="checkbox" class="ace">
+                                <span class="lbl"> Solo con daños atribuídos al cliente</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+
+
+            <button type="button" style="margin-left: 10px" ng-click="buscar()" class="btn btn-sm btn-primary pull-right">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar Mantenimientos
+            </button>
+            <button  class="btn btn-sm btn-success pull-right" ng-click="iniciarTransferenciaDeCostos()">
+                <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+                Crear nueva transferencia
+            </button>
+        </div>
+    </div>
+
+
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Id</th>
+                <th>Fecha</th>
+                <th>Dispenser</th>
+                <th>Síntoma</th>                
+                <th>Técnico</th>
+                <th>Cobrable</th>
+                <th>Mano de Obra</th>
+                <th>Materiales</th>
+                <th>Total</th>
+                <th>Ultimo cliente</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="mantenimiento in mantenimientos">
+
+                <td>
+                    <label ng-show="mantenimiento.cobrarAlCliente == null" uib-tooltip="Seleccionar mantenimiento">
+                        <input type="checkbox" name="file-format" class="ace"
+                               ng-model="mantenimiento.seleccionado">
+                        <span class="lbl"> </span>
+                    </label>
+                </td>
+                <td>{{mantenimiento.id}}</td>
+                <td>
+                   {{mantenimiento.fechaHora.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                </td>
+                <td>
+                    {{mantenimiento.numeroInterno}}
+                </td>
+                <td>
+                    {{mantenimiento.sintomaReal}}
+                </td>
+                <td>
+                   {{mantenimiento.tecnico}}
+                </td>
+                <td>
+                    {{mantenimiento.esCobrable?'Si':'No'}}
+                </td>
+                <td>${{mantenimiento.costoActividad}}</td>
+                <td>${{mantenimiento.costoRepuestos}}</td>
+                <td>${{mantenimiento.costoTotal}}</td>
+                <td>{{mantenimiento.ultimoClienteInstalado}}</td>
+                <td>{{mantenimiento.cobrarAlCliente==null?'Sin confirmar':'Confirmado'}}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

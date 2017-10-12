@@ -1,0 +1,301 @@
+﻿<h2>Importar Cobros</h2>
+<div class="form-horizontal" ng-app="mainApp" ng-controller="importarCobrosController">
+
+    <fieldset>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha desde</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <input fieldtype="text" ng-model="fechaDesde" class="date-picker col-xs-10 col-sm-8" placeholder="día/mes/año" type="text" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha hasta</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <input fieldtype="text" ng-model="fechaHasta" class="date-picker col-xs-10 col-sm-8" placeholder="día/mes/año" type="text" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6">
+            
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Agencia</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <select class="form-control"
+                                ng-model="importacion.idAgencia"
+                                ng-options="agencia.id as agencia.nombre  for agencia in agencias"></select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right"></label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <input name="attachment" type="file" file-model="importacion.attachment" />
+                    </div>
+                </div>
+            </div>
+           
+           
+        </div>
+    </fieldset>
+
+    <div class="form-actions center">
+
+        <div class="row">
+            <div class="col-sm-3" >
+                <a ng-if="importacion.idAgencia==1" href="/Facturacion/ObtenerFacturasParaPagoMisCuentaParaExportar"
+                   target="_blank" class="btn btn-sm btn-warning">
+                    Archivo Para PagoMisCuentas
+                    <i class="ace-icon fa fa-download icon-on-right bigger-110"></i>
+                </a>
+            </div>
+            <div class="col-sm-2">
+                <button type="button" id="btn_submit" ng-click="buscarCobranzas()" class="btn btn-sm btn-primary">
+                    Buscar Cobranzas
+                    <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                </button>
+            </div>
+            <div class="col-sm-3">
+                <button class="btn  btn-sm btn-success pull-right" ng-click="subirArchivos()" ng-enabled="!procesandoArchivos">
+                    <span class="bigger-110">{{procesandoArchivos?'Subiendo archivo':'Subir archivo'}}</span>
+                    <i class="ace-icon fa fa-upload icon-on-right"></i>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div ng-show="importacion.idAgencia==1">
+        <h3>PagoMisCuentas</h3>
+        <table class=" table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Fecha Archivo</th>
+                    <th>Fecha Subido</th>
+                    <th>Fecha Imputado</th>
+                    <th>Usuario Sube</th>
+                    <th>Usuario Imputa</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="item in cobranzasPMC">
+                <tr>
+                    <td>{{item.id}}</td>
+                    <td>{{item.fechaDeArchivo.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.fechaSubido.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.fechaImputaCobros.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.usuarioSube}}</td>
+                    <td>{{item.usuarioImputa}}</td>
+                    <td>{{item.cantidadRegistros}}</td>
+                    <td>${{item.importeTotal}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn btn-info btn-sm dropdown-toggle">
+                                Acciones
+                                <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                            </button>
+
+                            <ul class="dropdown-menu dropdown-info dropdown-menu-right">
+                                <li>
+                                    <a ng-click="imputarCobranzaPagoMisCuentas(item)" href="javascript:void(0)">Imputar cobros</a>
+                                </li>
+                                <li>
+                                    <a ng-click="eliminarCobranzaPagoMisCuentas(item)" href="javascript:void(0)">Eliminar cobranza</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="9">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Control</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha Factura</th>
+                                    <th>Nro Factura</th>
+                                    <th>Fecha de Cobro</th>
+                                    <th>Cobro</th>
+                                    <th>Imputado</th>
+                                    <th>Saldo</th>
+                                    <th>Fecha de Acreditación</th>
+                                    <th>Medio</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="detalle in item.Detalles">
+                                    <td>{{detalle.nroControl}}</td>
+                                    <td>
+                                        <a href="/Clientes/HistorialMovimientos/{{detalle.cliente_id}}">
+                                            {{detalle.nombreCliente}}
+                                        </a>
+                                    </td>
+                                    <td>{{detalle.fechaFactura.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                    <td>{{detalle.numeroComprobante}}</td>
+                                    <td>{{detalle.fechaAplicacion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                    <td>${{detalle.importe}}</td>
+                                    <td>${{detalle.totalImputado==null?0:detalle.totalImputado}}</td>
+                                    <td>${{detalle.importe - (detalle.totalImputado ==null? 0 : detalle.totalImputado)}}</td>
+                                    <td>{{detalle.fechaAcreditacion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                    <td>{{detalle.canalDePago}}</td>
+                                    <td>
+                                        <i ng-show="detalle.mensajeError!=null && detalle.mensajeError!='' "
+                                           class="fa fa-exclamation-triangle red hasTooltip"
+                                           title="{{detalle.mensajeError}}"></i>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button data-toggle="dropdown" class="btn btn-grey btn-sm dropdown-toggle">
+                                                Acciones
+                                                <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                            </button>
+
+                                            <ul ng-if="detalle.totalImputado!=detalle.importe && !item.eliminado" class="dropdown-menu dropdown-info dropdown-menu-right">
+                                                <li>
+                                                    <a ng-click="imputarDetalleDeCobranzaPagoMisCuentas(detalle)" href="javascript:void(0)">Imputar cobro</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+    <div ng-show="importacion.idAgencia==2">
+        <h3>Rapipago</h3>
+        <table class=" table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nro Rend</th>
+                    <th>Fecha Rendición</th>
+                    <th>Fecha Subido</th>
+                    <th>Fecha Imputado</th>
+                    <th>Usuario Sube</th>
+                    <th>Usuario Imputa</th>
+                    <th>Cantidad</th>
+                    <th>Total</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="item in cobranzasRP">
+                <tr>
+                    <td>{{item.id}}</td>
+                    <td>{{item.nroRendicion}}</td>
+                    <td>{{item.fechaDeRendicion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.fechaSubido.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.fechaImputaCobros.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.usuarioSube}}</td>
+                    <td>{{item.usuarioImputa}}</td>
+                    <td>{{item.cantidadRegistros}}</td>
+                    <td>${{item.totalImporteRendido}}</td>
+                    <td>
+                        <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn btn-info btn-sm dropdown-toggle">
+                                Acciones
+                                <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                            </button>
+
+                            <ul class="dropdown-menu dropdown-info dropdown-menu-right">
+                                <li>
+                                    <a ng-click="imputarCobranzaRapipago(item)" href="javascript:void(0)">Imputar cobros</a>
+                                </li>
+                             
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Registro</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha Factura</th>
+                                    <th>Nro Factura</th>
+                                    <th>Fecha de Cobro</th>
+                                    <th>Cobro</th>
+                                    <th>Imputado</th>
+                                    <th>Saldo</th>
+                                    <th>Fecha de Acreditación</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="detalle in item.Detalles">
+                                    <td>{{detalle.identificacionDelRegistro}}</td>
+                                    <td>
+                                        <a href="/Clientes/HistorialMovimientos/{{detalle.nroCliente}}" >
+                                            {{detalle.nombreCliente}}
+                                        </a>                                                
+                                    </td>
+                                    <td>{{detalle.fechaFactura.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                    <td>{{detalle.factura_id}}</td>
+                                    <td>{{detalle.fechaDePago.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                    <td>${{detalle.totalDePago}}</td>
+                                    <td>${{detalle.totalImputado==null?0:detalle.totalImputado}}</td>
+                                    <td>${{detalle.totalDePago - (detalle.totalImputado ==null? 0 : detalle.totalImputado)}}</td>
+                                    <td>{{detalle.fechaAcreditacion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                    <td>
+                                        <i ng-show="detalle.mensajeError!=null && detalle.mensajeError!='' "
+                                           class="fa fa-exclamation-triangle red hasTooltip"
+                                           title="{{detalle.mensajeError}}"></i>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button data-toggle="dropdown" class="btn btn-grey btn-sm dropdown-toggle">
+                                                Acciones
+                                                <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                            </button>
+
+                                            <ul ng-if="detalle.totalImputado!=detalle.importe && !item.eliminado" class="dropdown-menu dropdown-info dropdown-menu-right">
+                                                <li>
+                                                    <a ng-click="imputarDetalleDeCobranzaRapipago(detalle)" href="javascript:void(0)">Imputar cobro</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    
+</div>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/importarCobrosControllers.js"></script>

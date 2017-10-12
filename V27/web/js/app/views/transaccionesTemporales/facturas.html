@@ -1,0 +1,199 @@
+﻿
+<div class="widget-box ui-sortable-handle" ng-show="facturasPendientes.length>0">
+
+    <div class="widget-header">
+        <h5 class="widget-title">
+            Facturas pendientes
+            <span class="label label-warning arrowed-in-right arrowed" ng-if="obtenerTextoFacturas()!=''">
+                <i class="ace-icon fa fa-exclamation-triangle  bigger-120"></i> {{obtenerTextoFacturas()}}
+            </span>
+        </h5>
+
+        <!-- #section:custom/widget-box.toolbar -->
+        <div class="widget-toolbar">
+
+            <a href="#" class="collapse-button" data-action="collapse">
+                <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+        </div>
+
+        <!-- /section:custom/widget-box.toolbar -->
+    </div>
+
+    <div class="widget-body" style="display: block;">
+        <div class="widget-main">
+
+            <table class="table table-bordered table-striped">
+                <thead class="thin-border-bottom">
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th>
+                            N°
+                        </th>
+                        <th>
+                            Monto
+                        </th>
+                        <th>
+                            Emitida
+                        </th>
+                        <th>
+                            Vencimientos
+                        </th>
+                        <th>
+                            Saldo
+                        </th>
+                        <th class="center col-sm-3">
+                            Cobro
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="factura in facturasPendientes">
+                        <td>
+                            <span class="help-inline col-xs-12 col-sm-5">
+                                <label class="middle">
+                                    <input class="ace" type="checkbox" ng-model="factura.pagar">
+                                    <span class="lbl"></span>
+                                </label>
+                            </span>
+
+                        </td>
+                        <td>
+                            {{factura.numeroComprobante != null ? factura.numeroComprobante : factura.nroFactura}}
+                        </td>
+                        <td>
+                            <b>${{factura.montoFacturaTotal}}</b>
+                        </td>
+                        <td>
+                            {{factura.fechaFactura.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            {{factura.fechaVencimiento1.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                            <br>
+                            {{factura.fechaVencimiento2.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                            <br>
+                            {{factura.fechaVencimiento3.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            ${{factura.saldoPendiente}}
+                        </td>
+                        
+                        <td class="center">
+
+                            <div class="profile-user-info profile-user-info-striped" style="width: 400px;">
+
+                                <div class="profile-info-row">
+
+                                    <div class="profile-info-name">
+                                        
+                                        <select ng-options="item.valor_ids as item.valorTexto for item in listas.formasDePago" ng-model="factura.cobrosFacturas[0].formaPagoId" class="input-group col-sm-12" style="width: 100px"></select>
+
+                                        <p ng-show="factura.cobrosFacturas[0].formaPagoId==2 && factura.cobrosFacturas[0].cheque_id!=null">Cheque id: {{factura.cobrosFacturas[0].cheque_id}}</p>
+                                        <p ng-show="factura.cobrosFacturas[0].formaPagoId==3 && factura.cobrosFacturas[0].deposito_id!=null">Depósito id: {{factura.cobrosFacturas[0].deposito_id}}</p>
+                                    </div>
+
+                                    <div class="profile-info-value">
+                                        <input class="decimalFormat center col-sm-10" smart-float
+                                               ng-model="factura.cobrosFacturas[0].montoCobrado" style="width: 100px" />
+
+                                        <button class="btn btn-warning btn-xs" style="vert-align: bottom" ng-click="seleccionarFormaDePago(factura.cobrosFacturas[0])">
+                                            <i class="ace-icon fa fa-check  bigger-110 icon-only"></i>
+                                        </button>
+
+                                        <button class="btn btn-primary btn-xs" style="vert-align: bottom"
+                                                ng-click="agregarCobroFactura(factura)">
+                                            <i class="ace-icon fa fa-plus  bigger-110 icon-only"></i>
+                                        </button>
+                                        
+                                    </div>
+                                </div>
+                              
+                                <div class="profile-info-row" ng-repeat="cobroFactura in factura.cobrosFacturas">
+                                    
+                                    <div class="profile-info-name" ng-if="$index>0">
+                                        
+                                        <select ng-options="item.valor_ids as item.valorTexto for item in listas.formasDePago" ng-model="cobroFactura.formaPagoId" class="input-group col-sm-12" style="width: 100px">
+                                        </select>
+
+                                        <p ng-show="cobroFactura.formaPagoId==2 && cobroFactura.cheque_id!=null">Cheque id: {{cobroFactura.cheque_id}}</p>
+                                        <p ng-show="cobroFactura.formaPagoId==3 && cobroFactura.deposito_id!=null">Depósito id: {{cobroFactura.deposito_id}}</p>
+                                    </div>
+
+                                    <div class="profile-info-value" ng-if="$index>0">
+                                        <input class="decimalFormat center col-sm-10" smart-float ng-model="cobroFactura.montoCobrado" style="width: 100px" />
+                                        <button class="btn btn-warning btn-xs" style="vert-align: bottom" ng-click="seleccionarFormaDePago(cobroFactura)">
+                                            <i class="ace-icon fa fa-check  bigger-110 icon-only"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-xs" style="vert-align: bottom" ng-click="quitarCobroFactura(factura,$index)">
+                                            <i class="ace-icon fa fa-trash-o  bigger-110 icon-only"></i>
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> Ret IVA </div>
+                                    <div class="profile-info-value">
+                                        <input class="decimalFormat center col-sm-10" smart-float ng-model="factura.cobrosFacturas[0].retencionIVA" />
+                                    </div>
+                                </div>
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> Ret IIBB</div>
+                                    <div class="profile-info-value">
+                                        <input class="decimalFormat center col-sm-10" smart-float ng-model="factura.cobrosFacturas[0].retencionIngresosBrutos" />
+                                    </div>
+                                </div>
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> Ret SUSS</div>
+                                    <div class="profile-info-value">
+                                        <input class="decimalFormat center col-sm-10" smart-float ng-model="factura.cobrosFacturas[0].retencionSUSS" />
+                                    </div>
+                                </div>
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> Gananancias</div>
+                                    <div class="profile-info-value">
+                                        <input class="decimalFormat center col-sm-10" smart-float ng-model="factura.cobrosFacturas[0].retencionGanancias" />
+                                    </div>
+                                </div>
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> Com e Ind</div>
+                                    <div class="profile-info-value">
+                                        <input class="decimalFormat center col-sm-10" smart-float ng-model="factura.cobrosFacturas[0].retencionComInd" />
+                                    </div>
+                                </div>
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> Otras ret </div>
+                                    <div class="profile-info-value">
+                                        <input class="decimalFormat center col-sm-10" smart-float ng-model="factura.cobrosFacturas[0].retencionOtras" />
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> Cobrado </div>
+                                    <div class="profile-info-value">
+                                        <strong>${{obtenerCobradoFactura(factura)}}</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    <tr>
+                        <td colspan="6" class="center"><strong>Total efectivo</strong></td>
+                        <td class="center">
+                            <strong>$<span>{{obtenerTotalCobradoFacturas()}}</span></strong>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

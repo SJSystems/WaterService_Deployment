@@ -1,0 +1,80 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+}
+
+<div ng-app="mainApp" ng-controller="buscarUsuariosController">
+    <div class="form-horizontal">
+        <fieldset>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Nombre</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            <input ng-model="nombreApellido" class="validate form-control col-xs-10 col-sm-5 " fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="form-actions center">
+
+            <button type="button" ng-click="ObtenerUsuarios()" class="btn btn-sm btn-primary">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar usuarios
+            </button>
+        </div>
+    </div>
+
+    <table id="tb_usuarios" class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre y Apellido</th>
+                <th>Usuario</th>
+                <th>eMail</th>
+                <th>Teléfono</th>
+                <th>DNI</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="usuario in usuarios">
+            <tr>
+                <td>{{usuario.id}}</td>
+                <td>{{usuario.nombreApellido}}</td>
+                <td>{{usuario.userName}}</td>
+                <td>{{usuario.email}}</td>
+                <td>{{usuario.telefono}}</td>
+                <td>{{usuario.dni}}</td>
+                <td>{{usuario.activo}}</td>
+                <td>
+                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                            Acciones
+                            <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-inverse">
+                            <li>
+                                <a href="/Usuarios/EditarUsuario?id={{usuario.id}}">Editar</a>
+                            </li>
+                            <li ng-show="usuario.activo == true">
+                                <a href="javascript:return false;"
+                                   ng-click="EliminarUsuario(usuario.id)">
+                                    Eliminar
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<script src="~/js/app/controllers/usuariosControllers.js"></script>
+

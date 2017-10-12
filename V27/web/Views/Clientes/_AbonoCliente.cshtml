@@ -1,0 +1,147 @@
+﻿@model WaterService.Common.Entities.DTOs.AbonosClienteDTO
+
+@{ Layout = null;}
+
+
+<div class="widget-box widget-color-blue2" id="div_abono_@Model.id">
+
+	<div class="widget-header">
+		
+	    <div class="row center"  style="padding:10px">
+           
+	        <div class="col-xs-3">
+	            <span class="help-inline col-xs-12 col-sm-1">
+	                <label class="middle">
+	                    <input class="ace ckb-abonoSelected" abonoid="@Model.id" type="checkbox">
+	                    <span class="lbl"> </span>
+	                </label>
+	            </span>
+	            <strong>@Model.leyendaFactura </strong> 
+	        </div>
+	        <div class="col-xs-2"><strong>Fecha vigencia: </strong>@Model.fechaVigencia.ToShortDateString() @(Model.fechaVigenciaHasta.HasValue?" - "+ Model.fechaVigenciaHasta.Value.ToShortDateString():"") </div>
+	        <div class="col-xs-2"><strong>Precio</strong> $@Model.precio </div>
+	        <div class="col-xs-2"><strong>Cantidad:</strong> @Model.cantidadAbonos </div>
+	        <div class="col-xs-3">
+	            <p>
+	                <button class="btn btn-xs btn-warning" onclick="Modelo.AbrirDialogo_EditAbono(@Model.id)" type="button">
+	                    <i class="ace-icon fa fa-pencil bigger-120"></i>
+	                </button>
+	                <button class="btn btn-xs btn-danger" type="button" onclick="Modelo.PreguntaEliminarAbono(@Model.id)">
+	                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+	                </button>
+	                <button class="btn btn-xs btn-pink" type="button" onclick="Modelo.AbrirDialogo_AgregarArticulo(@Model.id)">
+	                    <i class="ace-icon fa fa-plus bigger-120"></i>
+	                    Agregar artículo
+	                </button>
+               
+	            </p>
+               
+                   
+	        </div>
+
+	    </div>
+	    <div class="row">
+            <div class="form-inline">
+                <select ng-model="modelo.clienteSeleccionado"
+                        ng-options="cliente.nombreCliente for cliente in sucursalesDisponibles"
+                        class="input-group col-xs-10 col-sm-8"></select>
+                <button class="btn btn-xs btn-yellow" type="button" ng-click="AbrirDialogo_AgregarDispenser(@Model.id)">
+                    <i class="ace-icon fa fa-plus bigger-120"></i>
+                    Agregar dispenser
+                </button>
+            </div>
+	    </div>
+
+	</div>
+
+	<div class="widget-body">
+		<div class="widget-main padding-8">
+			
+            
+    <div class="row" >
+    
+        <div class="col-xs-12">
+        
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="center"> Cod </th>
+                        <th class="center"> Artículo </th>
+                        <th class="center"> Cantidad </th>
+                        <th class="center"> Excedente</th>
+                        <th class="center"> </th>
+                    </tr>
+                </thead>
+                <tbody>
+						
+                @if (Model.Articulos != null)
+                {
+                    foreach (var item in Model.Articulos)
+                    {
+                        <tr>
+                            <td class="center">@item.articulo_id</td>
+                            <td>@item.nombreArticulo</td>
+                            <td class="center">@item.cantidad</td>
+                            <td class="center">$@item.precioExcendente</td>
+                            <td class="center">
+                                <button class="btn btn-xs btn-warning" onclick="Modelo.AbrirDialogo_EditArticulo(@item.id)" type="button">
+                                    <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                </button>
+                                <button class="btn btn-xs btn-danger" type="button" onclick="Modelo.PreguntaEliminarArticuloAbono(@item.id);" >
+                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                </button>
+
+                            </td>
+                        </tr>
+                    }
+                }
+						
+                </tbody>
+            </table>
+            
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="center"> Instalado </th>
+                        <th class="center"> Nro serie </th>
+                        <th class="center"> Nro interno </th>
+                        <th class="center"> Tipo </th>
+                        <th class="center"> Marca</th>
+                        <th class="center"> Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                    @foreach (var item in Model.DispensersAsociados)
+                    {
+                        <tr>
+                            <td>@item.nombreCliente</td>
+                            <td>@item.numeroSerie</td>
+                            <td>@item.numeroInterno</td>
+                            <td>@item.tipoDispenser</td>
+                            <td>@item.marcaDispenser</td>
+                            <td>@item.estadoDispenser</td>
+                            <td>
+                                <button class="btn btn-xs btn-danger" type="button" 
+                                              ng-click="QuitarDispenserDeAbono(@item.id);" >
+                                          <i class="ace-icon fa fa-times bigger-120"></i>
+                                      </button>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        
+
+    </div>
+    
+
+           
+		</div>
+	</div>
+</div>
+		

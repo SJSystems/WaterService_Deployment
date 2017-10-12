@@ -1,0 +1,222 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Dispenser_Create
+
+<script src="~/js/Views/Dispensers_Create.js"></script>
+
+<div class="page-header">
+    <h1>Nuevo Dispenser
+		<small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            Ingrese los datos
+        </small>
+    </h1>
+</div>
+
+
+<div class="widget-box">
+    <div class="widget-header">
+        <h4 class="widget-title">Nuevo Dispenser: </h4>
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-main no-padding">
+
+            @using (Html.BeginForm("Guardar", "Dispensers", FormMethod.Post, new { id = "form_create", name = "form_create", @class = "form-horizontal", role = "form" }))
+            {
+                @Html.HiddenFor(x=>x.DispenserModelo.clienteActual_id)
+                
+                <!-- <legend>Form</legend> -->
+                <fieldset>
+
+                    <div class="col-sm-6">
+                        
+                        @*numeroInterno*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Nro. Interno</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.DispenserModelo.numeroInterno, 
+                                                        new { fieldType = "text", errorMessage = "Si se deja vacío se autocompletará ", 
+                                                            @class = "col-xs-10 col-sm-8 ", 
+                                                            placeholder = Model.NumeroInternoSugerido,
+                                                            type = "text" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*numeroSerie*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Nro. Serie </label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.DispenserModelo.numeroSerie, 
+                                                        new { fieldType = "text", errorMessage = "Ingrese el nro. de serie del dispenser", 
+                                                            @class = "validate col-xs-10 col-sm-8 ", 
+                                                            placeholder = "nro. de serie del dispenser", type = "text" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                       
+
+                        @*Marca*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right"> Marca </label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(  x => x.DispenserModelo.codigoCarcaDispenser_ids, 
+                                                            new SelectList(Model.Codigos_Marcas_Dispensers, "valor_ids", "valorTexto"), 
+                                                            new { @class = "input-group col-xs-10 col-sm-8" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*Tipo*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(  x => x.DispenserModelo.tipoDispenser_ids, 
+                                        new SelectList(Model.Tipos_Dispensers, "valor_ids", "valorTexto"), 
+                                        new { @class = "input-group col-xs-10 col-sm-8" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                        
+                        @*Color*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Color</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(x => x.DispenserModelo.color_ids,
+                                        new SelectList(Model.Colores, "valor_ids", "valorTexto"),
+                                        new { @class = "input-group col-xs-10 col-sm-8" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*Estados_Dispensers*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Estado</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(x => x.DispenserModelo.estadoDispenserActual_ids,
+                                                           new SelectList(Model.Estados_Dispensers, "valor_ids", "valorTexto"),
+                                                           new { @class = "input-group col-xs-10 col-sm-8" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*[condicionActual_ids]*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Condición </label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(x => x.DispenserModelo.condicionActual_ids,
+                                        new SelectList(Model.CondicionesDeDispensers, "valor_ids", "valorTexto"),
+                                        new { @class = "input-group col-xs-10 col-sm-8" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                        @*fechaDeCompra*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha de compra</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(x => x.DispenserModelo.fechaDeCompra,
+                                                        new
+                                                        {
+                                                            fieldType = "text",
+                                                            errorMessage = "Ingrese la fecha de compra ",
+                                                            @class = "validate col-xs-10 col-sm-8 date-picker",
+                                                            placeholder = "dd/MM/yyyy",
+                                                            type = "text"
+                                                        })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*fechaDeNuevo*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha de nuevo</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(x => x.DispenserModelo.fechaDeNuevo,
+                                                        new
+                                                        {
+                                                            fieldType = "text",
+                                                            errorMessage = "Ingrese la fecha de nuevo",
+                                                            @class = "validate col-xs-10 col-sm-8 date-picker",
+                                                            placeholder = "dd/MM/yyyy",
+                                                            type = "text"
+                                                        })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                        
+                        @*[mesesEntreSanitizaciones]*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Meses entre sanitizaciones</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(x => x.DispenserModelo.mesesEntreSanitizaciones,
+                                        new
+                                        {
+                                            fieldType = "text",
+                                            errorMessage = "Ingrese el nro. Interno ",
+                                            @class = "validate col-xs-10 decimalFormat col-sm-8",
+                                            placeholder = "ej: 1",
+                                            type = "text"
+                                        })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                        
+                        @*[observaciones]*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Observaciones</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextAreaFor(x => x.DispenserModelo.observaciones,
+                                                        new
+                                                        {
+                                                            fieldType = "text",
+                                                            errorMessage = " ",
+                                                            @class = "col-xs-10 col-sm-8 ",
+                                                            placeholder = "",
+                                                            type = "text"
+                                                        })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+      
+                    </div>
+
+                </fieldset>
+                    
+                <div class="form-actions center">
+                    <button type="button" id="btn_guardar" class="btn btn-sm btn-success">
+                        Guardar
+							<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+

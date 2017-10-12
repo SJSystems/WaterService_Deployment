@@ -1,0 +1,131 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Repartos_Traspasos
+
+<style>
+
+    .registroEncontrado {        
+    background: maroon;
+    }
+
+</style>
+
+<div class="form-actions center">
+        
+    <button type="button" id="btn_obtenerReparto" class="btn btn-sm btn-success">
+		Obtener Reparto
+		<i class="ace-icon fa fa-refresh icon-on-right bigger-110"></i>
+	</button>
+
+     <button id="btn_GuardarCambios" class="btn btn-white btn-info btn-bold">
+	    <i class="ace-icon fa fa-floppy-o bigger-120 blue"></i>
+	    Guardar Cambios
+    </button>
+
+</div>
+
+@using (Html.BeginForm("ConfigurarRuta", "Repartos", FormMethod.Post, new { id = "form_hojaDeRuta"}))
+{
+	<div class="row">      
+          
+		<div class="col-sm-6"  >
+
+        <div class="col-sm-6 ">
+            <select class="form-control " id="cmb_dias_origen">
+	            <option value="1">Lunes</option>
+	            <option value="2">Martes</option>
+	            <option value="3">Miercoles</option>
+	            <option value="4">Jueves</option>
+	            <option value="5">Viernes</option>
+	            <option value="6">Sábado</option>
+	            <option value="7">Domingo</option>		
+            </select>
+        </div>
+
+        <div class="col-sm-6 ">
+            <select class="form-control " id="cmb_repartos_origen">
+                @foreach (var item in Model.Repartos)
+                {
+                    <option value="@item.id">@item.nombreReparto</option>
+                }
+            </select>
+        </div>
+
+        @if (Model.Reparto_Origen!=null)
+	    {
+	        <h3 class="header blue lighter smaller">
+		    <i class="ace-icon fa fa-question-circle smaller-90"></i>
+		    @Model.RepartoOrigenModelo.nombreReparto - @Model.Dia_Origen
+	    </h3>
+		<div class="dd" id="list_NoAsignados" style="overflow-y:scroll; height:420px;">
+
+            @if (Model.Reparto_Origen == null || Model.Reparto_Origen.Count == 0)
+            {
+                <div class="dd-empty"></div>
+            }
+            else
+            { 
+                <ol class="dd-list" >
+                    @Html.EditorFor(x=>x.Reparto_Origen) 
+				</ol>
+            }
+            				
+			</div>	 
+	    }
+
+		</div>
+
+		<div class="vspace-16-sm"></div>
+
+		<div class="col-sm-6" >
+                        
+        <div class="col-sm-6 ">
+            <select class="form-control " id="cmb_dias_destino">
+	            <option value="1">Lunes</option>
+	            <option value="2">Martes</option>
+	            <option value="3">Miercoles</option>
+	            <option value="4">Jueves</option>
+	            <option value="5">Viernes</option>
+	            <option value="6">Sábado</option>
+	            <option value="7">Domingo</option>		
+            </select>
+        </div>
+
+        <div class="col-sm-6 ">
+            <select class="form-control " id="cmb_repartos_destino">
+                @foreach (var item in Model.Repartos)
+                {
+                    <option value="@item.id">@item.nombreReparto</option>
+                }
+            </select>
+        </div>
+
+
+        @if (Model.Reparto_Destino!=null)
+	    {
+		 
+            <h3 class="header blue lighter smaller">
+		        <i class="ace-icon fa fa-bars smaller-90"></i>
+		        @Model.RepartoDestinoModelo.nombreReparto - @Model.Dia_Destino            
+	        </h3>
+
+			    <div class="dd dd-draghandle" id="list_Ordenados" style="overflow-y:scroll; height:420px;">
+
+                    @if (Model.Reparto_Destino == null || Model.Reparto_Destino.Count == 0)
+                    {
+                        <div class="dd-empty"></div>
+                    }
+                    else{
+            	
+                        <ol class="dd-list" >
+					            @Html.EditorFor(x=>x.Reparto_Destino)
+				        </ol>            
+                    }
+
+			    </div>
+	    }
+
+		</div>
+
+	</div>
+}
+<script src="~/assets/js/jquery.nestable.min.js"></script>
+<script src="~/js/Views/Repartos_CambiosRepartos.js"></script>

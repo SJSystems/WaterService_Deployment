@@ -1,0 +1,98 @@
+﻿<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable" style="min-height: 109px;"
+     ng-app="mainApp" ng-controller="verHistorialDeMantenimientoController">
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4 class="widget-title">Historial de Mantenimientos Dispenser Nro.: {{dispenser.numeroSerie}}</h4>
+        </div>
+
+        <div class="widget-body" style="margin: 15px;">
+
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Nro. Serie </label>
+                    <div class="col-sm-7">
+                        <input value="{{dispenser.numeroSerie}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Tipo Contrato </label>
+                    <div class="col-sm-7">
+                        <input value="{{dispenser.tipoContrato}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Nro. Interno </label>
+                    <div class="col-sm-7">
+                        <input value="{{dispenser.numeroInterno}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Estado </label>
+                    <div class="col-sm-7">
+                        <input value="{{dispenser.estadoDispenser}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Marca </label>
+                    <div class="col-sm-7">
+                        <input value="{{dispenser.marcaDispenser}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Condicion Actual </label>
+                    <div class="col-sm-7">
+                        <input value="{{dispenser.condicionActual}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-input-readonly"> Tipo </label>
+                    <div class="col-sm-7">
+                        <input value="{{dispenser.tipoDispenser}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Ubicacion Actual </label>
+                    <div class="col-sm-7">
+                        <input value="{{dispenser.ubicacionActual}}" type="text" class="col-xs-10 col-sm-12" id="form-input-readonly" disabled="disabled">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <table id="tb_mantenimientos" class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha</th>
+                <th>Comentarios</th>
+                <th>Condicion</th>
+                <th>Estado Dispenser</th>
+                <th>Ubicacion</th>
+                <th>Trabajos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="mantenimiento in mantenimientos">
+                <td>{{mantenimiento.id}}</td>
+                <td>{{mantenimiento.fechaHora}}</td>
+                <td>{{mantenimiento.comentarios}}</td>
+                <td>{{mantenimiento.condicionActual}}</td>
+                <td>{{mantenimiento.estadoDispenserActual}}</td>
+                <td>{{mantenimiento.ubicacionActual}}</td>
+                <td>{{mantenimiento.trabajos}}</td>
+            </tr>
+        </tbody>
+</table>
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

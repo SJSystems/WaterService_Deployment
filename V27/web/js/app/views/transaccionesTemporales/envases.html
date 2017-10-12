@@ -1,0 +1,117 @@
+﻿
+<div class="widget-box ui-sortable-handle">
+
+    <div class="widget-header">
+        <h5 class="widget-title">
+            Envases
+            <span class="label label-warning arrowed-in-right arrowed" ng-if="obtenerTextoEnvases()!=''">
+                <i class="ace-icon fa fa-exclamation-triangle  bigger-120"></i> {{obtenerTextoEnvases()}}
+            </span>
+        </h5>
+
+        <!-- #section:custom/widget-box.toolbar -->
+        <div class="widget-toolbar">
+
+            <a href="#" class="collapse-button" data-action="collapse">
+                <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+        </div>
+
+        <!-- /section:custom/widget-box.toolbar -->
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-main">
+
+            <div class="widget-main no-padding">
+                <table class="table table-bordered table-striped">
+                    <thead class="thin-border-bottom">
+                        <tr>
+                            <th>
+                                Envase a devolver
+                            </th>
+                            <th>
+                                Cantidad
+                            </th>
+                            <th>
+                                Fecha
+                            </th>
+                            <th>
+                                Vencimiento
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="item in envasesPendientes">
+                            <td>{{item.nombreArticulo}}</td>
+                            <td>{{item.cantidad}}</td>
+                            <td>{{item.fechaHora.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                            <td>{{item.fechaVencimiento.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <br />
+
+            <table class="table table-bordered table-striped">
+                <thead class="thin-border-bottom">
+                    <tr>
+                        <th style="width: 50px">
+
+                        </th>
+                        <th style="width: 150px">
+                            Tipo
+                        </th>
+                        <th style="width: 350px">
+                            Artículo
+                        </th>
+                        <th style="width: 80px">
+                            Cantidad
+                        </th>
+                        <th style="width: 80px">
+                            Solicitud
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="envase in ventaActual.envases">
+                        <td>
+                            <button type="button" ng-click="eliminarEnvase($index)" class="btn btn-sm btn-danger btn-round center">
+                                <i class="ace-icon fa fa-trash-o "></i>
+                            </button>
+                        </td>
+                        <td style="width: 150px">
+                            <select ng-model="envase.evento"
+                                    ng-options="ev.texto for ev in listas.envases_tiposDeEventos"
+                                    class="input-group"></select>
+                        </td>
+                        <td style="width: 350px">
+                            <select ng-model="envase.articulo"
+                                    ng-options="('(ART- '+art.codigoInterno+') '+art.nombreArticulo) for art in articulos.articulosTodos"
+                                    class="input-group col-xs-10 col-sm-8 " style="width: 350px"></select>
+                        </td>
+                        <td>
+                            <input type="text"
+                                   ng-model="envase.cantidad"
+                                   class="input-mini spinner-input form-control numericControl"
+                                   value="0" maxlength="4">
+                        </td>
+                        <td>
+                            <select ng-model="envase.motivoSolicitudDeStock_ids"
+                                    ng-options="motivo.valor_ids as motivo.valorTexto for motivo in listas.motivosDeSolicitud"
+                                    class="input-group"></select>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <button class="btn btn-white btn-default btn-round " ng-click="agregarEnvase()">
+                <i class="ace-icon fa fa-plus orange"></i>
+                Agregar Envase
+            </button>
+        </div>
+    </div>
+
+</div>

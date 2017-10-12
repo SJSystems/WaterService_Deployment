@@ -1,0 +1,389 @@
+﻿<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+    <div class="widget-box ui-sortable-handle">
+
+        <div class="widget-header">
+            <h4 class="widget-title">Historial de facturas</h4>
+            <div class="widget-toolbar">
+            </div>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main" id="div_buscarFacuras">
+
+                <div class="row">
+
+                    <div class="col-sm-3">
+                        <label class="control-label col-sm-4 padding-right">Desde</label>
+                        <div class="input-group">
+                            <input class="validate form-control date-picker col-xs-10 col-sm-5 "
+                                   placeholder="dd/mm/yyyy" type="text"
+                                   ng-model="modeloFacturas.fechaDesde">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="control-label col-sm-4 padding-right">Hasta</label>
+                        <div class="input-group">
+                            <input class="validate form-control date-picker col-xs-10 col-sm-5 "
+                                   placeholder="dd/mm/yyyy" type="text"
+                                   ng-model="modeloFacturas.fechaHasta">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <button type="button" class="btn btn-purple btn-sm " ng-click="modeloFacturas.buscarFacturas()">
+                            <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                            Buscar comprobantes
+                        </button>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <button id="btn_buscarMovimientos" type="button" class="btn btn-warning btn-sm " ng-click="modeloFacturas.descargarReporteFacturasCobros()">
+                            <i class="ace-icon fa fa-download icon-on-right bigger-110"></i>
+                            Descargar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="div_historialFacturas">
+
+    <div>
+
+        <div class="tabbable">
+            <ul class="nav nav-tabs" style="position: initial;">
+                <li class="active">
+                    <a data-toggle="tab" href="#facturasDelCliente">
+                        <i class="ace-icon fa fa-file-pdf-o bigger-120"></i>
+                        Facturas
+                    </a>
+                </li>
+
+                <li>
+                    <a data-toggle="tab" href="#ajustesFacturacionDelCliente">
+                        <i class="ace-icon fa fa-align-justify bigger-120"></i>
+                        Ajustes de facturación
+                    </a>
+                </li>
+
+                <!--<li>
+                    <a data-toggle="tab" href="#resumenesDeCuenta">
+                        <i class="ace-icon fa fa-align-justify bigger-120"></i>
+                        Resumenes de cuenta
+                    </a>
+                </li>-->
+
+            </ul>
+
+            <div class="tab-content">
+                <div id="facturasDelCliente" class="tab-pane fade in active">
+
+                    <div class="alert alert-info hide" id="div_InformacionFactura">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="ace-icon fa fa-times"></i>
+                        </button>
+                        <strong>Información de Afip de la Factura</strong>
+                        <span id="span_detallesFactura"></span>
+                    </div>
+
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>n°</th>
+                                <th>Fecha</th>
+                                <th>Entrega</th>
+                                <th>Comprobante</th>
+                                <th>Vencimientos</th>
+                                <th>Monto</th>
+                                <th>Saldo</th>
+                                <th>Estado</th>
+                                <th>CAE</th>
+                                <th>Observaciones</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="item in modeloFacturas.facturas">
+
+                            <tr style="{{modeloFacturas.obtenerEstiloParaFactura(item)}}">
+
+                                <td ng-if="item.pathFactura==null || item.pathFactura==''">
+                                    {{item.id}}
+                                </td>
+                                <td ng-if="!(item.pathFactura==null || item.pathFactura=='')">
+                                   
+                                    <a target="blank" href="/Facturas/{{item.pathFactura}}">{{item.id}}</a>
+                                    (<a target="blank" href="/Facturas/{{item.pathFacturaDuplicado}}">dup</a>)
+                                </td>
+                                <td>{{item.fechaFactura.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                <td>
+                                    <a class="red" href="javascript:void(0);" ng-click="modeloFacturas.enviarFacturaPorMail(item)">
+                                        <i class="fa fa-mail-forward bigger-130 "></i>
+                                    </a>
+                                   <span ng-show="item.fechaEntregadaEmail!=null">Por mail {{item.fechaEntregadaEmail.slice(6, -2)  |  date:'dd/MM/yyyy HH:mm'}}.</span>
+                                   <span ng-show="item.fechaEntregadaPapel!=null">Papel {{item.fechaEntregadaPapel.slice(6, -2)  |  date:'dd/MM/yyyy'}}.</span>
+                                </td>
+                                <td>{{item.numeroComprobante}}</td>
+                                <td>
+                                    {{item.fechaVencimiento1.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                                    <br>
+                                    {{item.fechaVencimiento2.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                                    <br>
+                                    {{item.fechaVencimiento3.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    ${{item.montoFacturaTotal}}
+                                    <a href="javascript:void(0)"
+                                       ng-click="modeloFacturas.verCobros(item)" style="margin-right: 8px">
+                                        <i class="ace-icon fa {{item.mostrarCobros?'fa-arrow-down':'fa-arrow-up'}}"></i>
+
+                                    </a>
+                                </td>
+                                <td>${{item.saldoPendiente}}</td>
+                                <td>{{item.estadoFactura}}</td>
+                                <td>{{item.cae}}</td>
+                                <td>{{item.notaDeDebitoAjusteId!=null?'Nota de débito':''}}
+                                    {{item.observaciones}}
+                                </td>
+                                <td>
+                                    
+                                    <div class="btn-group">
+                                        <button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">
+                                            Opciones
+                                            <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <li ng-if="!(item.cae==null || item.cae=='') || !item.facturarAfip">
+                                                <a href="/Facturacion/NuevoAjusteFacturacion?facturaId={{item.id}}">
+                                                    <i class="ace-icon fa fa-bolt bigger-120 orange"></i>
+                                                    Ajuste
+                                                </a>
+                                            </li>
+
+                                            <li ng-if="!(item.cae==null || item.cae=='')">
+                                                <a href="javascript:void(0)" ng-click="modeloFacturas.ObtenerDatosAfip(item)">
+                                                    <i class="ace-icon fa fa-file-pdf-o bigger-120 blue"></i>
+                                                    Afip
+                                                </a>
+                                            </li>
+
+                                            <li ng-if="(item.cae==null || item.cae=='') && item.facturarAfip">
+                                                <a href="javascript:void(0)"
+                                                   ng-click="modeloFacturas.generarFacturaElectronica(item)">
+                                                    <i class="ace-icon fa fa-file-pdf-o bigger-120 orange"></i>
+                                                    Generar FE
+                                                </a>
+                                            </li>
+
+                                            <li class="divider"></li>
+                                            
+                                            <li ng-if="(item.cae==null || item.cae=='') && item.facturarAfip">
+                                                <a href="javascript:void(0)" ng-click="modeloFacturas.regenerarComprobante(item)">
+                                                    <i class="ace-icon fa fa-refresh bigger-120 red"></i>
+                                                    Regenerar comprobante
+                                                </a>
+                                            </li>
+                                            
+                                            <li ng-if="(item.cae==null || item.cae=='') && !item.facturarAfip">
+                                                <a href="javascript:void(0)" ng-click="modeloFacturas.convertirAFactura(item)">
+                                                    <i class="ace-icon fa fa-refresh bigger-120 red"></i>
+                                                    Generar Comprobante Fiscal
+                                                </a>
+                                            </li>
+
+                                            <li ng-if="!(item.pathFactura==null || item.pathFactura=='')">
+                                                <a href="javascript:void(0)" ng-click="modeloFacturas.eliminarPdf(item)">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-times fa-stack-1x red"></i>
+                                                        <i class="fa fa-file-pdf-o fa-stack-2x blue"></i>
+                                                    </span>
+                                                    Eliminar PDF
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="/VentasEntregas/ObtenerRemitosDeFactura/?idFactura={{item.id}}" target="_blank">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-file-zip-o fa-stack-2x blue"></i>
+                                                    </span>
+                                                    Remitos asociados
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                        
+                                </td>
+
+                            </tr>
+                            
+                            <tr ng-if="item.mostrarCobros==true">
+                                <td colspan="10">
+                                    <table class="table table-striped table-bordered ">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Hoja de ruta</th>
+                                                <th>Monto</th>
+                                                <th>Forma de pago</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="cobro in item.cobros">
+                                                <td>{{cobro.fechaCobro.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                                <td> 
+                                                    <a href="/HojasDeRuta?hojaDeRutaId={{cobro.hojaDeRuta_id}}" target="_blank">
+                                                        {{cobro.hojaDeRuta_id}}
+                                                    </a>                                                 
+                                                </td>
+                                                <td>
+                                                    <a href="/VentasEntregas/ObtenerReciboDeCobroDeFactura?idCobroConsumo={{cobro.id}}" target="_blank">
+                                                        ${{cobro.montoCobro}}
+                                                    </a>
+                                                </td>
+                                                <td>{{cobro.formaDeCobro}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div id="ajustesFacturacionDelCliente" class="tab-pane fade">
+                    
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Fecha</th>
+                                <th>Comprobante</th>
+                                <th>Tipo</th>
+                                <th>Motivo</th>
+                                <th>Descripción</th>
+                                <th>Monto</th>
+                                
+                                <th>CAE</th>
+                                <th>Afip</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr ng-repeat="item in modeloFacturas.ajustes">
+                                <td>{{item.id}}</td>
+                                <td>{{item.fechaCreacion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                <td>{{item.numeroComprobanteAjusteAfip}}</td>
+                                <td>{{item.tipoAjuste}}</td>
+                                <td>{{item.motivoAjuste}}</td>
+                                <td>{{item.textoEnMovimiento}}</td>
+                                <td>${{item.totalAjuste}}</td>
+                                <td>{{item.caeComprobanteAjuste}}</td>
+                                
+                                <td>{{item.observacionesAjuste}}</td>
+                                <td>
+
+                                    <div class="btn-group">
+                                        <button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">
+                                            Opciones
+                                            <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+                                            <li ng-if="item.pathArchivo!=null && item.pathArchivo!=''">
+                                                <a href="/Facturas/{{item.pathArchivo}}" target="_blank" class="btn btn-xs btn-warning">
+                                                    <i class="ace-icon fa fa-download bigger-120"></i> Orig
+                                                </a>
+                                            </li>
+
+                                            <li ng-if="item.pathArchivo!=null && item.pathArchivo!=''">
+                                                <a href="/Facturas/{{item.pathArchivoDuplicado}}" target="_blank" class="btn btn-xs btn-inverse">
+                                                    <i class="ace-icon fa fa-download bigger-120"></i> Dup
+                                                </a>
+                                            </li>
+                                            <li class="divider"></li>
+                                            <li ng-if="(item.caeComprobanteAjuste==null || item.caeComprobanteAjuste=='') && item.comprobanteAfip">
+                                                <a href="javascript:void(0)"
+                                                   ng-click="modeloFacturas.generarFacturaElectronicaAjuste(item)">
+                                                    <i class="ace-icon fa fa-file-pdf-o bigger-120 orange"></i>
+                                                    Generar FE
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+
+                                   
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!--<div id="resumenesDeCuenta" class="tab-pane fade">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Fecha</th>
+                                <th>Comprobante</th>
+                                <th>Tipo</th>
+                                <th>Motivo</th>
+                                <th>Descripción</th>
+                                <th>Monto</th>
+
+                                <th>CAE</th>
+                                <th>Afip</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in modeloFacturas.resumenesDeCuenta">
+                                <td>{{item.id}}</td>
+                                <td>{{item.fechaCreacion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                <td>{{item.numeroComprobante}}</td>
+                                <td>{{item.tipoAjuste}}</td>
+                                <td>{{item.motivoAjuste}}</td>
+                                <td>{{item.textoEnMovimiento}}</td>
+                                <td>${{item.totalAjuste}}</td>
+                                <td>{{item.cae}}</td>
+
+                                <td>{{item.observacionesAjuste}}</td>
+                                <td>
+                                    <div ng-if="item.pathArchivo!=null && item.pathArchivo!=''">
+                                        <a href="/Facturas/{{item.pathArchivo}}" target="_blank" class="btn btn-xs btn-warning">
+                                            <i class="ace-icon fa fa-download bigger-120"></i> Orig
+                                        </a>
+                                        <a href="/Facturas/{{item.pathArchivoDuplicado}}" target="_blank" class="btn btn-xs btn-inverse">
+                                            <i class="ace-icon fa fa-download bigger-120"></i> Dup
+                                        </a>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>-->
+            </div>
+        </div>
+
+    </div>
+</div>

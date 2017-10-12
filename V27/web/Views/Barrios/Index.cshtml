@@ -1,0 +1,65 @@
+﻿
+@model WaterService.FrontEnd.WebUI.Models.Pages.Barrio_Index
+
+@{
+    ViewBag.Title = "Buscar Barrios";
+}
+
+<script src="~/js/Views/Barrios_Index.js"></script>
+
+<h2>Buscar Barrios</h2>
+
+@using (Html.BeginForm("BuscarBarrios", "Barrios", FormMethod.Post, new { id = "form_buscar", name = "form_buscar", @class = "form-horizontal", role = "form" }))
+{                    
+    <fieldset>
+
+        <div class="col-sm-6">
+
+            @* nombreBarrio *@
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Barrio; Ciudad; Provincia</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        @Html.TextBoxFor(   x => x.BarrioModelo.nombreBarrio,
+                                            new { fieldType = "text", errorMessage = "Ingrese el nombre del barrio", 
+                                                  @class = " col-xs-10 col-sm-8 ", 
+                                                  placeholder = "nombre del barrio", type = "text" })
+                    </div>
+                    <div class="mensajeValidacion help-block"></div>
+                </div>
+            </div>
+
+            @*Ciudad*@
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Ciudad</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        @Html.DropDownListFor(  x => x.BarrioModelo.ciudad_id, 
+                                                new SelectList(Model.Ciudades, "id", "nombreCiudad"), 
+                                                new { @class = "input-group col-xs-10 col-sm-8" })
+                    </div>
+                    <div class="mensajeValidacion help-block"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </fieldset>                    
+                    
+    <div class="form-actions center">
+
+        <button type="button" id="btn_buscar" class="btn btn-sm btn-primary">
+            Buscar Barrio
+			<i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+        </button>
+
+        <a href="/Barrios/Create" id="btn_nuevo" class="btn btn-sm btn-success">
+            Nuevo Barrio
+		    <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+        </a>
+
+    </div>
+}
+
+<div id="div_resultadoBusqueda">
+</div>

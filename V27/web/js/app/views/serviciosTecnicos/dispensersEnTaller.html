@@ -1,0 +1,89 @@
+﻿<table class="table table-striped table-bordered"
+       st-table="dispensersDisplay"
+       st-safe-src="dispensers">
+    <thead>
+        <tr>
+            <th class="center" st-sort="numeroInterno">
+                Nro
+            </th>
+            <th st-sort="numeroSerie">
+                Serie
+            </th>
+            <th st-sort="tipoDispenser">
+                Tipo
+            </th>
+            <th st-sort="marcaDispenser">
+                Marca
+            </th>
+            <th st-sort="color">
+                Color
+            </th>
+            <th st-sort="estadoDispenser">
+                Estado
+            </th>
+            <th st-sort="ubicacionActual">
+                Ubicación
+            </th>
+            <th st-sort="condicionActual">
+                Condición
+            </th>
+            <th st-sort="fechaUltimoCambioDeEstado">
+                Ultimo estado
+            </th>
+            <th>
+                
+            </th>
+        </tr>
+    </thead>
+    <tbody >
+        <tr ng-repeat="dispenser in dispensersDisplay">
+
+            <td>  
+                <a href="javascript:void(0)" 
+                   ng-click="abrirFichaDeDispenser(dispenser.id)">
+                    {{dispenser.numeroInterno}}
+                </a>              
+                
+            </td>
+            <td>
+                {{dispenser.numeroSerie}}
+            </td>
+            <td>
+                {{dispenser.tipoDispenser}}
+            </td>
+            <td>
+                {{dispenser.marcaDispenser}}
+            </td>
+            <td>
+                {{dispenser.color}}
+            </td>
+            <td>
+                {{dispenser.estadoDispenser}}
+            </td>
+            <td>
+                {{dispenser.ubicacionActual}}
+            </td>
+            <td>
+                {{dispenser.condicionActual}}
+            </td>
+            <td>
+                {{dispenser.fechaUltimoCambioDeEstado | dformat | date : 'dd/MM/yyyy HH:mm'}}
+            </td>
+            <td>
+                
+                <a class="blue"
+                   ng-click="abrirFichaDeDispenser(dispenser.id)"
+                   href="javascript:void(0)" uib-tooltip="Ver ficha">
+                    <i class="ace-icon fa fa-list-alt bigger-130"></i>
+                </a>
+
+                <!--<a class="green" href="/Dispensers/Edit/{{dispenser.id}}" target="_blank">
+                    <i class="ace-icon fa fa-pencil bigger-130"></i>
+                </a>-->
+               
+            </td>
+
+        </tr>
+    </tbody>
+ 
+</table>

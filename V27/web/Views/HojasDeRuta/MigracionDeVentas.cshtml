@@ -1,0 +1,50 @@
+﻿<div ng-app="mainApp" ng-controller="migracionDeVentasController">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="widget-box">
+                <div class="widget-header">
+                    <h4 class="widget-title">Seleccionar archivos para procesar</h4>
+
+                    <div class="widget-toolbar">
+                        <a href="#" data-action="collapse">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+
+                        <a href="#" data-action="close">
+                            <i class="ace-icon fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <div class="form-group">
+                            <div class="col-xs-12">
+                                <input multiple="" name="attachment" type="file" file-model="migracion.attachment" />
+
+                                <!-- /section:custom/file-input -->
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="widget-toolbox padding-8 clearfix">
+
+                    <button class="btn  btn-success pull-right" ng-click="subirArchivos()" ng-enabled="!procesandoArchivos">
+                        <span class="bigger-110">Procesar archivos</span>
+                        <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <span>{{resultadoMigracion}}</span>
+
+</div>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/migracionDeVentasControllers.js"></script>

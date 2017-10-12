@@ -1,0 +1,73 @@
+﻿
+
+<div id="div-nuevo-mensaje">
+    <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <h3 class="header smaller lighter blue">
+                        <span style="margin-left: 20px">{{tituloAccion}}</span>
+                    </h3>
+                    <div class="form-horizontal col-sm-11">
+
+                        <div class="row">
+                            <div class="form-group">
+                                <label class="control-label col-sm-3 no-padding-right">Nombre:</label>
+                                <div class="col-sm-8">
+                                    <div class="clearfix">
+                                        <span class="block input-icon input-icon-right">
+                                            <input ng-model="lista.nombre" name="txt_nombre" type="text"
+                                                   class="col-xs-12 col-sm-12">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-3 no-padding-right">Descripción:</label>
+                                <div class="col-sm-8">
+                                    <div class="clearfix">
+                                        <textarea class="form-control limited" ng-model="lista.descripcion" maxlength="100"></textarea>
+                                    </div>
+                                    <div ng-show="lista.descripcion==null || lista.descripcion=='' "
+                                         class="help-block" style="color: #d16e6c">Ingrese una descripción...</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right"> Tipo: </label>
+                                <div class=" col-sm-8">
+                                    <div class="clearfix">
+                                        <select class="input-group col-xs-10 col-sm-8"
+                                                ng-model="lista.tipoDeLista_ids"
+                                                ng-options="item.valor_ids as item.valorTexto for item in tiposDeListasDePrecios"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row col-sm-offset-1 col-sm-11">
+                            <articulos-de-lista lista-id="lista.id" ng-if="esEdicion"></articulos-de-lista>
+                        </div>                        
+
+                        <div class="row">                            
+                            <div class="col-xs-4 col-sm-offset-2">
+                                <a class="btn btn-warning " type="button" href="javascript:void(0);" ng-click="cerrar()">
+                                    <i class="ace-icon fa fa-arrow-circle-left bigger-110"></i>
+                                    Volver
+                                </a>
+                            </div>
+                            <div class="col-xs-4">
+                                <button class="btn btn-primary pull-right" type="button" ng-click="guardarLista()">
+                                    <i class="ace-icon fa fa-save bigger-110"></i>
+                                    Guardar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,300 @@
+﻿<div ng-app="mainApp" ng-controller="repLibroIvaController">
+
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">
+                Reporte Libro IVA
+            </h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center ng-binding">Periodo fiscal</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <input type="text" ng-model="periodoFiscal" class="form-control search-query" placeholder="Periodo. Ej: 201607">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center ng-binding">Centro de facturación</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                   
+                                    <select ng-model="centroId" 
+                                                ng-options="centro.id as (
+                                                ( centro.id != 0 ) 
+                                                ? (centro.razonSocial + ' - Punto de Venta: ' + centro.puntoDeVenta) 
+                                                : (centro.razonSocial)
+                                                ) for centro in centros"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+            
+            <div class="col-sm-6">
+                
+                <div class="input-group">
+                    <input type="text" ng-model="libro" class="form-control" style="width:200px" placeholder="Nro de libro">
+                    <input type="text" ng-model="folio" class="form-control" style="width:200px" placeholder="Nro de folio">
+                    <span class="input-group-btn">
+                        <a type="button" class="btn btn-warning btn-sm"
+                           href="/Reportes/DescargarLibroIva?periodo={{periodoFiscal}}&libro={{libro}}&folio={{folio}}&centroDeFacturacionId={{centroId}}"
+                           target="_blank">
+                            Libro IVA
+                            <i class="ace-icon fa fa-download icon-on-right bigger-110"></i>
+                        </a>
+                       
+                    </span>
+                </div>
+
+            </div>
+
+            <span ng-show="comprobantes!=null">
+                {{comprobantes.length}} registros encontrados.
+            </span>
+
+            <a type="button" class="btn btn-success btn-sm"
+               href="/Reportes/ObtenerLibroIvaExcel?periodo={{periodoFiscal}}&centroDeFacturacionId={{centroId}}"
+               target="_blank">
+                Excel
+                <i class="ace-icon fa fa-download icon-on-right bigger-110"></i>
+            </a>
+            <button type="button" class="btn btn-info btn-sm"
+                    ng-click="descargarZipComprobantes()"
+               target="_blank">
+                zip
+                <i class="ace-icon fa fa-download icon-on-right bigger-110"></i>
+            </button>
+            <button type="button" ng-click="buscar()" class="btn btn-sm btn-primary pull-right">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar
+            </button>
+
+            <button type="button" class="btn btn-purple btn-sm pull-right" ng-click="expotarComprobantes()" style="    margin-right: 10px;">
+                Exportar Comprobantes
+                <i class="ace-icon fa fa-download icon-on-right bigger-110"></i>
+            </button>
+
+            @*<button type="button" ng-click="ExportarCSV()" class="btn btn-sm btn-success pull-right">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Export CSV
+            </button>*@
+        </div>
+    </div>
+    
+    <div class="row">
+        
+        <div class="col-xs-12">
+        
+            <uib-tabset>
+                
+                <uib-tab index="0" heading="Comprobantes">
+                    
+                    <table class="table table-striped table-bordered table-hover"
+                           st-table="displayComprobantes"
+                           st-safe-src="comprobantes">
+                        <thead>
+                            <tr>
+                                <th class="center" st-sort="fechaComprobante">
+                                    Fecha
+                                </th>
+                                <th st-sort="nroComprobante">
+                                    Comprobante
+                                </th>
+                                <th st-sort="razonSocial">
+                                    Razón Social
+                                </th>
+                                <th st-sort="documento">
+                                    documento
+                                </th>                               
+                                <th st-sort="condicionIva">
+                                    Cond IVA
+                                </th>
+                               
+                                <th st-sort="totalComprobante">
+                                    Total
+                                </th>                                
+                                <th st-sort="excento">
+                                    Excento
+                                </th>
+                                <th st-sort="montoGravado">
+                                    Gravado
+                                </th>
+                                <th st-sort="iva">
+                                    IVA
+                                </th>
+
+                            </tr>
+                            <tr>
+                                <th colspan="10">
+                                    <input st-search="" class="form-control" placeholder="Buscar en esta tabla" type="text" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="comp in displayComprobantes">
+                                <td>
+                                    {{comp.fechaComprobante.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                                </td>
+                                <td>
+                                    {{comp.nroComprobante}}
+                                </td>
+                                <td>
+                                    {{comp.razonSocial}}
+                                </td>
+                                <td>
+                                   {{comp.documento}}
+                                </td>
+                                <td>
+                                    {{comp.condicionIva}}
+                                </td>
+                                <td>
+                                    ${{comp.totalComprobante}}
+                                </td>
+                                <td>
+                                    ${{comp.excento}}
+                                </td>
+                                <td>
+                                    ${{comp.gravado}}
+                                </td>
+                                <td>
+                                    ${{comp.iva}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="9" class="text-center">
+                                    <div st-pagination="" st-items-by-page="30" st-displayed-pages="20"></div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </uib-tab>
+                <uib-tab index="1" heading="Totales">
+                    
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="widget-box transparent">
+                                <div class="widget-header widget-header-flat">
+                                    <h4 class="widget-title lighter">                                        
+                                        Totales por condiciones de IVA
+                                    </h4>
+
+                                    <div class="widget-toolbar">
+                                        <a href="#" data-action="collapse">
+                                            <i class="ace-icon fa fa-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="widget-body">
+                                    <div class="widget-main no-padding">
+                                        <table class="table table-bordered table-striped">
+                                            <thead class="thin-border-bottom">
+                                                <tr>
+                                                    <th>
+                                                        <i class="ace-icon fa fa-caret-right blue"></i>Condición IVA
+                                                    </th>
+                                                    <th>
+                                                        <i class="ace-icon fa fa-caret-right blue"></i>Gravado
+                                                    </th>
+                                                    <th>
+                                                        <i class="ace-icon fa fa-caret-right blue"></i>Excento
+                                                    </th>
+                                                    <th>
+                                                        <i class="ace-icon fa fa-caret-right blue"></i>Neto
+                                                    </th>
+
+                                                    <th class="hidden-480">
+                                                        <i class="ace-icon fa fa-caret-right blue"></i>IVA 
+                                                    </th>
+                                                    <th class="hidden-480">
+                                                        <i class="ace-icon fa fa-caret-right blue"></i>Total
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                                <tr ng-repeat="total in totales">
+                                                    <td>
+                                                        {{total.condicionIva}}
+                                                    </td>
+                                                    <td>
+                                                        <p>${{total.gravado}}</p>
+                                                        <b class="blue pull-right">{{total.porcentajeGravado}}%</b>
+                                                    </td>
+                                                    <td>
+                                                        <p>${{total.excento}}</p>
+                                                        <b class="blue pull-right">{{total.porcentajeExcento}}%</b>
+                                                    </td>
+                                                    <td>
+                                                        ${{total.neto}}
+                                                    </td>
+                                                    <td>
+                                                        ${{total.iva}}
+                                                    </td>
+                                                    <td>
+                                                        ${{total.total}}
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                            <tfoot>
+                                                <tr >
+                                                    <td>
+                                                        <strong>Total</strong>
+                                                    </td>
+                                                    <td>
+                                                        <p>${{total.gravado}}</p>
+                                                        <b class="blue pull-right">{{total.porcentajeGravado}}%</b>
+                                                    </td>
+                                                    <td>
+                                                        <p>${{total.excento}}</p>
+                                                        <b class="blue pull-right">{{total.porcentajeExcento}}%</b>
+                                                    </td>                                                    
+                                                    <td>
+                                                        ${{total.neto}}                                                         
+                                                    </td>
+                                                    <td>
+                                                        ${{total.iva}}
+                                                    </td>
+                                                    <td>
+                                                        ${{total.total}}
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div><!-- /.widget-main -->
+                                </div><!-- /.widget-body -->
+                            </div><!-- /.widget-box -->
+                        </div>
+
+                    </div>
+
+
+                </uib-tab>
+
+            </uib-tabset>    
+        </div><!-- /.span -->
+    </div>
+
+
+</div>
+
+<script src="~/js/app/controllers/reportes/appReportes.js"></script>
+<script src="~/js/app/controllers/reportes/directivesReportes.js"></script>
+<script src="~/js/app/controllers/reportes/repLibroIva.js"></script>
+<script src="~/js/app/app_directives.js"></script>

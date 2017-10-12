@@ -1,0 +1,22 @@
+﻿<ui-select ng-model="dirModel.valorSateliteSeleccionado"
+           theme="bootstrap"
+           ng-if="multiple!='true'">
+    <ui-select-match placeholder="Seleccione" allow-clear="{{allowClear}}">
+        {{$select.selected.valorTexto}}
+    </ui-select-match>
+    <ui-select-choices repeat="item in optionItems | propsFilter: {valorTexto: $select.search}">
+        <div ng-bind-html="item.valorTexto | highlight: $select.search"></div>
+    </ui-select-choices>
+</ui-select>
+
+<ui-select multiple
+           ng-model="dirModel.valorSateliteSeleccionado"
+           ng-if="multiple=='true'"
+           theme="bootstrap">
+    <ui-select-match placeholder="Seleccione" allow-clear="{{allowClear}}">
+        {{$item.valorTexto}}
+    </ui-select-match>
+    <ui-select-choices repeat="item in optionItems | propsFilter: {valorTexto: $select.search}">
+        <div ng-bind-html="item.valorTexto | highlight: $select.search"></div>
+    </ui-select-choices>
+</ui-select>

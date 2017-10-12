@@ -1,0 +1,21 @@
+﻿
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label class="col-sm-6 control-label no-padding-right">Reparto:</label>
+            <div class="col-sm-6">
+                <select class="form-control" required
+                        ng-model="pedido.reparto_id">
+                    <option ng-repeat="reparto in repartos"
+                            ng-value="{{reparto.id}}"
+                            ng-selected="{{pedido.reparto_id==reparto.id}}">
+                        {{reparto.nombreReparto}}
+                    </option>
+                </select>
+                <span if="detalleCliente!=null" class="help-inline col-xs-12 col-sm-7">
+                    <span class="middle">Sugerido: {{detalleCliente.reparto}}</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

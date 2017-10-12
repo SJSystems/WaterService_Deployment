@@ -1,0 +1,54 @@
+﻿<div>
+    <div class="col-xs-12 col-sm-12 widget-container-col">
+
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <h3 class="header smaller lighter blue">
+                        <span style="margin-left: 10px">Editar consumo</span>
+                    </h3>
+                    <div class="form-horizontal col-sm-9">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"> Artículo </label>
+                            <div class="col-sm-9">
+
+                                <h1>{{itemVendido.nombreArticulo}}</h1>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"> Cantidad </label>
+                            <div class="col-sm-9">
+                                <input ng-model="cantidad" class="validate form-control col-xs-10 col-sm-10 "  smart-float fieldtype="text" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right"> Precio </label>
+                            <div class="col-sm-9">
+                                <input ng-model="precioUnitario" class="validate form-control col-xs-10 col-sm-10 " smart-float fieldtype="text" type="text">
+                            </div>
+                        </div>
+
+                        <div class="space-10"></div>
+                        <div class="space-10"></div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="widget-toolbox padding-8 clearfix">
+                <button class="btn btn-sm btn-danger pull-left" ng-click="cerrar()">
+                    <i class="ace-icon fa fa-times"></i>
+                    <span class="bigger-110">Cancelar</span>
+                </button>
+
+                <button class="btn btn-sm btn-success pull-right" ng-click="guardarCambios()">
+                    <span class="bigger-110">Guardar cambios</span>
+
+                    <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,465 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Cliente_DatosFacturacion
+@{
+    ViewBag.Title = "Datos de Facturación";
+}
+
+@Html.Partial("_PasosCliente", Model.ClienteModelo)
+
+
+<div class="tabbable">
+	<ul class="nav nav-tabs padding-12 tab-color-blue background-blue" id="myTab4">
+		<li class="active">
+			<a data-toggle="tab" href="#home4">Datos de Facturación</a>
+		</li>
+
+		<li class="">
+			<a href="/Clientes/EditOrdenes/@Model.ClienteModelo.id">Órdenes de Compra</a>
+		</li>
+												
+	</ul>
+
+	<div class="tab-content">
+		<div id="home4" class="tab-pane active">
+			
+            <div class="widget-box">
+                <div class="widget-header">
+                    <h4 class="widget-title">Datos de Facturación: @Model.ClienteModelo.nombreCliente</h4>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main no-padding">
+
+                        @using (Html.BeginForm("DatosFacturacion", "Clientes", FormMethod.Post, new { id = "form_edit", name = "form_edit", @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.HiddenFor(x => x.ClienteModelo.id)
+                            @Html.HiddenFor(x => x.ClienteModelo.datosFacturacion_id)
+                            @Html.HiddenFor(x => x.DatosFacturacionModelo.id)
+
+                            <!-- <legend>Form</legend> -->
+                            <fieldset>
+
+                                <div class="col-sm-6">
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Razón social</label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                @Html.TextBoxFor(x => x.DatosFacturacionModelo.razonSocial, new { fieldType = "text", errorMessage = "Ingrese una razón social a facturar", @class = "validate col-xs-10 col-sm-8 ", placeholder = "", type = "text" })
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Condición de IVA</label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                @Html.DropDownListFor(x => x.DatosFacturacionModelo.condicionIva_ids, new SelectList(Model.CondicionesIVA, "valor_ids", "valorTexto"), new { @class = "input-group col-xs-10 col-sm-8" })
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group hide" >
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Tipo de Factura</label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                @Html.DropDownListFor(x => x.DatosFacturacionModelo.tipoFactura_ids, new SelectList(Model.TiposFacturas, "valor_ids", "valorTexto"), new { @class = "input-group col-xs-10 col-sm-8" })
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Centro de facturación</label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                @Html.DropDownListFor(x => x.DatosFacturacionModelo.centroFacturacion_id, new SelectList(Model.CentrosDeFacturacion, "id", "nombreCentroDeFacturacion"), new { @class = "input-group col-xs-10 col-sm-8" })
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Cobrador</label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                @Html.DropDownListFor(x => x.DatosFacturacionModelo.cobrador_id, new SelectList(Model.Cobradores, "usuario_id", "nombreApellido"), new { @class = "input-group col-xs-10 col-sm-8" })
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    @if (Model.ClienteModelo.tipoCliente_ids == 2)
+                                    {
+                                        @Html.HiddenFor(x => x.DatosFacturacionModelo.creditoPermitido)
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Límite de facturas</label>
+                                            <div class="col-xs-12 col-sm-8">
+                                                <div class="clearfix">
+                                                    @Html.TextBoxFor(x => x.DatosFacturacionModelo.limiteFacturas, new {fieldType = "text", @class = "validate col-xs-10 col-sm-3 decimalFormat", placeholder = "cant facturas", type = "number"})
+                                                </div>
+                                                <div class="mensajeValidacion help-block">Ingrese un valor</div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        @Html.HiddenFor(x => x.DatosFacturacionModelo.limiteFacturas)
+                                        <div class="form-group">
+                                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Crédito de familia $</label>
+                                            <div class="col-xs-12 col-sm-8">
+                                                <div class="clearfix">
+                                                    @Html.TextBoxFor(x => x.DatosFacturacionModelo.creditoPermitido, new { fieldType = "text", @class = " validate col-xs-10 col-sm-3 decimalFormat", placeholder = "ej: $150" })
+                                                </div>
+                                                <div class="mensajeValidacion help-block">Ingrese un valor</div>
+                                            </div>
+                                        </div>
+
+                                    }
+
+                                
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"></label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+                                                <label>
+                                                    @*<input class="ace" data-val="true" data-val-required="El campo validaCredito es obligatorio." id="ClienteModelo_validaCredito" name="ClienteModelo.validaCredito" type="checkbox" value="true">*@
+                                                    @Html.CheckBoxFor(x => x.DatosFacturacionModelo.validaCredito)
+                                                    <span class="lbl">Valida límite y/o crédito</span>
+                                                </label>
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    @if (Model.DiasDeFacturacion != null)
+                                    {   
+                                        <div class="col-sm-8">
+                                            <div class="widget-box transparent">
+                                                <div class="widget-header widget-header-flat">
+                                                    <h4 class="widget-title lighter">Ciclos de facturación
+                                                    </h4>
+
+                                                    <div class="widget-toolbar">
+                                                        <a id="btn_collapse" href="#" data-action="collapse">
+                                                            <i class="ace-icon fa fa-chevron-up"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                                <div class="widget-body" style="display: block;">
+                                                    <div class="widget-main no-padding">
+                                                        <table class="table table-bordered table-striped">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Día</th>
+		                                                            <th>Imputar abonos</th>
+		                                                            <th>Facturar abonos</th>
+		                                                            <th>Es inicio</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (var item in Model.DiasDeFacturacion)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@item.dia</td>
+                                                                        <td>@(item.imputarAbonos?"Si":"No")</td>
+                                                                        <td>@(item.facturarAbonos?"Si":"No")</td>
+                                                                        <td>@(item.esDiaInicio?"Si":"No")</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <!-- /.widget-main -->
+                                                </div>
+                                                <!-- /.widget-body -->
+                                            </div>
+                                            <!-- /.widget-box -->
+                                        </div>                                 
+                                    }
+
+
+                                </div>
+
+                                <div class="col-sm-6">
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Domicilio Fiscal</label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                @Html.TextBoxFor(x => x.DatosFacturacionModelo.domicioFiscal, new { fieldType = "text", errorMessage = "Ingrese el domicilio fiscal", @class = "  validate col-xs-10 col-sm-8 ", placeholder = "", type = "text" })
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">CUIT</label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                @Html.TextBoxFor(x => x.DatosFacturacionModelo.cuit, new { fieldType = "text", errorMessage = "Ingrese número de CUIT", @class = "validate col-xs-10 col-sm-8 ", placeholder = "", type = "text" })
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Ingresos Brutos</label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                @Html.TextBoxFor(x => x.DatosFacturacionModelo.ingresosBrutos, new { fieldType = "text", errorMessage = "Ingrese número de CUIT", @class = "validate col-xs-10 col-sm-8 ", placeholder = "", type = "text" })
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">DNI persona</label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                @Html.TextBoxFor(x => x.DatosFacturacionModelo.dniPersona, new { fieldType = "text", errorMessage = "Ingrese número de DNI", @class = "validate col-xs-10 col-sm-8 ", placeholder = "", type = "text" })
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Condicion de venta</label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                @Html.DropDownListFor(x => x.DatosFacturacionModelo.formaDeCobro_ids, new SelectList(Model.CondicionesDeVenta, "valor_ids", "valorTexto"), new { @class = "input-group col-xs-10 col-sm-8" })
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right"></label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                <label>
+                                                    @Html.CheckBoxFor(x => x.DatosFacturacionModelo.compensa)
+                                                    <span class="lbl">Compensa</span>
+                                                </label>
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right"></label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                <label>
+                                                    @Html.CheckBoxFor(x => x.DatosFacturacionModelo.facturacionAutomatica)
+                                                    <span class="lbl">Generación de factura automática</span>
+                                                </label>
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right"></label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                <label>
+                                                    @Html.CheckBoxFor(x => x.DatosFacturacionModelo.validarOrdenesDeCompra)
+                                                    <span class="lbl">Validar órdenes de compra en facturación</span>
+                                                </label>
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group hide">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right"></label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                <label>
+                                                    @Html.CheckBoxFor(x => x.DatosFacturacionModelo.facturarAbonoEnInicioCiclo)
+                                                    <span class="lbl">Facturar Abono al imputar</span>
+                                                </label>
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right"></label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                <label>
+                                                    @Html.CheckBoxFor(x => x.DatosFacturacionModelo.facturacionAutomatica)
+
+                                                    <span class="lbl">Requiere recibo</span>
+                                                </label>
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right"></label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                <label>
+                                                    @Html.CheckBoxFor(x => x.DatosFacturacionModelo.modificacionMasivaDePrecios)
+
+                                                    <span class="lbl">Modificación masiva de precios</span>
+                                                </label>
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right"></label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                <label>
+                                                    @Html.CheckBoxFor(x => x.DatosFacturacionModelo.conRemito)
+
+                                                    <span class="lbl">Requiere remito para la entrega</span>
+                                                </label>
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right"></label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                <label>
+                                                    @Html.CheckBoxFor(x => x.DatosFacturacionModelo.generarResumenDeCuenta)
+
+                                                    <span class="lbl">Requiere resumen de cuenta</span>
+                                                </label>
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Calificación crediticia</label>
+                                        <div class="col-xs-12 col-sm-9">
+                                            <div class="clearfix">
+                                                @Html.DropDownListFor(x => x.DatosFacturacionModelo.calificacionCrediticia_ids, new SelectList(Model.CalificacionesCrediticias, "valor_ids", "valorTexto"), new { @class = "input-group col-xs-10 col-sm-8" })
+                                            </div>
+                                            <div class="mensajeValidacion help-block"></div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-xs-12 col-sm-4 no-padding-right"></label>
+                                        <div class="col-xs-12 col-sm-8">
+                                            <div class="clearfix">
+
+                                                @if (Model.ClienteModelo.datosFacturacion_id.HasValue)
+                                                {
+                                                    <button class="btn btn-white btn-default btn-round"  type="button"  onclick="AbrirArchivos('DATOSFACTURACION_CLIENTE', @Model.ClienteModelo.datosFacturacion_id.Value); return false;">
+                                                        <i class="ace-icon fa fa-file-text-o  red2"></i>
+                                                        Archivos
+                                                    </button>
+                                        
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </fieldset>                    
+                    
+                            <div class="form-actions center">
+                                <button type="button" id="btn_facturacion" class="btn btn-sm btn-success">
+                                    Guardar datos de facturación
+							<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                                </button>
+
+                                @if (Model.ClienteModelo.datosFacturacion_id.HasValue)
+                                {                                        
+                                        
+                                    <button type="button" class="btn btn-white btn-warning btn-bold" onclick="Modelo.AbrirDialogoCiclosFacturacion();">
+                                        <i class="ace-icon fa fa-refresh bigger-120 orange"></i>
+                                        Ciclos de Facturación
+                                    </button>
+                                }
+
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            
+		    <div id="dialog_diasFacturacion" title="Días de facturación">
+             
+		        <div  ng-app="app_FactracionClientes" ng-controller="diasFacturacionCtrl" >
+                    
+		            <div class="alert alert-danger" ng-show="mensajeError!=null && mensajeError!=''">
+		                <strong>
+		                    <i class="ace-icon fa fa-times"></i>
+		                    Error: 
+		                </strong>
+		                {{mensajeError}}
+		                <br>
+		            </div>
+                        
+		            <table class="table table-striped table-bordered table-hover">
+		                <thead>
+		                    <tr>
+		                        <th>Día</th>
+		                        <th>Imputar abonos</th>
+		                        <th>Facturar abonos</th>
+		                        <th>Es inicio</th>
+		                        <th></th>                        
+		                    </tr>
+		                </thead>
+		                <tbody >
+
+		                    <tr  ng-repeat="ciclo in diasFacturacion">
+                
+		                        <td> <input class="text-box single-line decimalFormat" type="number" ng-model="ciclo.dia"></td>
+		                        <td> <input class="check-box" type="checkbox"  ng-show="ciclo.esDiaInicio" ng-model="ciclo.imputarAbonos"/></td>
+		                        <td> <input class="check-box" type="checkbox" ng-show="ciclo.esDiaInicio" ng-model="ciclo.facturarAbonos"/></td>
+		                        <td> <input class="check-box" type="checkbox" ng-model="ciclo.esDiaInicio"/></td>
+		                        <td>
+		                            <button type="button" class="red" ng-click="eliminarDiaFacturacion($index)">
+		                                <i class="ace-icon fa fa-trash-o bigger-130"></i>
+		                            </button>
+		                        </td>
+		                    </tr>
+
+		                </tbody>
+		            </table>  
+    
+		            <button class="btn btn-white btn-default btn-round" type="button" ng-click="AgregarDiaFacturacion()" >
+		                <i class="ace-icon fa fa-plus red2"></i>
+		                Agregar ciclo
+		            </button>
+    
+		            <div class="form-actions center">
+
+		                <button class="btn btn-white btn-info btn-bold" ng-click="guardarDiasFacturacion()" type="button">
+		                    <i class="ace-icon fa fa-floppy-o bigger-120 blue"></i>
+		                    Guardar cambios
+		                </button>
+
+		            </div>
+
+		        </div>
+
+		    </div>
+
+		</div>
+												
+	</div>
+</div>
+
+@Html.HiddenFor(x=>x.DatosFacturacionModelo.id)
+
+<script src="~/js/Views/Clientes_DatosDeFacturacion.js"></script>
+<script src="~/js/app/controllers/datosFacturacionControllers.js"></script>
+<script src="~/js/app/app_FactracionClientes.js"></script>

@@ -1,0 +1,31 @@
+﻿@model WaterService.Common.Entities.DTOs.VIEW_ClientesXRepartos_DTO
+
+@{
+    var valorBuscar = "(" + Model.cliente_id + ") " + Model.domicilioCompleto + " " + Model.nombreCliente + " [" + Convert.ToInt32(Model.orden) + "]";
+}
+
+<li class="dd-item item-blue2 row_cliente" cliente_id="@Model.cliente_id" ordenCliente="@Convert.ToInt32(Model.orden)">        
+    @Html.HiddenFor(x => x.cliente_id, new { @class="cliente_id"})
+    @Html.HiddenFor(x => x.dia_ids , new { @class="dia_ids"})
+    @Html.HiddenFor(x => x.orden, new { @class="orden"})
+    @Html.HiddenFor(x => x.reparto_id, new { @class="reparto_id"})
+    @Html.HiddenFor(x => x.haCambiado, new { @class="haCambiado"})
+    <input type="hidden" class="valorBuscar" cliente_id="@Model.cliente_id" value="@valorBuscar" />
+
+    <div class="dd-handle registroCliente" id="registro_@Model.cliente_id">
+        
+        <strong></strong>
+            <h4>
+                <span class="hasTooltip" title="Orden">[@Convert.ToInt32(Model.orden)]</span>
+                <span class="hasTooltip" title="Cliente"> (@Model.cliente_id)</span> -  @Model.nombreCliente    
+                <a href="/Clientes/EditCliente/@Model.cliente_id" target="_blank" class="hasTooltip" title="Editar cliente">
+                      <i class="ace-icon fa fa-pencil-square-o  green"></i>
+                </a>
+            </h4>
+            <h5 class="text-warning bigger-110 orange hasTooltip" title="Domicilio">
+                <i class="ace-icon fa fa-home red " ></i>
+                @Model.domicilioCompleto -   @Model.tipoCliente 
+            </h5>
+
+    </div>
+</li>

@@ -1,0 +1,78 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.VentasEntregas_Index
+
+
+@using (Html.BeginForm("Index", "VentasEntregas", FormMethod.Post, new { id = "form_buscar", name = "form_buscar", @class = "form-horizontal", role = "form" }))
+{                    
+    <fieldset>        
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha desde</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                       
+                        <div class="input-group">
+                            @Html.TextBoxFor(x=>x.FechaDesde, new { errorMessage="Ingrese la fecha desde", fieldType="text", @class="validate form-control date-picker col-xs-10 col-sm-5", placeholder="dd/mm/yyyy"})
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div> 
+                    </div>                                
+                    <div class="mensajeValidacion help-block"></div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha hasta</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <div class="input-group">
+                            @Html.TextBoxFor(x=>x.FechaHasta, new { errorMessage="Ingrese la fecha hasta", fieldType="text", @class="validate form-control date-picker col-xs-10 col-sm-5", placeholder="dd/mm/yyyy"})
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div> 
+
+                    </div>                                
+                    <div class="mensajeValidacion help-block"></div>
+                </div>
+            </div>                         
+                        
+        </div>
+
+        <div class="col-sm-6">
+                                                  
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2 no-padding-right">Repartidor</label>
+                <div class="col-xs-12 col-sm-10">
+                    <div class="clearfix">
+                        @Html.DropDownListFor(x => x.Repartidor_id, new SelectList(Model.Repartidores, "usuario_id", "nombreApellido"), new { @class="input-group col-xs-10 col-sm-8"})
+                    </div>                                
+                    <div class="mensajeValidacion help-block"></div>
+                </div>
+            </div>                         
+                  
+        </div>
+                        
+    </fieldset>                    
+                    
+	<div class="form-actions center">
+
+		<button type="submit" id="btn_submit" class="btn btn-sm btn-primary">
+			Buscar Ventas
+			<i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+		</button>
+
+        <a href="/VentasEntregas/Create" class="btn btn-sm btn-success">
+            Nueva Venta
+		    <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+        </a>
+
+	</div>
+} 
+
+<div id="div_resultadoBusqueda">
+
+
+</div>
+
+<script src="~/js/Views/VentasEntregas_Index.js"></script>

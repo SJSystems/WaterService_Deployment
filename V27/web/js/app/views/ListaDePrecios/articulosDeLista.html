@@ -1,0 +1,140 @@
+﻿
+<div class="widget-box widget-color-blue3">
+    <!-- #section:custom/widget-box.options -->
+    <div class="widget-header">
+        <h5 class="widget-title bigger lighter">
+            <i class="ace-icon fa fa-list-alt"></i>
+            Articulos de lista
+        </h5>
+
+    </div>
+
+
+    <!-- /section:custom/widget-box.options -->
+    <div class="widget-body">
+        <div class="widget-main no-padding">
+
+            <div id="tabs" class="tabbable">
+                <ul id="myTab" class="nav nav-tabs tab-color-blue background-blue">
+                    <li class="active">
+                        <a href="#tabs-activos" data-toggle="tab">Activos</a>
+                    </li>
+                    <li class="">
+                        <a href="#tabs-inactivos" data-toggle="tab">Inactivos</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content clearfix">
+                    <div id="tabs-activos" class="tab-pane in active">
+
+                        <table class="table table-bordered ">
+                            <thead class="thin-border-bottom">
+                                <tr>
+
+                                    <div class="row">
+                                        <form name="formArticulos" class="form-horizontal">
+
+                                            <div class="col-sm-7">
+                                                <div class="form-group">
+                                                    <div class="col-sm-3">
+                                                        <label class="col-sm-2 control-label no-padding-right"> Articulo: </label>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <input class="form-control" type="text" ng-model="articuloNuevo.articuloSelected"
+                                                               uib-typeahead="  articulo as ( ' cod.: ' + articulo.codigoInterno + ' - ' + articulo.nombreArticulo ) for articulo in articulosParaElegir | filter:$viewValue " />
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <div class="col-sm-3">
+                                                        <label class="col-sm-2 control-label no-padding-right"> $: </label>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <input class="form-control" name="precio" ng-model="articuloNuevo.precio"
+                                                               type="number" ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01" required />
+
+                                                        <div ng-show="articuloNuevo.precio==null || articuloNuevo.precio=='' "
+                                                             class="help-block" style="color: #d16e6c">Ingrese precio...</div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <button type="button" class="btn btn-sm btn-success pull-right" ng-click="agregarArticuloLista()">
+                                                    <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+                                                    Agregar
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </tr>
+                                <tr>
+                                    <th>Articulo</th>
+                                    <th>Precio</th>
+                                    <th>Alta</th>
+                                    <th>UsuarioAlta</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody ng-repeat="articulo in articulosActivosDeLista" style="background-color: aliceblue; margin-bottom:10px">
+                                <tr>
+                                    <td>{{articulo.nombreDeArticulo}}</td>
+                                    <td>{{articulo.precio}}</td>
+                                    <td>{{articulo.fechaAlta.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                    <td>{{articulo.nombreApellidoAlta}}</td>
+
+                                    <td>
+                                        <!--<a href="javascript:;">
+                                            <i title="editar" class="ace-icon fa fa-pencil bigger-130 " ng-click=""></i>
+                                        </a>-->
+
+                                        <a href="javascript:;">
+                                            <i title="eliminar" class="ace-icon fa fa-trash-o bigger-130 red" ng-click="eliminar(articulo.id, false)"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div id="tabs-inactivos" class="tab-pane">
+
+                        <table class="table table-bordered ">
+                            <thead class="thin-border-bottom">
+                                <tr>
+                                    <th>Articulo</th>
+                                    <th>Precio</th>
+                                    <th>Alta</th>
+                                    <th>UsuarioAlta</th>
+                                    <th>Baja</th>
+                                    <th>UsuarioBaja</th>
+
+                                </tr>
+                            </thead>
+
+                            <tbody ng-repeat="articulo in articulosInactivosDeLista" style="background-color: aliceblue; margin-bottom:10px">
+                                <tr>
+                                    <td>{{articulo.nombreDeArticulo}}</td>
+                                    <td>{{articulo.precio}}</td>
+                                    <td>{{articulo.fechaAlta.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                    <td>{{articulo.nombreApellidoAlta}}</td>
+                                    <td>{{articulo.fechaBaja.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                                    <td>{{articulo.nombreApellidoBaja}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

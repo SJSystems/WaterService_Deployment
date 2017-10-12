@@ -1,0 +1,284 @@
+﻿@{
+    ViewBag.Title = "Liquidación de hoja de ruta";
+}
+<div ng-app="mainApp" ng-controller="hojasDeRutaLiquidacionCtrl">
+ 
+    <div class="widget-body">
+        <div class="widget-main">
+            <!-- #section:plugins/fuelux.wizard -->
+            <div id="fuelux-wizard" data-target="#step-container">
+                <!-- #section:plugins/fuelux.wizard.steps -->
+                <ul class="wizard-steps">
+                    
+                    <li data-target="#step1" class="active">
+                        <span class="step">1</span>
+                        <span class="title">Cobros y efectivo</span>
+                    </li>
+
+                    <li data-target="#step2">
+                        <span class="step">2</span>
+                        <span class="title">Artículos y envases</span>
+                    </li>
+
+                    <li data-target="#step3">
+                        <span class="step">3</span>
+                        <span class="title">Pedidos</span>
+                    </li>
+
+                    <li data-target="#step4">
+                        <span class="step">4</span>
+                        <span class="title">Ausentes y no atendidos</span>
+                    </li>
+                    
+                    <li data-target="#step5">
+                        <span class="step">5</span>
+                        <span class="title">Préstamos y devoluciones</span>
+                    </li>
+                    <li data-target="#step6">
+                        <span class="step">6</span>
+                        <span class="title">Dispensers</span>
+                    </li>
+
+                </ul>
+
+                <!-- /section:plugins/fuelux.wizard.steps -->
+            </div>
+        
+            <hr />
+            <!-- #section:plugins/fuelux.wizard.container -->
+            <div class="step-content pos-rel" id="step-container">
+                
+                <div class="step-pane active" id="step1" ng-include="'/js/app/views/hojasDeRuta/liquidacion_step1.html'">
+                </div>
+
+                <div class="step-pane" id="step2" ng-include="'/js/app/views/hojasDeRuta/liquidacion_step2.html'">
+                </div>
+
+                <div class="step-pane" id="step3" ng-include="'/js/app/views/hojasDeRuta/liquidacion_step3.html'">
+                </div>
+
+                <div class="step-pane" id="step4" ng-include="'/js/app/views/hojasDeRuta/liquidacion_step4.html'">
+                </div>
+                
+                <div class="step-pane" id="step5" ng-include="'/js/app/views/hojasDeRuta/liquidacion_step5.html'">
+                </div>
+
+                <div class="step-pane" id="step6" ng-include="'/js/app/views/hojasDeRuta/liquidacion_step6.html'">
+                </div>
+                
+            </div>
+
+            <!-- /section:plugins/fuelux.wizard.container -->
+            <hr />
+
+            <div class="wizard-actions">
+                <!-- #section:plugins/fuelux.wizard.buttons -->
+                <button class="btn btn-prev">
+                    <i class="ace-icon fa fa-arrow-left"></i>
+                    Anterior
+                </button>
+
+                <button class="btn btn-success btn-next" data-last="Confirmar liquidación">
+                    Siguiente
+                    <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                </button>
+
+                <!-- /section:plugins/fuelux.wizard.buttons -->
+            </div>
+
+
+            <!-- /section:plugins/fuelux.wizard -->
+        </div><!-- /.widget-main -->
+    </div><!-- /.widget-body -->
+    
+    <div id="dialog_cheques" title="Cheques recibidos">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Cod</th>
+                    <th>N°</th>
+                    <th>Banco</th>
+                    <th>Cliente</th>
+                    <th>Importe</th>
+                    <th>Imputado</th>
+                    <th>Disponible</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cheque in cierreLiquidacion.ChequesRegistrados">
+                    <td>{{cheque.id}}</td>
+                    <td>{{cheque.nroCheque}}</td>
+                    <td>{{cheque.banco}}</td>
+                    <td>{{cheque.nombreCliente}}</td>
+                    <td>${{cheque.importe}}</td>
+                    <td>${{(cheque.montoUtilizadoTemporal==null?0:cheque.montoUtilizadoTemporal)}}</td>
+                    <td>
+                        ${{(cheque.importe - (cheque.montoUtilizadoTemporal==null?0:cheque.montoUtilizadoTemporal))}}
+                        <i ng-show="(cheque.importe - (cheque.montoUtilizadoTemporal==null?0:cheque.montoUtilizadoTemporal)) != 0"
+                           class="ace-icon fa fa-exclamation-triangle bigger-130 orange" 
+                           uib-tooltip="No debe haber disponible"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="dialog_depositos" title="Depositos recibidos">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Cod</th>
+                    <th>Comprobante</th>
+                    <th>Banco</th>
+                    <th>Cliente</th>
+                    <th>Importe</th>
+                    <th>Imputado</th>
+                    <th>Disponible</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="deposito in cierreLiquidacion.DepositosRegistrados">
+                    <td>{{deposito.id}}</td>
+                    <td>{{deposito.nroDeComprobante}}</td>
+                    <td>{{deposito.banco}}</td>
+                    <td>{{deposito.nombreCliente}}</td>
+                    <td>${{deposito.importe}}</td>
+                    <td>${{(deposito.montoUtilizadoTemporal==null?0:deposito.montoUtilizadoTemporal)}}</td>
+                    <td>
+                        ${{(deposito.importe - (deposito.montoUtilizadoTemporal==null?0:deposito.montoUtilizadoTemporal))}}
+                        <i ng-show="(deposito.importe - (deposito.montoUtilizadoTemporal==null?0:deposito.montoUtilizadoTemporal)) != 0" 
+                           class="ace-icon fa fa-exclamation-triangle bigger-130 orange" 
+                           uib-tooltip="No debe haber disponible"></i>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div id="dialog_totalRetenciones" title="Tipos de retenciones">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Retención</th>
+                    <th>Importe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>IVA</td>
+                    <td>${{cierreLiquidacion.Retenciones.retencionIVA}}</td>
+                </tr>
+                <tr>
+                    <td>IIBB</td>
+                    <td>${{cierreLiquidacion.Retenciones.retencionIngresosBrutos}}</td>
+                </tr>
+                <tr>
+                    <td>SUSS</td>
+                    <td>${{cierreLiquidacion.Retenciones.retencionSUSS}}</td>
+                </tr>
+                <tr>
+                    <td>Ganancias</td>
+                    <td>${{cierreLiquidacion.Retenciones.retencionGanancias}}</td>
+                </tr>
+                <tr>
+                    <td>Com e Ind</td>
+                    <td>${{cierreLiquidacion.Retenciones.retencionComInd}}</td>
+                </tr>
+                <tr>
+                    <td>Otras</td>
+                    <td>${{cierreLiquidacion.Retenciones.retencionOtras}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div id="dialog_declaracionEfectivo" title="Declaración de efectivo">
+        
+        <div ng-hide="editandoDeclaracionEfectivo">
+            <button class="btn btn-sm btn-warning" ng-click="editandoDeclaracionEfectivo=!editandoDeclaracionEfectivo">
+                <i class="ace-icon fa fa-pencil bigger-110"></i>
+                <span class="bigger-110 no-text-shadow">Editar</span>
+            </button>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Valor</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="declaracion in cierreLiquidacion.DeclaracionesEfectivo">
+                        <td>${{declaracion.valorNominal}}</td>
+                        <td>{{declaracion.cantidad}}</td>
+                        <td>${{declaracion.subtotal}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div ng-show="editandoDeclaracionEfectivo">
+            
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Valor</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="billete in billetes">
+                        <td>${{billete.valorNominal}}</td>
+                        <td><input ng-model="billete.cantidad" /></td>
+                        <td>${{(billete.valorNominal * 1) * billete.cantidad}}</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td>${{totalBilletes()}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <button class="btn btn-sm btn-success" ng-click="confirmarDeclaracionEfectivo()">
+                <i class="ace-icon fa fa-save bigger-110"></i>
+                <span class="bigger-110 no-text-shadow">Confirmar</span>
+            </button>
+
+        </div>
+
+    </div>
+    
+    <div id="dialog_gastos" title="Gastos del reparto">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Descripción</th>
+                    <th>Importe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="gasto in cierreLiquidacion.Gastos">
+                    <td>{{gasto.tipoGasto}}</td>
+                    <td>{{gasto.descripcionGasto}}</td>
+                    <td>${{gasto.monto}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+
+
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/hojasDeRutaControllers.js"></script>
+<script src="~/js/app/controllers/incidentesControllers.js"></script>
+<script src="~/assets/js/fuelux/fuelux.wizard.min.js"></script>
+
+<script src="~/assets/js/flot/jquery.flot.min.js"></script>
+<script src="~/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="~/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="~/assets/js/jquery.easypiechart.min.js"></script>
+<script src="~/assets/js/jquery.sparkline.min.js"></script>

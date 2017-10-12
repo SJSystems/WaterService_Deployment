@@ -1,0 +1,199 @@
+﻿<div class="row" id="nuevo-incidente">
+    <div class="col-sm-12">
+        
+        <div class="page-header">
+            <h1>
+                {{accion}}
+            </h1>
+        </div>
+
+        <div class="form-horizontal">
+
+            <div class="form-group">
+
+                <label class="col-sm-5 control-label no-padding-right">
+                    <button ng-class="{disabled:onEditar}" class="btn btn-sm btn-white btn-default btn-round"
+                            ng-click="abrirDialogoNuevoCliente()">
+                        <i class="ace-icon fa fa-plus blue"></i>
+                    </button>
+                    <button ng-class="{disabled:onEditar}" class="btn btn-sm btn-white btn-default btn-round" ng-click="abrirSeleccionarCliente('incidentesNuevoCliente')">
+                        <i class="ace-icon fa fa-check green"></i>
+                    </button>
+
+                </label>
+
+                <div class="col-sm-7">
+                    <strong ng-show="clienteSelected==null">--Seleccione un cliente--</strong>
+                    <div ng-show="clienteSelected!=null" style="margin-top: 7px;">
+                        <strong>{{clienteSelected.nombreCliente}}</strong>
+                        <a href="javascript:return false;"
+                           ng-click="mostrarDetallesDeCliente=!mostrarDetallesDeCliente"
+                           class="tooltip-info" title="Información del cliente"
+                           data-original-title="Información del cliente">
+                            <i class="middle ace-icon fa fa-info-circle fa-2x blue"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="mostrarDetallesDeCliente"
+                 ng-include="'/js/app/views/shared/template_datosResumenCliente.html'"></div>
+
+            <div class="col-sm-12">
+                <h4 class="header blue">Datos del incidente</h4>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Tipo de incidente</label>
+                <div class="col-sm-9">
+                    <select ng-show="onEditar==false"
+                            ng-model="tiposIncidentesSelected"
+                            ng-options="tipo.valorTexto for tipo in tiposIncidentes"
+                            ng-change="onSeleccionarFechaDeVisita()"
+                            class="input-group col-xs-10 col-sm-8"></select>
+                    <span ng-show="onEditar==true" class="input-group col-xs-10 col-sm-8">{{tiposIncidentesSelected.valorTexto}}</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Clasificación</label>
+                <div class="col-sm-9">
+                    <select ng-show="onEditar==false" ng-model="subTipoIncidentesSelected" ng-options="subtipo.valorTexto for subtipo in subtiposIncidentes"
+                            class="input-group col-xs-10 col-sm-8"></select>
+                    <span ng-show="onEditar==true" class="input-group col-xs-10 col-sm-8">{{subTipoIncidentesSelected.valorTexto}}</span>
+
+                </div>
+            </div>
+
+            <div class="form-group" ng-hide="tiposIncidentesSelected.valor_ids==tiposDeIncidentes.SERVICIO_TECNICO">
+                <label class="col-sm-3 control-label no-padding-right">Descripción</label>
+                <div class="col-sm-9">
+                    <div class="clearfix">
+                        <textarea class="form-control limited" ng-model="incidente.descripcion" maxlength="3000"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Severidad</label>
+                <div class="col-sm-9">
+                    <select ng-show="onEditar==false" ng-model="severidadesSelected" ng-options="tipo.valorTexto for tipo in severidades"
+                            class="input-group col-xs-10 col-sm-8"></select>
+                    <span ng-show="onEditar==true" class="input-group col-xs-10 col-sm-8">{{severidadesSelected.valorTexto}}</span>
+
+                </div>
+            </div>
+
+            <div class="form-group"  ng-show="onEditar==false">
+                <label class="col-sm-3 control-label no-padding-right"> Responsable</label>
+                <div class="col-sm-9">
+                    <div class="radio">
+                        <label>
+                            <input name="form-field-radio" type="radio" ng-value="1" ng-model="responsableId" class="ace">
+                            <span class="lbl"> 
+                                <i class="ace-icon fa fa-user blue"></i> Usuario 
+                            </span>
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input name="form-field-radio" type="radio" ng-value="2" ng-model="responsableId" class="ace">
+                            <span class="lbl"> 
+                                <i class="ace-icon fa fa-users green"></i> Grupo 
+                            </span>
+                        </label>
+                    </div>
+
+                    <div style="margin-top: 10px;">
+                        <select ng-show="onEditar==false && responsableId==1" ng-model="usuarioResponsableSelected" ng-options="u.nombreApellido for u in usuarios"
+                                class="input-group col-xs-10 col-sm-8"></select>
+
+                        <select ng-show="onEditar==false && responsableId==2" ng-model="grupoResponsableSelected" ng-options="grupo.valorTexto for grupo in grupos"
+                                class="input-group col-xs-10 col-sm-8"></select>
+
+                        <span ng-show="onEditar==true" class="input-group col-xs-10 col-sm-8">
+                            {{usuarioResponsableSelected.nombreApellido}}
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right"> Fecha de Cierre Estimada</label>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <input style="position: relative; z-index: 999;" class="validate form-control date-picker col-sm-8"
+                               ng-model="incidente.fechaCierreEstimado"
+                               ng-change="onSeleccionarFechaDeVisita()"
+                               fieldtype="text" id="fecha" name="fecha"
+                               placeholder="dd/mm/yyyy" type="text">
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Estado</label>
+                <div class="col-sm-9">
+                    <select ng-model="estadosIncidentesSelected" ng-options="tipo.valorTexto for tipo in estadosIncidentes"
+                            class="input-group col-xs-10 col-sm-8"></select>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <div class="form-horizontal">
+            <div class="col-sm-12">
+                <h4 ng-if="tiposIncidentesSelected.valor_ids==tiposDeIncidentes.PEDIDO || tiposIncidentesSelected.valor_ids==tiposDeIncidentes.SERVICIO_TECNICO"
+                    class="header blue">
+                    {{tiposIncidentesSelected.valorTexto}}
+                </h4>
+            </div>
+
+            <!--Pedido-->
+            <div ng-show="tiposIncidentesSelected.valor_ids==tiposDeIncidentes.PEDIDO"
+                 ng-include="'/js/app/views/incidentes/pedido.html'"
+                 class="form-horizontal col-sm-9">
+            </div>
+
+            <!--Servicio técnico-->
+            <div ng-show="tiposIncidentesSelected.valor_ids==tiposDeIncidentes.SERVICIO_TECNICO"
+                 ng-include="'/js/app/views/incidentes/servicioTecnico.html'"
+                 class="form-horizontal col-sm-9">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="clearfix form-actions">
+                    <div class="row">
+                        <div class="col-md-3">
+                            
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-info" type="button" ng-click="Save()">
+                                Guardar
+                                <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                            </button>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-danger" type="button" ng-click="cerrarPantalla()">
+                                <i class="ace-icon fa fa-times bigger-110"></i>
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+
+    </div>
+
+    <seleccionar-clientes codigo="incidentesNuevoCliente" />
+</div>

@@ -1,0 +1,191 @@
+﻿<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable" style="min-height: 109px;"
+     ng-app="mainApp" ng-controller="solicitudesDeStockController">
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">Solicitudes de stock de clientes</h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                
+                <div class="row">
+
+                    <div class="col-sm-4">
+
+                        <label>Periodo de creación</label>
+                        <div class="row">
+
+                            <div class="col-xs-8 col-sm-12">
+                                <div class="input-daterange input-group">
+                                    <input type="text" class=" form-control" ng-model="desde" name="start" />
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-exchange"></i>
+                                    </span>
+                                    <input type="text" class=" form-control" ng-model="hasta" name="end" />
+                                </div>
+
+                                <!-- /section:plugins/date-time.datepicker -->
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <div class="col-sm-4">
+
+                        <label>Relevamientos</label>
+                        <div class="row">
+
+                            <div class="col-xs-8 col-sm-12">
+                                <select class="col-sm-8" ng-model="idVerRelevamiento">
+                                    <option value="0">-- Ver Todo --</option>
+                                    <option value="1">Ver relevamientos</option>
+                                    <option value="2">Ver no relevamientos</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                
+                <div class="row">
+                    
+                    <div class="col-sm-4">
+
+                        <label>Estado</label>
+                        <div class="row">
+
+                            <div class="col-xs-8 col-sm-12">
+                                <select class="col-sm-8" ng-model="estadoId"
+                                        ng-options="estado.valor_ids as estado.valorTexto for estado in estados"></select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-4">
+
+                        <label>Reparto</label>
+                        <div class="row">
+
+                            <div class="col-xs-8 col-sm-12">
+                                <select class="col-sm-8" ng-model="repartoId"
+                                        ng-options="reparto.id as reparto.nombreReparto for reparto in repartos"></select>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    
+                    <div class="col-sm-4">
+
+                        <label>Tipo</label>
+                        <div class="row">
+                            
+                            <select class="col-sm-8" ng-model="tipoSolicitudId"
+                                    ng-options="tipo.valor_ids as tipo.valorTexto for tipo in tiposDeSolicitud"></select>
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+            
+            <div class="pull-right">
+                <opciones-de-solicitud-de-stock obtener-solicitudes-seleccionadas="obtenerSolicitudesSeleccionadas"
+                                                on-confirmar="onConfirmarSolicitud">
+                </opciones-de-solicitud-de-stock>
+            </div>
+
+            <button class="btn btn-primary pull-left" ng-click="buscar()">
+                <i class="ace-icon fa fa-search align-top bigger-125"></i>
+                Buscar
+            </button>
+
+        </div>
+    </div>
+
+    <div >
+
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        <label class="middle">
+                            <input class="ace" type="checkbox"
+                                   ng-model="todosSeleccionados"
+                                   ng-click="seleccionarTodos()">
+                            <span class="lbl"></span>
+                        </label>
+                        Id
+                    </th>
+                    <th>Fecha </th>
+                    <th>Reparto </th>
+                    <th>Cliente</th>
+                    <th>Envase</th>
+                    <th>Tipo </th>
+                    <th>Cantidad</th>
+                    <th>Relev</th>
+                    <th>Motivo</th>
+                    <th>Estado</th>
+                    <th>Creado</th>
+                    <th>Confirmado</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="item in solicitudes">
+                    <td>
+                        <label class="middle">
+                            <input class="ace" type="checkbox"
+                                   ng-model="item.seleccionado">
+                            <span class="lbl"></span>
+                        </label>
+                        {{item.id}}
+                    </td>
+                    <td>
+                        <span ng-show="item.hojaDeRuta_id==null">
+                            {{item.fecha.slice(6, -2)  |  date:'dd/MM/yyyy' }}
+                        </span>
+                        <a ng-hide="item.hojaDeRuta_id==null" href="/HojasDeRuta?hojaDeRutaId={{item.hojaDeRuta_id}}" target="_blank" >
+                            {{item.fecha.slice(6, -2)  |  date:'dd/MM/yyyy' }}
+                        </a>
+                    </td>
+                    <td>
+                        {{item.nombreReparto}}
+                    </td>
+                    <td>
+                        <a href="/Clientes/HistorialMovimientos/{{item.cliente_id}}#/div_movimientos_envases" target="_blank">
+                            {{item.nombreCliente }}
+                        </a>
+                    </td>
+                    <td>{{item.nombreArticulo }}</td>
+                    <td>{{item.tipoSolicitud }}</td>
+                    <td>{{item.cantidad }}</td>
+                    <td>{{item.esRelevamiento ? 'Si' :'No' }}</td>
+                    <td>{{item.motivoDeSolicitud }}</td>
+                    <td>{{item.estadoSolicitud }}</td>
+                    <td>{{item.usuarioRegistra }}</td>
+                    <td>{{item.usuarioAprueba }}</td>
+                    <td>
+                        <opciones-de-solicitud-de-stock solicitud="item"
+                                                        on-confirmar="onConfirmarSolicitud">
+                        </opciones-de-solicitud-de-stock>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+
+
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/envasesControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

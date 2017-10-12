@@ -1,0 +1,117 @@
+﻿
+<div class="widget-box ui-sortable-handle" ng-hide="soloLectura && (dispensers==null || dispensers.length==0)">
+
+    <div class="widget-header">
+        <h5 class="widget-title">Dispensers asociados {{soloDeCliente?' del cliente':' de fábrica'}}</h5>
+        <div class="widget-toolbar" ng-if="permitirEdicion()">
+            <div class="widget-menu open">
+                <a href="#" data-action="settings" data-toggle="dropdown">
+                    <i class="ace-icon fa fa-plus"></i>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-right dropdown-light-blue dropdown-caret dropdown-closer">
+
+                    <li>
+                        <a data-toggle="tab" href="javascript:void(0)" ng-click="agregarDispenser()">
+                            Agregar dispenser
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="widget-body" style="max-height:300px; overflow-y:auto">
+        <div class="widget-main">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Cod</th>
+                        <th>Nº Serie</th>
+                        <th>Marca</th>
+                        <th>Tipo</th>
+                        <th>Condición</th>
+                        
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="dispenser in dispensers">
+                    <tr>
+                        <td>
+                            <a href="javascript:void(0)" 
+                               ng-click="mostrarMantenimientos(dispenser, true)"
+                               uib-tooltip="Ver mantenimientos"
+                               ng-if="dispenser.mantenimientoAsociado && !dispenser.mantenimientoAsociado.mostrar">
+                                <i class="ace-icon fa fa-chevron-down"></i>
+                            </a>
+                            
+                            <a href="javascript:void(0)"
+                               ng-click="mostrarMantenimientos(dispenser, false)"
+                               uib-tooltip="Ocultar mantenimiento"
+                               ng-if="dispenser.mantenimientoAsociado && dispenser.mantenimientoAsociado.mostrar" >
+                                <i class="ace-icon fa fa-chevron-up"></i>
+                            </a>
+                            
+                            <a href="javascript:void(0)" uib-tooltip="Ver historial" ng-click="verHistorial(dispenser.id)">
+                                {{dispenser.numeroInterno}}
+                            </a>
+                        </td>
+                        <td>{{dispenser.numeroSerie}}</td>
+                        <td>{{dispenser.marcaDispenser}}</td>
+                        <td>{{dispenser.tipoDispenser}}</td>
+                        <td>{{dispenser.condicionActual}}</td>
+                        <td>
+                            <a ng-hide="!permitirEdicion() || dispenser.mantenimientoAsociado || soloLectura"
+                               ng-click="quitarDispenserAsociado(dispenser,$index)"
+                               uib-tooltip="Quitar dispenser asociado"
+                               href="javascript:void(0)">
+                                <i class="ace-icon fa fa-trash-o"></i>
+                            </a>
+                            <a ng-if="!dispenser.mantenimientoAsociado && !soloLectura && dispenser.dispensersAsociadosAServicioTecnico_id!=null"
+                               ng-click="agregarMantenimientoDispenserAsociado(dispenser)"
+                               uib-tooltip="Agregar mantenimiento"
+                               href="javascript:void(0)">
+                                <i class="ace-icon fa fa-wrench"></i>
+                            </a>
+
+                            <i class="ace-icon fa fa-exclamation-triangle text-danger" 
+                               uib-tooltip="No guardado"
+                               ng-show="dispenser.dispensersAsociadosAServicioTecnico_id==null"></i>
+                        </td>
+                    </tr>
+                    <tr ng-if="dispenser.mantenimientoAsociado && dispenser.mantenimientoAsociado.mostrar">
+                        <th colspan=8>Mantenimientos</th>
+                    </tr>
+                    <tr ng-if="dispenser.mantenimientoAsociado && dispenser.mantenimientoAsociado.mostrar">
+                        <td colspan=8>
+                            <div class="row">
+                                <div class="col-md-4"><strong>Codigo:</strong> {{dispenser.mantenimientoAsociado.id}}</div>
+                                <div class="col-md-4"><strong>fecha y Hora: </strong>{{dispenser.mantenimientoAsociado.fechaHora.slice(6, -2)  |  date:'dd/MM/yyyy'}}</div>
+                                <div class="col-md-4"><strong>Comentarios: </strong>{{dispenser.mantenimientoAsociado.comentarios}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4"><strong>Técnico:</strong> {{dispenser.mantenimientoAsociado.tecnico}}</div>
+                                <div class="col-md-4"><strong>Síntoma Real:</strong> {{dispenser.mantenimientoAsociado.sintomaReal}}</div>
+                                <div class="col-md-4"><strong>Acción principal: </strong>{{dispenser.mantenimientoAsociado.accionPrincipal}}</div>                                
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <strong>Trabajos:</strong> 
+                                    <ul class="list-unstyled spaced">
+
+                                        <li ng-repeat="detalle in dispenser.mantenimientoAsociado.detalles">
+                                            <i class="ace-icon fa {{detalle.tipoArticulo_ids==3?'fa-cogs':'fa-hand-paper-o'}} bigger-110 purple"></i>
+                                            {{detalle.nombreArticulo}} (x {{detalle.cantidad}}) [{{detalle.tipoArticulo}}]
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

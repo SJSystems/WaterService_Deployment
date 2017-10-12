@@ -1,0 +1,203 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.OrdenesDeCompra_Cliente_Create
+
+@{
+    Layout = null;
+}
+<br />
+
+@using (Html.BeginForm("EditFromCliente", "OrdenesDeCompra", FormMethod.Post, new { id = "form_create", name = "form_create", @class = "form-horizontal", role = "form" }))
+{
+    @Html.HiddenFor(x => x.Cliente_id);
+    @Html.HiddenFor(x => x.OrdenModel.id);
+    @Html.HiddenFor(x => x.OrdenModel.cliente_id);
+    @Html.HiddenFor(x => x.OrdenModel.eliminada);
+     
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Tipo Item: </label>
+        <div class="col-xs-12 col-sm-9">
+            <div class="clearfix">
+                @Html.DropDownListFor(x => x.OrdenModel.tipoItemOrdenDeCompra_ids,
+                                        new SelectList(Model.TipoItemOrden, "valor_ids", "valorTexto"),
+                                        new { @class = " input-group col-xs-10 col-sm-10",
+                                              @id = "cmb_TipoItems",
+                                              onchange = "Modelo.TipoItemOrden_OnChange()"})
+            </div>
+            <div class="mensajeValidacion help-block"></div>
+        </div>
+    </div>
+
+<!-- <legend>Form</legend> -->
+<fieldset>
+
+
+    <div class="form-group" id="div_abonos">
+        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Origen: </label>
+        <div class="col-xs-12 col-sm-9">
+
+            <div class="clearfix">
+                @Html.DropDownListFor(x => x.OrdenModel.articuloAbono_id, 
+                                        new SelectList(Model.ArticulosABONO, "id", "articulo"), 
+                                        new { @class = "  input-group col-xs-10 col-sm-10",
+                                              @id = "cmb_abonos"})
+            </div>
+            <div class="mensajeValidacion help-block"></div>
+        </div>
+    </div>
+
+    <div class="form-group" id="div_comodatos">
+        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Origen: </label>
+        <div class="col-xs-12 col-sm-9">
+
+            <div class="clearfix">
+                   @Html.DropDownListFor(x => x.OrdenModel.articuloComodato_id, 
+                                        new SelectList(Model.ArticulosCOMODATO, "id", "articulo"), 
+                                        new { @class = "  input-group col-xs-10 col-sm-3",
+                                              @id = "cmb_comodatos"})
+            </div>
+            <div class="mensajeValidacion help-block"></div>
+        </div>
+    </div>
+
+    <div class="form-group" id="div_articulos">
+        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Origen: </label>
+        <div class="col-xs-12 col-sm-9">
+
+            <div class="clearfix">
+                    @Html.DropDownListFor(x => x.OrdenModel.articulo_id, 
+                                        new SelectList(Model.Articulos, "id", "articulo"), 
+                                        new { @class = " chosen-select input-group col-xs-10 col-sm-3" ,
+                                              @id = "cmb_articulos"})
+            </div>
+            <div class="mensajeValidacion help-block"></div>
+        </div>
+    </div>
+      
+                
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Vigencia: </label>
+        <div class="col-xs-12 col-sm-9">
+            <div class="clearfix">
+                <label>
+                    @Html.CheckBoxFor(x => x.OrdenModel.vigenciaXCantidad,
+                                        new { @id = "chk_Cant",
+                                              onchange = "Modelo.VigenciaXCant_OnChange()" })
+                    <span class="lbl">Vigencia por cantidad</span>
+                </label>
+            </div>
+            <div class="mensajeValidacion help-block"></div>
+        </div>
+    </div>
+
+    <div class="form-group" id = "div_Cant">
+        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Cantidad Vigencia</label>
+        <div class="col-xs-12 col-sm-9">
+            <div class="clearfix" >
+                @Html.TextBoxFor(x => x.OrdenModel.cantidadVigencia,
+                                new
+                                {
+                                    fieldType = "text",
+                                    errorMessage = "Ingrese el sector de la empresa",
+                                    @class = "col-xs-10 col-sm-8 ",
+                                    placeholder = "",
+                                    type = "text",
+                                    @id = "txt_Cant"
+                                })
+            </div>
+            <div class="mensajeValidacion help-block"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Vigencia: </label>
+        <div class="col-xs-12 col-sm-9">
+            <div class="clearfix">
+                <label>
+                    @Html.CheckBoxFor(x => x.OrdenModel.vigenciaXFecha,
+                                        new { @id = "chk_Fecha",
+                                            onchange = "Modelo.VigenciaXFecha_OnChange()" })
+                    <span class="lbl">Vigencia por fecha</span>
+                </label>
+            </div>
+            <div class="mensajeValidacion help-block"></div>
+        </div>
+    </div>
+
+    <div class="form-group" id = "div_FechaDesde">
+        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Desde</label>
+        <div class="col-xs-12 col-sm-9">
+            <div class="clearfix">
+                @Html.TextBoxFor(x => x.OrdenModel.fechaVigenciaDesde,
+                                new
+                                {
+                                    fieldType = "text",
+                                    errorMessage = "Ingrese el sector de la empresa",
+                                    @class = "date-picker col-xs-10 col-sm-8 ",
+                                    placeholder = "dd/mm/yyyy",
+                                    @id = "txt_FechaDesde"
+                                })
+            </div>
+            <div class="mensajeValidacion help-block"></div>
+        </div>
+    </div>
+
+    <div class="form-group" id = "div_FechaHasta">
+        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Hasta</label>
+        <div class="col-xs-12 col-sm-9">
+            <div class="clearfix">
+                @Html.TextBoxFor(x => x.OrdenModel.fechaVigenciaHasta,
+                                new
+                                {
+                                    fieldType = "text",
+                                    errorMessage = "Ingrese el sector de la empresa",
+                                    @class = "date-picker col-xs-10 col-sm-8 ",
+                                    placeholder = "dd/mm/yyyy",
+                                    @id = "txt_FechaHasta"
+                                })
+            </div>
+            <div class="mensajeValidacion help-block"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Precio Pactado:</label>
+        <div class="col-xs-12 col-sm-9">
+            <div class="clearfix" >
+                @Html.TextBoxFor(x => x.OrdenModel.precioPactado,
+                                new
+                                {
+                                    fieldType = "text",
+                                    errorMessage = "Ingrese el sector de la empresa",
+                                    @class = "col-xs-10 col-sm-8 ",
+                                    placeholder = "",
+                                    type = "text"
+                                })
+            </div>
+            <div class="mensajeValidacion help-block"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Estado: </label>
+        <div class="col-xs-12 col-sm-9">
+            <div class="clearfix">
+                @Html.DropDownListFor(x => x.OrdenModel.estadoOrdenCompra_ids,
+                                        new SelectList(Model.Estados_Orden_Compra, "valor_ids", "valorTexto"),
+                                        new { @class = "  input-group col-xs-10 col-sm-3" })
+            </div>
+            <div class="mensajeValidacion help-block"></div>
+        </div>
+    </div>
+
+</fieldset>
+
+<div class="form-actions center">
+    <button type="button" id="btn_guardarOrden" onclick="Modelo.GuardarOrdenDeCompra();" class="btn btn-sm btn-success">
+        Guardar
+				<i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+    </button>
+</div>
+}
+
+
+<script src="~/js/Views/Clientes_OrdenesDeCompra.js"></script>  

@@ -1,0 +1,215 @@
+﻿<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBcjGR9OttFSgQbPyYGfA80EKFh6HYGniY "></script>
+<style>
+    #map * {
+    overflow:visible;
+}
+</style>
+<div ng-app="mainApp">
+    <div ng-controller="buscarIncidentesController">
+        <div class="form-horizontal">
+            <fieldset>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label no-padding-right"> Cliente </label>
+                                    <div class="col-sm-8">
+                                        <button class="btn btn-white btn-default btn-round btn-xs" ng-click="abrirSeleccionarCliente('incidentesBuscarCliente')">
+                                            <i class="ace-icon fa fa-check green"></i>
+                                        </button>
+                                        <strong >
+                                            {{clienteSelected.nombreCliente}}
+                                            <a ng-show="clienteSelected != null" href="javascript:return false;" ng-click="quitarClienteSeleccionado()" class="ace-icon fa fa-times bigger-110 red"></a>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha Desde</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaDesde" fieldtype="text" id="fecha" name="fecha" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha Hasta</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaHasta" fieldtype="text" id="fecha" name="fecha" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label no-padding-right"> Tipo Incidente</label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="tipoIncidenteId"
+                                                class="input-group col-xs-10 col-sm-12"
+                                                ng-options="item.valor_ids as item.valorTexto for item in tiposIncidentes">
+                                          </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label no-padding-right"> Estado</label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="estadoIncidenteId"
+                                                class="input-group col-xs-10 col-sm-12"
+                                                ng-options="item.valor_ids as item.valorTexto for item in estadosIncidentes">
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label no-padding-right"> Usuario</label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="usuarioId"
+                                                class="input-group col-xs-10 col-sm-12"
+                                                ng-options="item.id as item.nombreApellido for item in usuarios">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <seleccionar-clientes codigo="incidentesBuscarCliente" />
+        </fieldset>
+
+            <div class="form-actions center">
+
+                <button type="button" ng-click="ObtenerIncidentes()" class="btn btn-sm btn-primary">
+                    <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                    Buscar incidentes
+                </button>
+                <button type="button" class="btn btn-sm btn-success" ng-click="AgregarIncidente()">
+                    <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+                    Agregar incidentes
+                </button>
+            </div>
+
+        </div>
+        <table id="tb_incidentes" class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Alta</th>
+                    <th>Tipo</th>
+                    <th>Subtipo</th>
+                    <th>Cliente</th>
+                    <th>Severidad</th>
+                    <th>Estimada</th>
+                    <th>Estado</th>
+                    <th>Responsable</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody ng-repeat="incidente in incidentes">
+                <tr>
+                    <td>{{incidente.id}}</td>
+                    <td>{{incidente.fechaHoraRegistro.slice(6, -2)  |  date:'dd/MM/yyyy HH:mm'}}</td>                    
+                    <td>{{incidente.tipoIncidente}}</td>
+                    <td>{{incidente.subtipoIncidente}}</td>
+                    <td>
+                        <strong>{{incidente.cliente}}</strong>
+                        <links-de-cliente cliente-id="incidente.cliente_id"></links-de-cliente>
+                        <br />
+                        {{incidente.domicilioResumen}}
+                        <br />
+                        UE: {{incidente.fechaUtlimaEntrega.slice(6, -2)  |  date:'dd/MM/yyyy HH:mm'}}
+                    </td>
+                    <td>{{incidente.severidad}}</td>
+                    <td>
+                        <strong>{{incidente.fechaCierreEstimado.slice(6, -2)  |  date:'dd/MM/yyyy'}} 
+                            <i ng-show="incidente.fechaCierreEstimadoReplanificada!=null" class="fa fa-warning  bigger-130 orange" uib-tooltip="Replanificado"></i>
+                        </strong>
+                        <br ng-show="incidente.fechaCierreEstimadoReplanificada!=null" />
+                        <small ng-show="incidente.fechaCierreEstimadoReplanificada!=null">
+                            {{incidente.fechaCierreEstimadoReplanificada.slice(6, -2)  |  date:'dd/MM/yyyy'}}                            
+                        </small>                        
+                    </td>
+                    <td>{{incidente.estadoIncidente}}</td>
+                    <td>
+                        <span><i class="ace-icon fa fa-user blue" ng-show="incidente.usuarioResponsable!=null"></i> {{incidente.usuarioResponsable}}</span>
+                        <span><i class="ace-icon fa fa-users green" ng-show="incidente.grupoResponsable!=null"></i> {{incidente.grupoResponsable}}</span>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                                Acciones
+                                <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-inverse">
+                                <li>
+                                    <a href="javascript:return false;"
+                                       ng-click="VerIncidente(incidente)">
+                                        Ver
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:return false;"
+                                       ng-click="EliminarIncidente(incidente.id)">
+                                        Eliminar
+                                    </a>
+                                </li>
+                               
+                            </ul>
+                        </div>
+                        
+                        <div class="btn-group btn-corner" ng-show="incidente.estadoIncidente_ids==6">
+                            <button type="button" class="btn btn-white btn-success btn-xs" ng-click="aprobarIncidente(incidente, true)">
+                                <i class="ace-icon fa fa-check green"></i>
+                            </button>
+                            <button type="button" class="btn btn-white btn-danger btn-xs" ng-click="aprobarIncidente(incidente, false)">
+                                <i class="ace-icon fa fa-times red2"></i>
+                            </button>
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/incidentesControllers.js"></script>
+<script src="~/js/app/controllers/clientesControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/reportes/directivesReportes.js"></script>
+<script src="~/js/app/controllers/usuariosClientesControllers.js"></script>

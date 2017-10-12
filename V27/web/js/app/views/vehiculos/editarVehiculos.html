@@ -1,0 +1,132 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+</head>
+<body>
+
+
+
+    <div id="modal_vehiculos">
+        <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+
+            <div class="widget-body">
+                <div class="widget-main">
+                    <div class="row">
+                        <h3 class="header smaller lighter blue">
+                            <span style="margin-left: 10px">{{tituloAccion}}</span>
+                        </h3>
+                        <div class="form-horizontal col-sm-9">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Vehículo </label>
+                                        <div class="col-sm-9">
+                                            <input ng-model="vehiculo.nombreVehiculo" class="validate form-control col-xs-10 col-sm-10 "
+                                                   fieldtype="text" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Estado</label>
+                                        <div class="col-sm-9">
+                                            <select ng-model="selectedEstado" id="cmbEstados"
+                                                    class="input-group col-xs-10 col-sm-8"
+                                                    ng-options="estadoVehiculo.valorTexto for estadoVehiculo in estadosVehiculos">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Marca</label>
+                                        <div class="col-sm-9">
+                                            <select ng-model="selectedMarca" id="cmbMarcas"
+                                                    class="input-group col-xs-10 col-sm-8"
+                                                    ng-options="marcaVehiculo.valorTexto for marcaVehiculo in marcasVehiculos"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> A&ntilde;o </label>
+                                        <div class="col-sm-9">
+                                            <input ng-model="vehiculo.anio" class="validate form-control col-xs-10 col-sm-10 "
+                                                   fieldtype="text" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Kilometraje </label>
+                                        <div class="col-sm-9">
+                                            <input ng-model="vehiculo.kilometrajeActual" class="validate form-control col-xs-10 col-sm-10 "
+                                                   fieldtype="text" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Carga en Kg. </label>
+                                        <div class="col-sm-9">
+                                            <input ng-model="vehiculo.kilosDeCarga" class="validate form-control col-xs-10 col-sm-10 "
+                                                   fieldtype="text" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right">  </label>
+                                        <div class="col-sm-9">
+                                            <label class="middle">
+                                                <input class="ace" type="checkbox" ng-model="vehiculo.activo">
+                                                <span class="lbl">
+                                                    Activo
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <a class="btn btn-warning" type="button" href="javascript:void(0);" ng-click="Cerrar()">
+                                <i class="ace-icon fa fa-arrow-circle-left bigger-110"></i>
+                                Volver
+                            </a>
+
+                            <button class="btn btn-primary pull-right" type="button" ng-click="Save()">
+                                <i class="ace-icon fa fa-save bigger-110"></i>
+                                Guardar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,80 @@
+﻿<div ng-app="mainApp" ng-controller="cuentaClienteController">
+    
+    <div class="page-header">
+        <h1>
+            <small>
+                <i class="ace-icon fa fa-user"></i>
+                Cliente:
+            </small> {{cliente.nombreCliente}}
+
+        </h1>
+    </div>
+
+    <div class="row">
+
+        <div class="col-xs-8 col-sm-4">
+            <div class="input-daterange input-group">
+                <input ng-model="fechaDesde" type="text" class=" form-control date-picker" placeholder="fecha desde" name="start" />
+                <span class="input-group-addon">
+                    <i class="fa fa-exchange"></i>
+                </span>
+                <input ng-model="fechaHasta" type="text" class=" form-control date-picker" placeholder="fecha hasta" name="end" />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-purple btn-sm" ng-click="obtenerDatos()">
+                        Buscar
+                        <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                    </button>
+                </span>
+            </div>
+
+            <!-- /section:plugins/date-time.datepicker -->
+        </div>
+    </div>
+
+    <br />
+
+    <div id="tabs" class="tabbable">
+
+        <ul id="myTab" class="nav nav-tabs tab-color-blue background-blue">
+
+            <li class="active">
+                <a href="#tabs-comprobantes" data-toggle="tab">Comprobantes</a>
+            </li>
+            <li class="">
+                <a href="#tabs-consumos" data-toggle="tab">Consumos</a>
+            </li>
+            <li class="">
+                <a href="#tabs-cobros" data-toggle="tab">Cobros</a>
+            </li>
+            <li class="">
+                <a href="#tabs-ordenes" data-toggle="tab">Servicios técnicos</a>
+            </li>
+
+        </ul>
+
+        <div class="tab-content clearfix">
+
+            <div id="tabs-comprobantes" class="tab-pane in active">
+                <comprobantes-de-clientes on-obtener-datos="onObtenerComprobantes" desde="fechaDesde" hasta="fechaHasta"></comprobantes-de-clientes>                                
+            </div>
+
+            <div id="tabs-consumos" class="tab-pane">
+                <consumos-de-cliente  on-obtener-datos="onObtenerConsumos" desde="fechaDesde" hasta="fechaHasta"></consumos-de-cliente>
+            </div>
+
+            <div id="tabs-cobros" class="tab-pane">
+                <cobros-de-cliente on-obtener-datos="onObtenerCobros" desde="fechaDesde" hasta="fechaHasta"></cobros-de-cliente>
+            </div>
+            <div id="tabs-ordenes" class="tab-pane">
+                <servicios-tecnicos-cliente desde="fechaDesde" hasta="fechaHasta" allow-edit="false" on-obtener-datos="onObtenerOrdenesDeTrabajo" ></servicios-tecnicos-cliente>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/usuariosClientesControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>

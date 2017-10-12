@@ -1,0 +1,218 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Repartos_MapaClientes
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCrFetYLnnlcxcJjEhP79agcSbKo1_mAGg"></script>
+
+<div class="row">
+    
+    <div class=" col-sm-3">
+        
+        <div class="widget-box transparent">
+        
+            <div class="widget-header widget-header-flat">
+                <h4 class="widget-title lighter" style="color: #11821c">
+                    <i class="ace-icon fa fa-truck" style="color: #11821c"></i>
+                    @ViewBag.RepartoDia
+                </h4>
+
+                <div class="widget-toolbar">
+                    <a href="#" class="abrirCerrar" data-action="collapse">
+                        <i class="ace-icon fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main no-padding">
+						
+                    <div  style="overflow-y:scroll; height:480px;">
+                        <div class="widget-body">
+                            <div class="widget-main no-padding">
+                            
+                                <a class="btn btn-danger btn-sm hasTooltip" title="Volver a repartos"  href="/Repartos/OrdenClientes">
+                                    <i class="ace-icon fa fa-reply icon-only"></i>
+                                </a>
+
+
+                                <a  href="/Repartos/ConfigurarRuta?reparto_id=@Model.RepartoModelo.id&dia_id=@Model.DiaId" class="btn btn-white btn-info btn-bold">
+                                    <i class="ace-icon fa fa-sort-numeric-asc bigger-120 blue"></i>
+                                    Orden
+                                </a>
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead class="thin-border-bottom">
+                                        <tr>
+                                            <th> <input type="checkbox" id="ckb_seleccionarClientes" /></th>	
+                                            <th>Clientes</th>											
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+					
+                                        @foreach (var item in Model.ClientesHojaDeRuta)
+                                        {
+                                            <tr class="hasTooltip" title="@item.domicilioCompleto">
+                                                <td>
+                                                    @if (!string.IsNullOrEmpty(item.altitud) && !string.IsNullOrEmpty(item.longitud))
+                                                    {
+                                                        <input class="ckb_seleccion" type="checkbox" id="ckb_seleccion_@item.cliente_id" indexArray="-1" cliente_id="@item.cliente_id" /> 
+                                                    }
+                                
+                                                </td>
+                                                <td >                                 
+                                                    [@Convert.ToInt32(item.orden)] - (@item.cliente_id) @item.nombreCliente 
+                                                    <a href="/Clientes/EditDomicilio/@item.cliente_id" tabindex="-1"><i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                
+                                                    @if (!string.IsNullOrEmpty(item.altitud) && !string.IsNullOrEmpty(item.longitud))
+                                                    {
+                                                        <i class="ace-icon fa fa-map-marker red2"></i>
+                                                    }
+                                
+                                                    <input type="hidden" 
+                                                           class="clienteReparto" 
+                                                           id="cliente_reparto_@item.cliente_id"  
+                                                           cliente_id="@item.cliente_id"
+                                                           coorLatitud="@item.altitud"
+                                                           coorLongitud="@item.longitud"
+                                                           nombreCliente="@item.nombreCliente"
+                                                           domicilioCompleto="@item.domicilioCompleto"
+                                                           ordenCliente="@Convert.ToInt32(item.orden)"
+                                                           markerColor="11821c"
+                                                        />
+                                                </td>
+
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+						
+                </div><!-- /.widget-main -->
+            </div><!-- /.widget-body -->
+        </div>
+        
+        @if (Model.ClientesHojaDeRuta_Comparacion!=null)
+        {
+            <div class="widget-box transparent">
+        
+                <div class="widget-header widget-header-flat" style="color: #c41669">
+                    <h4 class="widget-title lighter" >
+                        <i class="ace-icon fa fa-truck" style="color: #c41669"></i>
+                        @ViewBag.RepartoDia_Comparacion
+                    </h4>
+
+                    <div class="widget-toolbar">
+                        <a href="#" data-action="collapse"  class="abrirCerrar">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main no-padding">
+						
+                        <div  style="overflow-y:scroll; height:480px;">
+                            <div class="widget-body">
+                                <div class="widget-main no-padding">
+                            
+                                    <a class="btn btn-danger btn-sm hasTooltip" title="Volver a repartos"  href="/Repartos/OrdenClientes">
+                                        <i class="ace-icon fa fa-reply icon-only"></i>
+                                    </a>
+
+
+                                    <a  href="/Repartos/ConfigurarRuta?reparto_id=@Model.RepartoModelo_Comparacion.id&dia_id=@Model.DiaId_Comparacion" class="btn btn-white btn-info btn-bold">
+                                        <i class="ace-icon fa fa-sort-numeric-asc bigger-120 blue"></i>
+                                        Orden
+                                    </a>
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead class="thin-border-bottom">
+                                            <tr>
+                                                <th> <input type="checkbox" id="ckb_seleccionarClientes_Comparacion" /></th>	
+                                                <th>Clientes</th>											
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+					
+                                            @foreach (var item in Model.ClientesHojaDeRuta_Comparacion)
+                                            {
+                                                <tr class="hasTooltip" title="@item.domicilioCompleto">
+                                                    <td>
+                                                        @if (!string.IsNullOrEmpty(item.altitud) && !string.IsNullOrEmpty(item.longitud))
+                                                        {
+                                                            <input class="ckb_seleccion" type="checkbox" id="ckb_seleccion_@item.cliente_id" indexArray="-1" cliente_id="@item.cliente_id" /> 
+                                                        }
+                                
+                                                    </td>
+                                                    <td >                                 
+                                                        [@Convert.ToInt32(item.orden)] - (@item.cliente_id) @item.nombreCliente 
+                                                        <a href="/Clientes/EditDomicilio/@item.cliente_id" tabindex="-1"><i class="ace-icon fa fa-pencil bigger-130"></i></a>
+                                
+                                                        @if (!string.IsNullOrEmpty(item.altitud) && !string.IsNullOrEmpty(item.longitud))
+                                                        {
+                                                            <i class="ace-icon fa fa-map-marker red2"></i>
+                                                        }
+                                
+                                                        <input type="hidden" 
+                                                               class="clienteReparto" 
+                                                               id="cliente_reparto_@item.cliente_id"  
+                                                               cliente_id="@item.cliente_id"
+                                                               coorLatitud="@item.altitud"
+                                                               coorLongitud="@item.longitud"
+                                                               nombreCliente="@item.nombreCliente"
+                                                               domicilioCompleto="@item.domicilioCompleto"
+                                                               ordenCliente="@Convert.ToInt32(item.orden)"
+                                                               markerColor="c41669"
+                                                            />
+                                                    </td>
+
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+						
+                    </div><!-- /.widget-main -->
+                </div><!-- /.widget-body -->
+            </div>
+        }
+
+        <select class="form-control " id="cmb_dias_comparacion">
+            <option value="1">Lunes</option>
+            <option value="2">Martes</option>
+            <option value="3">Miercoles</option>
+            <option value="4">Jueves</option>
+            <option value="5">Viernes</option>
+            <option value="6">Sábado</option>
+            <option value="7">Domingo</option>		
+        </select>
+
+        <select class="form-control  " id="cmb_repartosComparacion">
+            @foreach (var item in Model.Repartos)
+            {
+                <option value="@item.id">@item.nombreReparto</option>
+            }
+        </select>
+        
+        <button type="button" id="btn_obtenerReparto" onclick="Modelo.ObtenerComparacion()" class="btn btn-sm btn-success">
+            Obtener Reparto
+            <i class="ace-icon fa fa-refresh icon-on-right bigger-110"></i>
+        </button>
+    </div>
+    
+    <div class="col-sm-9">
+        <div id="div_map" style="width: 100%; height: 600px;"></div>  
+    </div>
+
+</div>
+
+@Html.HiddenFor(x=>x.DiaId)
+@Html.HiddenFor(x=>x.RepartoModelo.id)
+
+<script src="~/js/Views/Repartos_MapaReparto.js"></script>

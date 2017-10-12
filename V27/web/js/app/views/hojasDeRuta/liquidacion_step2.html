@@ -1,0 +1,306 @@
+﻿<h3 class="lighter block green">Control de playa, artículos y envases:</h3>
+
+<div class="tabbable">
+
+    <ul class="nav nav-tabs" id="myTab">
+        <li class="active">
+            <a data-toggle="tab" href="#div_todos">
+                <i class="green ace-icon fa fa-home bigger-120"></i>
+                Todos
+            </a>
+        </li>
+        <li class="">
+            <a data-toggle="tab" href="#div_articulos">
+                Artículos
+            </a>
+        </li>
+        <li class="">
+            <a data-toggle="tab" href="#div_envases">
+                Envases
+            </a>
+        </li>
+
+    </ul>
+
+    <div class="tab-content">
+
+        <div id="div_todos" class="tab-pane fade active in">
+
+            <div class="col-sm-3">
+                <span class="help-inline col-xs-12 col-sm-7">
+                    <label class="middle">
+                        <input class="ace ng-pristine ng-valid" type="checkbox" ng-model="mostrarCargas" id="id-disable-check">
+                        <span class="lbl">Cargas</span>
+                    </label>
+                </span>
+            </div>
+            <div class="col-sm-3">
+                <span class="help-inline col-xs-12 col-sm-7">
+                    <label class="middle">
+                        <input class="ace ng-pristine ng-valid" type="checkbox" ng-model="motrarDescargas" id="id-disable-check">
+                        <span class="lbl">Descargas</span>
+                    </label>
+                </span>
+            </div>
+            <div class="col-sm-3">
+
+                <span class="help-inline col-xs-12 col-sm-7">
+                    <label class="middle">
+                        <input class="ace ng-pristine ng-valid" type="checkbox" ng-model="mostrarVentas" id="id-disable-check">
+                        <span class="lbl">Ventas</span>
+                    </label>
+                </span>
+            </div>
+            <div class="col-sm-3">
+
+                <span class="help-inline col-xs-12 col-sm-7">
+                    <label class="middle">
+                        <input class="ace ng-pristine ng-valid" type="checkbox" ng-model="mostrarEnvases" id="id-disable-check">
+                        <span class="lbl">Envases</span>
+                    </label>
+                </span>
+            </div>
+
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 210px;"></th>
+                        <th ng-show="mostrarCargas" class="center">Cargas</th>
+                        <th ng-show="motrarDescargas" class="center" colspan="3"> Descargas</th>
+                        <th ng-show="mostrarVentas" class="center" colspan="4">Ventas</th>
+                        <th ng-show="mostrarEnvases" class="center" colspan="2">Envases</th>
+                        <th class="center" colspan="3">Teórico</th>
+                        <th class="center" colspan="3">Diferencias</th>
+                    </tr>
+                    <tr style="height: 90px">
+                        <th><span>Articulo</span></th>
+                        <th ng-show="mostrarCargas" style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">Llenos</th>
+
+                        <th ng-show="motrarDescargas" style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Llenos
+                        </th>
+                        <th ng-show="motrarDescargas" style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Vacios
+                        </th>
+                        <th ng-show="motrarDescargas" style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Fallados
+                        </th>
+
+                        <th ng-show="mostrarVentas" style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Vendidos
+                        </th>
+
+                        <th ng-show="mostrarVentas" style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Reutilizables
+                        </th>
+                        <th ng-show="mostrarVentas" style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Cam dir
+                        </th>
+                        <th ng-show="mostrarVentas" style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Fallados
+                        </th>
+
+                        <th ng-show="mostrarEnvases" style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Prestados
+                        </th>
+                        <th ng-show="mostrarEnvases" style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Devueltos
+                        </th>
+
+                        <th style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Llenos
+                        </th>
+                        <th style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Vacios
+                        </th>
+                        <th style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Fallados
+                        </th>
+
+                        <th style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Llenos
+                        </th>
+                        <th style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Vacios
+                        </th>
+                        <th style="writing-mode: tb-rl; -webkit-transform: rotate(270deg);">
+                            Fallados
+                        </th>
+
+
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="art in liquidacion.articulos">
+
+                        <td>
+                            ({{art.codigoInterno}}) {{art.nombreArticulo}}
+                            <i ng-show="art.tipoEnvase_ids==1" class="ace-icon fa fa-recycle green hasTooltip" title="Envase retornable"></i>
+                            <i ng-show="art.diferencia_llenos!=0 || art.diferencia_vacios != 0 || art.diferencia_fallados != 0" class="ace-icon fa fa-exclamation-triangle bigger-130 orange hasTooltip" title="Hay diferencias"></i>
+                        </td>
+
+                        <td ng-show="mostrarCargas" style="background-color: lightskyblue;">{{art.salida_llenos}}</td>
+
+                        <td ng-show="motrarDescargas">{{art.entrada_llenos}}</td>
+                        <td ng-show="motrarDescargas">{{art.tipoEnvase_ids==1?art.entrada_vacios:'-'}}</td>
+                        <td ng-show="motrarDescargas">{{art.entrada_fallados}}</td>
+
+                        <td ng-show="mostrarVentas" style="background-color: rgb(201, 168, 202);">{{art.ventEntr_cantidadVendEntre}}</td>
+                        <td ng-show="mostrarVentas" style="background-color: rgb(201, 168, 202);">{{art.ventEntr_devueltosReutilizables}}</td>
+                        <td ng-show="mostrarVentas" style="background-color: rgb(201, 168, 202);">{{art.ventEntr_cambiosDirectos}}</td>
+                        <td ng-show="mostrarVentas" style="background-color: rgb(201, 168, 202);">{{art.ventEntr_fallados}}</td>
+
+                        <td ng-show="mostrarEnvases">{{art.tipoEnvase_ids==1?art.envases_prestados:'-'}}</td>
+                        <td ng-show="mostrarEnvases">{{art.tipoEnvase_ids==1?art.envases_devueltos:'-'}}</td>
+
+                        <td style="background-color: rgb(75, 205, 151);">{{art.teorico_llenos}}</td>
+                        <td style="background-color: rgb(75, 205, 151);">
+                            <span>{{art.tipoEnvase_ids==1?art.teorico_vacios:'-'}}</span>
+                        </td>
+                        <td style="background-color: rgb(75, 205, 151);">{{art.teorico_fallados}}</td>
+
+                        <td style="{{art.diferencia_llenos!=0?'background: orange;':''}}">{{art.diferencia_llenos}}</td>
+                        <td style="{{art.diferencia_vacios!=0?'background: orange;':''}}">
+                            <span>{{art.tipoEnvase_ids==1? art.diferencia_vacios : '-'}}</span>
+                        </td>
+                        <td style="{{art.diferencia_fallados!=0?'background: orange;':''}}">{{art.diferencia_fallados}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div id="div_articulos" class="tab-pane fade">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Artículo</th>
+                        <th>
+                            <span class="hasTooltip" title="Control de ruta salida">Salida</span>
+                        </th>
+                        <th>
+                            <span class="hasTooltip" title="Control de ruta entrada">Entrada</span>
+                        </th>
+                        <th>
+                            <span class="hasTooltip" title="Cantidad de artículos que se han registrado como devoluciones del cliente"> Reutilizables</span>
+                        </th>
+                        <th>
+                            <span class="hasTooltip" title="Cantidad salida - cantidad entrada + reutilizables">Teórico Entregado</span>
+                        </th>
+                        <th>
+                            <span class="hasTooltip" title="Registros de artículos vendidos y cambios directos">Registrado</span>
+                        </th>
+                        <th>Diferencia</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="art in liquidacion.articulos">
+
+                        <td>
+                            ({{art.codigoInterno}}) {{art.nombreArticulo}}
+                            <i ng-show="art.tipoEnvase_ids==1" class="ace-icon fa fa-recycle green hasTooltip" title="Envase retornable"></i>
+                            <i ng-show="art.diferencia_llenos!=0" class="ace-icon fa fa-exclamation-triangle bigger-130 orange hasTooltip" title="Hay diferencias"></i>
+                        </td>
+                        <td>{{art.salida_llenos}}</td>
+                        <td>{{art.entrada_llenos}}</td>
+                        <td>{{art.ventEntr_devueltosReutilizables}}</td>
+                        <td>{{art.salida_llenos + art.ventEntr_devueltosReutilizables - art.entrada_llenos }} </td>
+                        <td>{{art.ventEntr_cantidadVendEntre + art.ventEntr_cambiosDirectos}}</td>
+                        <td>
+                            {{(art.salida_llenos + art.ventEntr_devueltosReutilizables - art.entrada_llenos) - (art.ventEntr_cantidadVendEntre + art.ventEntr_cambiosDirectos) }}
+                        </td>
+
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div id="div_envases" class="tab-pane fade">
+
+
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Envase</th>
+                        <th>
+                            <span class="hasTooltip" title="Control de ruta salida">Salida</span>
+                        </th>
+                        <th>
+                            <span class="hasTooltip" title="Registros de ventas y entregas">Entregas</span>
+                        </th>
+                        <th>
+                            <span class="hasTooltip" title="Registros de devoluciones reutilizables">Reutilizables</span>
+                        </th>
+                        <th>
+                            <span class="hasTooltip" title="Préstamos de envases registrados">Préstamos</span>
+                        </th>
+                        <th>
+                            <span class="hasTooltip" title="Devoluciones de envases registradas">Devoluciones</span>
+                        </th>
+                        <th>
+                            <span class="hasTooltip" title="Cantidad envases salida - préstamos + devoluciones">
+                                Entrada teórico
+                            </span>
+                        </th>
+                        <th>
+                            <span class="hasTooltip" title="Control de ruta entrada">Entrada real</span>
+                        </th>
+                        <th>Diferencia</th>
+                        <th>Ent llenos</th>
+                        <th>Ent vacios</th>
+                        <th>Ent fallados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="art in liquidacion.articulos" ng-show="art.tipoEnvase_ids==1">
+
+                        <!--Envase -->
+                        <td>
+                            ({{art.codigoInterno}}) {{art.nombreArticulo}}
+                            <i ng-show="art.tipoEnvase_ids==1" class="ace-icon fa fa-recycle green hasTooltip" title="Envase retornable"></i>
+                            <i ng-show="art.diferencia_llenos!=0" class="ace-icon fa fa-exclamation-triangle bigger-130 orange hasTooltip" title="Hay diferencias"></i>
+                        </td>
+
+                        <!--Salida -->
+                        <td>{{art.salida_llenos + art.salida_vacios + art.salida_fallados}}</td>
+
+                        <!--Entregas -->
+                        <td>{{ art.ventEntr_cantidadVendEntre + art.ventEntr_cambiosDirectos }}</td>
+
+                        <!--Reutilizables -->
+                        <td>{{ art.ventEntr_devueltosReutilizables}}</td>
+
+                        <!--Préstamos -->
+                        <td>{{ art.envases_prestados}}</td>
+
+                        <!--Devoluciones -->
+                        <td>{{ art.envases_devueltos}}</td>
+
+                        <!--Entrada teórico -->
+                        <td>{{ (art.salida_llenos + art.salida_vacios + art.salida_fallados) +   art.ventEntr_devueltosReutilizables + art.envases_devueltos - art.envases_prestados }}</td>
+
+                        <!--Entrada real -->
+                        <td>{{art.entrada_llenos + art.entrada_vacios + art.entrada_fallados }}</td>
+
+                        <!--Diferencia -->
+                        <td>{{((art.salida_llenos + art.salida_vacios + art.salida_fallados) +   art.ventEntr_devueltosReutilizables + art.envases_devueltos - art.envases_prestados) - (art.entrada_llenos + art.entrada_vacios + art.entrada_fallados)}}</td>
+
+                        <!--llenos -->
+                        <td>{{art.entrada_llenos}}</td>
+                        <!--vacios -->
+                        <td>{{art.entrada_vacios}}</td>
+                        <!--fallados -->
+                        <td>{{art.entrada_fallados}}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</div>

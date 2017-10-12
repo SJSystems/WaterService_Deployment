@@ -1,0 +1,339 @@
+﻿<style>
+    .limite-altura {
+        max-height: 500px;
+        overflow-y: auto
+    }
+</style>
+<div ng-app="mainApp" ng-controller="repClientesController">
+
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">
+                Lista de clientes
+            </h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+
+                <div class="row">
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Estados</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-valores-tabla-satelite dir-model="busqueda.estados" multiple="true" tabla-satelite-id="30" allow-clear="true"></ui-seleccionar-valores-tabla-satelite>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Tipos</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-valores-tabla-satelite dir-model="busqueda.tipos" multiple="true" tabla-satelite-id="20" allow-clear="true"></ui-seleccionar-valores-tabla-satelite>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">IVA</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-valores-tabla-satelite dir-model="busqueda.condicionesIva" multiple="true" tabla-satelite-id="60" allow-clear="true"></ui-seleccionar-valores-tabla-satelite>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top:10px">
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Repartos</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-repartos dir-model="busqueda.repartos" multiple="true" allow-clear="true"></ui-seleccionar-repartos>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Días</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-valores-tabla-satelite dir-model="busqueda.dias" multiple="true" tabla-satelite-id="90" allow-clear="true"></ui-seleccionar-valores-tabla-satelite>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Zonas</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-valores-tabla-satelite dir-model="busqueda.zonas" multiple="true" tabla-satelite-id="690" allow-clear="true"></ui-seleccionar-valores-tabla-satelite>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top:10px">
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">Promotores</label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-seleccionar-usuarios-por-rol dir-model="busqueda.promotores" multiple="true" allow-clear="true" rol-id="180" placeholder="Seleccionar promotor"></ui-seleccionar-usuarios-por-rol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+
+                            <label class="col-sm-3 control-label no-padding-right center">
+                                <label>
+                                    <input name="form-field-checkbox" type="checkbox" ng-model="busqueda.incluirAlta" class="ace">
+                                    <span class="lbl"> Alta</span>
+                                </label>
+                            </label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-periodo model-periodo="busqueda.periodoAlta"></ui-periodo>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right center">
+                                <label>
+                                    <input name="form-field-checkbox" type="checkbox" ng-model="busqueda.incluirBaja" class="ace">
+                                    <span class="lbl"> Baja</span>
+                                </label>
+                            </label>
+                            <div class="col-sm-9">
+                                <div class="clearfix">
+                                    <ui-periodo model-periodo="busqueda.periodoBaja"></ui-periodo>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+
+                @*<div class="row" style="margin-top:10px">
+
+                    <div class="col-sm-4">
+                       
+                    </div>
+
+                    <div class="col-sm-4">
+                        
+                    </div>
+
+                </div>*@
+
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+
+            <span class="blue" ng-show="datos.items.length>0">{{datos.items.length}} registros encontrados</span>
+                       
+            <button type="button" ng-disabled="descangando" ng-click="descargarExcel()" class="btn btn-sm btn-success pull-right" style="margin-left: 10px">
+                <i class="ace-icon fa fa-file-excel-o icon-on-right bigger-110"></i>
+                {{descangando?'Descargando archivo...':'Descargar Excel'}}
+            </button>
+            <button type="button" ng-click="buscar()" class="btn btn-sm btn-primary pull-right" style="margin-left: 10px">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar
+            </button>
+
+            <label class="pull-right">
+                <input name="form-field-checkbox" type="checkbox" ng-model="busqueda.incluirLista" class="ace">
+                <span class="lbl"> Incluir lista</span>
+            </label>
+
+
+        </div>
+    </div>
+
+    <uib-tabset>
+
+        <uib-tab heading="Gráficos">
+
+            <div class="row">
+
+                <div class="col-sm-4 infobox-container limite-altura">
+                    <canvas id="piechart-tipos-clientes" width="400" height="400"></canvas>
+                </div>
+
+                <div class="col-sm-4 infobox-container limite-altura">
+                    <canvas id="piechart-cliente-iva" width="400" height="400"></canvas>
+                </div>
+
+                <div class="col-sm-4 infobox-container limite-altura">
+                    <canvas id="piechart-estados" width="400" height="400"></canvas>
+                </div>
+               
+            </div>
+            <br />
+            <div class="row">
+
+                <div class="col-sm-4 infobox-container limite-altura">
+                    <canvas id="piechart-repartos" width="400" height="400"></canvas>
+                </div>
+                <div class="col-sm-4 infobox-container limite-altura">
+                    <canvas id="piechart-zonas" width="400" height="400"></canvas>
+                </div>
+                
+                <div class="col-sm-4 infobox-container limite-altura">
+                    <canvas id="piechart-dias" width="400" height="400"></canvas>
+                </div>
+
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-4 infobox-container limite-altura">
+                    <canvas id="piechart-ciudades" width="400" height="400"></canvas>
+                </div>
+
+                <div class="col-sm-4 infobox-container limite-altura">
+                    <canvas id="piechart-abonos" width="400" height="400"></canvas>
+                </div>                
+                
+                <div class="col-sm-4 infobox-container limite-altura">
+                    <canvas id="piechart-dispensers" width="400" height="400"></canvas>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                
+                <div class="col-sm-12 infobox-container ">
+                    <canvas id="chart-saldos-repartos" width="400" height="300"></canvas>
+                </div>
+
+            </div>
+
+        </uib-tab>
+
+        <uib-tab heading="Lista">
+
+            <table class="table table-striped table-hover"
+                   st-table="displayItems"
+                   st-safe-src="datos.items">
+                <thead>
+                    <tr>
+                        <th colspan="13">
+                            <input st-search="" class="form-control" placeholder="Buscar en esta tabla" type="text" />
+                        </th>
+                    </tr>
+                    <tr>
+                        <th st-sort="nombreCliente">Cliente</th>
+                        <th st-sort="tipoCliente">Tipo</th>
+                        <th st-sort="condicionIva">Iva</th>
+                        <th st-sort="estadoCliente">Estado</th>
+                        <th st-sort="nombreReparto">Reparto</th>
+                        <th st-sort="nombrePromotor">Promotor</th>
+                        <th st-sort="fechaIngreso">Alta</th>
+                        <th st-sort="fechaBaja">Baja</th>
+                        <th st-sort="zona">Zona</th>
+                        <th st-sort="nombreCiudad">Ciudad</th>
+                        <th class="center" st-sort="cantidadAbonos">Abo</th>
+                        <th class="center" st-sort="cantidadDispensers">Dis</th>
+                        <th class="center" st-sort="saldoFinal">Saldo</th>
+                        @*<th class="center" st-sort="lunes">Lun</th>
+                        <th class="center" st-sort="martes">Mar</th>
+                        <th class="center" st-sort="miercoles">Mie</th>
+                        <th class="center" st-sort="jueves">Jue</th>
+                        <th class="center" st-sort="viernes">Vie</th>
+                        <th class="center" st-sort="sabado">Sab</th>
+                        <th class="center" st-sort="domingo">Dom</th>*@
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in displayItems">
+                        <td>
+                            {{item.nombreCliente}}
+                            <pop-over-cliente cliente-id="item.cliente_id"></pop-over-cliente>
+                        </td>
+                        <td>{{item.tipoCliente}}</td>
+                        <td>{{item.condicionIva}}</td>
+                        <td>{{item.estadoCliente}}</td>
+                        <td>{{item.nombreReparto}}</td>
+                        <td>{{item.nombrePromotor}}</td>
+                        <td>{{item.fechaIngreso.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                        <td>{{item.fechaBaja.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                        <td>{{item.zona}}</td>
+                        <td>{{item.nombreCiudad}}</td>
+                        <td>{{item.cantidadAbonos}}</td>
+                        <td>{{item.cantidadDispensers}}</td>
+                        <td>${{item.saldoFinal}}</td>
+                        @*<td>{{item.lunes}}</td>
+                        <td>{{item.martes}}</td>
+                        <td>{{item.miercoles}}</td>
+                        <td>{{item.jueves}}</td>
+                        <td>{{item.viernes}}</td>
+                        <td>{{item.sabado}}</td>
+                        <td>{{item.domingo}}</td>*@
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="13" class="text-center">
+                            <div st-pagination="" st-items-by-page="30" st-displayed-pages="20"></div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </uib-tab>
+        
+    </uib-tabset>
+    
+</div>
+
+<script src="~/js/app/controllers/reportes/appReportes.js"></script>
+<script src="~/js/app/controllers/reportes/directivesReportes.js"></script>
+<script src="~/js/app/controllers/reportes/repClientes.js"></script>
+<script src="~/js/app/controllers/usuariosClientesControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/vendors/charts/chart.min.js"></script>
+
+@*<script src="~/assets/js/flot/jquery.flot.min.js"></script>
+<script src="~/assets/js/flot/jquery.flot.pie.min.js"></script>
+<script src="~/assets/js/flot/jquery.flot.resize.min.js"></script>
+<script src="~/assets/js/jquery.easypiechart.min.js"></script>
+<script src="~/assets/js/jquery.sparkline.min.js"></script>
+<script src="~/assets/js/flot/jquery.flot.stack.js"></script>
+<script src="~/assets/js/flot/jquery.flot.categories.js"></script>*@
+
+<style>
+    .btn-default, .btn-default:focus, .btn:focus {
+        background-color: #5aa9d9 !important;
+        border-color: #031d2d;
+    }
+</style>

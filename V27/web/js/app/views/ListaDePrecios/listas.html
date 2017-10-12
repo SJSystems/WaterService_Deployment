@@ -1,0 +1,57 @@
+﻿
+<div class="widget-box widget-color-blue3">
+    <!-- #section:custom/widget-box.options -->
+    <div class="widget-header">
+        <h5 class="widget-title bigger lighter">
+            <i class="ace-icon fa fa-list-alt"></i>
+            Listas
+        </h5>
+
+    </div>
+
+    <!-- /section:custom/widget-box.options -->
+    <div class="widget-body">
+        <div class="widget-main no-padding">
+
+            <table class="table table-bordered ">
+                <thead class="thin-border-bottom">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Alta</th>
+                        <th>UsuarioAlta</th>
+                        <th>Baja</th>
+                        <th>UsuarioBaja</th>
+                        <th>Activa</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody ng-repeat="lista in listas" style="background-color: aliceblue; margin-bottom:10px">
+                    <tr>
+                        <td>{{lista.nombre}}</td>
+                        <td>{{lista.tipoDeListaDePrecios}}</td>
+                        <td>{{lista.fechaAlta.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                        <td>{{lista.nombreApellidoAlta}}</td>
+                        <td>{{lista.fechaBaja.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                        <td>{{lista.nombreApellidoBaja}}</td>
+                        <td>
+                            <span class="label label-success arrowed arrowed-right" ng-show="lista.activo">Si</span>
+                            <span class="label label-danger arrowed arrowed-right" ng-show="!lista.activo">No</span>
+                        </td>                                             
+                        <td>
+                            <a href="javascript:;">
+                                <i title="editar" class="ace-icon fa fa-pencil bigger-130 "  ng-click="abrirDialogoEditar(lista)"></i>
+                            </a>
+                            
+                            <a href="javascript:;" >
+                                <i title="eliminar" class="ace-icon fa fa-trash-o bigger-130 red" ng-click="eliminar(lista.id)"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

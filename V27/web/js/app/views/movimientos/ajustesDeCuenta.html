@@ -1,0 +1,92 @@
+﻿
+<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+    <div class="widget-box ui-sortable-handle">
+
+        <div class="widget-header">
+            <h4 class="widget-title">Ajustes de cuenta</h4>
+            <div class="widget-toolbar">
+            </div>
+        </div>
+
+        <div class="widget-body">
+
+            <div class="widget-main">
+
+                <div class="row">
+
+                    <div class="col-sm-3">
+                        <label class="control-label col-sm-4 padding-right">Desde</label>
+                        <div class="input-group">
+                            <input class="validate form-control date-picker col-xs-10 col-sm-5 "
+                                   placeholder="dd/mm/yyyy" type="text"
+                                   ng-model="ModeloBuscarAjustes.desde">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-3">
+                        <label class="control-label col-sm-4 padding-right">Hasta</label>
+                        <div class="input-group">
+                            <input class="validate form-control date-picker col-xs-10 col-sm-8 "
+                                   placeholder="dd/mm/yyyy"
+                                   ng-model="ModeloBuscarAjustes.hasta">
+                            <span class="input-group-addon">
+                                <i class="fa fa-calendar bigger-110"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-purple btn-sm " ng-click="ModeloBuscarAjustes.buscar()">
+                            <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                            Buscar
+                        </button>
+                        <a href="/AjustesCuenta/Create?clienteId={{modeloMovimientos.clienteId}}" class="btn btn-white btn-warning btn-bold">
+                            <i class="ace-icon fa fa-plus bigger-120 green"></i>
+                            Agregar ajuste
+                        </a>
+                        <a href="/AjustesCuenta/Create?clienteId={{modeloMovimientos.clienteId}}&esSaldoInicial=true"
+                           class="btn btn-danger btn-bold">
+                            <i class="ace-icon fa fa-plus bigger-120 green"></i>
+                            Agregar factura interna
+                        </a>
+                        
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Tipo </th>
+            <th>Motivo </th>
+            <th>Descripción </th>
+            <th>Monto</th>
+            <th>Facturado</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in ModeloBuscarAjustes.ajustes">
+
+            <td>{{item.fechaCreacion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+            <td>{{item.tipoAjuste}}</td>
+            <td>{{item.motivoAjuste}}</td>
+            <td>{{item.textoEnMovimiento}}</td>
+            <td>${{item.montoAjuste}}</td>
+            <td>{{item.facturar?'Si':'No'}}</td>
+            <td></td>
+
+        </tr>
+    </tbody>
+</table>

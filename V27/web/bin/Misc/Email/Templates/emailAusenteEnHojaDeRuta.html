@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Sistema Water Service</title>
+</head>
+<body>
+    <p>Estimado cliente de <strong>{{razonSocial}}</strong>:</p>
+    <p>
+        Nos dirigimos a usted con el fin de comunicarle que hemos visitado el
+        domicilio de {{domicilioCliente}}, el día {{fechaDeVisita}}. 
+        No hemos encontrado a ninguna persona que pueda atendernos en el lugar.
+    </p>
+    <p>
+        Recuerde que puede realizar cualquier pedido en caso que requiera de nuestros productos antes de la próxima visita.
+    </p>
+    <p>
+            
+    </p>
+    <p>
+        Atentamente, <strong>{{razonSocial}}</strong>.
+        <br/>
+        {{datosDeLaEmpresa}}
+    </p>
+    <h4>
+        Datos de la cuenta
+    </h4>
+
+    <ul>
+        <li>Cliente visitado: {{nombreClienteEntrega}}</li>
+        <li>Titular: {{nombreDelTitular}}</li>
+        <li>Nº de cliente: {{numeroDeCliente}}</li>
+    </ul>
+    <img src="cid:logo.jpg" style="width: 190px; height: 90px" />
+</body>
+</html>

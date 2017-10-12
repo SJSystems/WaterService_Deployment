@@ -1,0 +1,163 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+}
+
+<div ng-app="mainApp" ng-controller="nuevoUsuarioController" class="ng-scope">
+
+    <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+        <div class="widget-box ui-sortable-handle">
+            <div class="widget-header">
+                <h5 class="widget-title">{{accion}}</h5>
+                <div class="widget-toolbar">
+                    <a href="#" data-action="fullscreen" class="orange2">
+                        <i class="ace-icon fa fa-expand"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main">
+                    
+                    <div class="row">
+
+                        <div class="form-horizontal col-sm-6" >
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Nombre completo</label>
+                                        <div class="col-sm-9">
+
+                                            <input ng-model="usuario.nombreApellido" class="validate form-control col-xs-10 col-sm-10 " fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Usuario</label>
+                                        <div class="col-sm-9">
+                                            <input ng-model="usuario.userName" class="validate form-control col-xs-10 col-sm-5 " fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Password</label>
+                                        <div class="col-sm-9">
+                                            <input ng-model="usuario.password" class="validate form-control col-xs-10 col-sm-5" type="password" fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Email</label>
+                                        <div class="col-sm-9">
+
+                                            <input ng-model="usuario.email" class="validate form-control col-xs-10 col-sm-5 " fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> Teléfono</label>
+                                        <div class="col-sm-9">
+
+                                            <input ng-model="usuario.telefono" class="validate form-control col-xs-10 col-sm-5 " fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> DNI</label>
+                                        <div class="col-sm-9">
+
+                                            <input ng-model="usuario.dni" class="validate form-control col-xs-10 col-sm-5 " fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label no-padding-right"> </label>
+                                        <div class="col-sm-9">
+                                            <span class="help-inline col-xs-12 col-sm-7">
+                                                <label class="middle">
+                                                    <input class="ace" type="checkbox" ng-model="usuario.activo">
+                                                    <span class="lbl"> Usuario activo</span>
+                                                </label>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                        <div class="col-sm-3">
+                            <strong>Roles</strong>
+                           <div class="row" ng-repeat="rol in roles">
+                               <div class="col-sm-12">
+                                   <label class="middle" >
+                                       <input class="ace" type="checkbox" ng-model="rol.selected">
+                                       <span class="lbl"> {{rol.nombreRol}}</span>
+                                   </label>
+                               </div>
+                           </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <strong>Grupos</strong>
+                            <div class="row" ng-repeat="grupo in grupos">
+                                <div class="col-sm-12">
+                                    <label class="middle">
+                                        <input class="ace" type="checkbox" ng-model="grupo.selected">
+                                        <span class="lbl"> {{grupo.valorTexto}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+        </div>
+    </div>
+    <div class="widget-toolbox padding-8 clearfix">
+        <div class="col-sm-6">
+            <button class="btn btn-sm btn-success pull-right" ng-click="Save()">
+                Guardar
+                <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+</div>
+<script src="~/js/app/controllers/usuariosControllers.js"></script>
+

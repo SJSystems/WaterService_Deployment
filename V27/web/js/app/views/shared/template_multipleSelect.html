@@ -1,0 +1,27 @@
+﻿
+<div class="multiple-select">
+    <style>
+        li.active-result:hover {
+            background: #316AC5;
+            color: #FFF;
+        }
+
+    </style>
+    <div class="chosen-container chosen-container-multi chosen-with-drop" ng-click="Toggle()" ng-blur="Toggle()" style="width: 100%;" title="" id="form_field_select_4_chosen">
+        <ul class="chosen-choices">
+            <li class="search-choice" ng-repeat="s in selectedItems">
+                <span>{{s.valor}}</span>
+                <a class="search-choice-close" ng-click="RemoveElement(s)"></a>
+            </li>
+            <li class="search-field" ng-click="Toggle()" ng-blur="Toggle()">
+                <input type="text" placeholder="{{placeHolder}}" class="" autocomplete="off" style="width: 25px;"  ng-blur="Toggle()" ng-click="Toggle()">
+            </li>
+        </ul>
+        <div class="chosen-drop" ng-class="{'hidden': !IsShowingList()}">
+            <ul class="chosen-results">
+                <li ng-repeat="i in items" class="active-result" ng-click="AddElement(i)" ng-class="{'result-selected': IsItemSelected(i)}">{{i.valor}}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+

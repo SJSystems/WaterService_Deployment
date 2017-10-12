@@ -1,0 +1,42 @@
+﻿@model System.Collections.Generic.Dictionary<WaterService.Common.Entities.DTOs.ValoresTablasSateliteDTO,System.Collections.Generic.List<WaterService.Common.Entities.DTOs.Reporte_DTO>>
+
+<style>
+    /* some elements used in demo only */
+    .spinner-preview {
+        width: 100px;
+        height: 100px;
+        text-align: center;
+        margin-top: 60px;
+    }
+
+    .dropdown-preview {
+        margin: 0 5px;
+        display: inline-block;
+    }
+
+        .dropdown-preview > .dropdown-menu {
+            display: block;
+            position: static;
+            margin-bottom: 5px;
+        }
+</style>
+
+<h2>Reportes disponibles</h2>
+
+@foreach (var areaReporte in Model)
+{
+
+    <div class="col-sm-4">
+        <h3 class="header smaller lighter green" style=" background: beige;" >
+            @areaReporte.Key.valorTexto
+        </h3>
+        
+        @foreach (var reporte in areaReporte.Value)
+        {
+            <a class="well well-sm col-sm-12" href="@reporte.urlPath" tabindex="-1">
+                @reporte.nombreReporte
+            </a>
+        }
+
+    </div>
+}

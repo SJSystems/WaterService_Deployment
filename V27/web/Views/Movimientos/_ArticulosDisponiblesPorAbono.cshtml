@@ -1,0 +1,36 @@
+﻿@model System.Collections.Generic.List<WaterService.Common.Entities.DTOs.VIEW_ArticulosXAbonos_Disponibles_DTO>
+
+@{
+    Layout = null;
+}
+
+  <table class="table">
+      <thead>
+          <th>Desde</th>
+          <th>Hasta</th>
+          <th>Artículo</th>
+          <th>Cant</th>
+          <th>Consumidos</th>
+          <th>Disponibles</th>
+          <th>Excedentes</th>
+          <th>Precio excedente</th>
+      </thead>
+    <tbody>
+        
+       @foreach (var item in Model)
+       {
+           <tr>
+               <td>@item.vigenciaDesde.ToString("dd/MM/yyyy")</td>
+               <td>@item.vigenciaHasta.ToString("dd/MM/yyyy")</td>
+               <td>@item.nombreArticulo</td>
+               <td>@(item.cantidad)</td>
+               <td>@item.cantidadConsumida</td>
+               <td>@( (item.cantidad)-item.cantidadConsumida >0 ? (item.cantidad)-item.cantidadConsumida : 0 )</td>
+               <td>@( (item.cantidad)-item.cantidadConsumida <0 ? ((item.cantidad)-item.cantidadConsumida)*-1 : 0 )</td>
+               <td>$@item.precioExcendente</td>
+           </tr>
+
+       }
+
+    </tbody>
+</table>

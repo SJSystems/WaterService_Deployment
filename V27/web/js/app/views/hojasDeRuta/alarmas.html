@@ -1,0 +1,40 @@
+﻿<div class="page-header">
+    <h1>
+        {{hojaDeRuta.fechaRuta.slice(6, -2)  |  date:'dd/MM/yyyy'}} - {{hojaDeRuta.nombreReparto}}
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            {{hojaDeRuta.estadoHojaDeRuta}}
+        </small>
+    </h1>
+</div>
+
+<div class="row">
+    
+    <div class="col-sm-12">
+        <h3 class="header smaller lighter red">Recuperación de envases</h3>
+    </div>
+
+    <div class="col-sm-6 infobox-container">
+        
+        <div id="piechart-placeholder"></div>
+
+    </div>
+
+    <div class="col-sm-6">
+
+        <table class="table table-striped table-bordered table-hover">
+            <tbody>
+                <tr>
+                    <th>Artículo</th>
+                    <th>Cantidad</th>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr ng-repeat="prestamo in alertas.prestamos">
+                    <td>{{prestamo.nombreArticulo}}</td>
+                    <td>{{prestamo.cantidadAdeudada}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

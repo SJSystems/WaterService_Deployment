@@ -1,0 +1,83 @@
+﻿@model WaterService.Common.Entities.Afip.TokenAcceso_DTO
+
+<h2>Configuracion de Factura Electrónica AFIP</h2>
+<br/>
+<div class="row">
+    <div class="col-sm-6">
+      
+        <div class="row">
+            <div class="col-sm-6">
+                Entorno:
+            </div>
+            <div class="col-sm-6">
+                @Model.Entorno
+            </div>
+        </div>  
+        <div class="row">
+            <div class="col-sm-6">
+                Servidor Autenticación:
+            </div>
+            <div class="col-sm-6">
+                @Model.UrlAutenticacion
+            </div>
+        </div>  
+        <div class="row">
+            <div class="col-sm-6">
+                Servidor FE:
+            </div>
+            <div class="col-sm-6">
+                @Model.UrlFacturaElectronica
+            </div>
+        </div>  
+        <div class="row">
+            <div class="col-sm-6">
+                Cuit empresa:
+            </div>
+            <div class="col-sm-6">
+                @Model.Cuit
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                Certificado:
+            </div>
+            <div class="col-sm-6">
+                @Model.Certificado
+            </div>
+        </div>    
+
+        <div class="row">
+            <div class="col-sm-6">
+                Error al obtener token:
+            </div>
+            <div class="col-sm-6">
+                @Model.Errores
+            </div>
+        </div>  
+        <div class="row">
+            <div class="col-sm-6">
+                Token:
+            </div>
+            <div class="col-sm-6">
+                @Model.Token
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                Firma:
+            </div>
+            <div class="col-sm-6">
+                @Model.Sign
+            </div>
+        </div>    
+        <div class="row">
+            <div class="col-sm-6">
+                Expiración de Token:
+            </div>
+            <div class="col-sm-6">
+                @Model.ExpirationTime.ToString("G")
+            </div>
+        </div>  
+
+    </div>
+</div>

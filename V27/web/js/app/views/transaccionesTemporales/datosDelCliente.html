@@ -1,0 +1,146 @@
+﻿<div class="row">
+
+    <div class="col-sm-7">
+
+        <div class="profile-user-info profile-user-info-striped">
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Cliente </div>
+
+                <div class="profile-info-value">
+                    <a href="/Clientes/EditCliente/{{ventaActual.clienteActual.cliente_id}}">
+                        <span class="editable editable-click">
+                            {{ventaActual.clienteActual.nombreCliente}}
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Dirección </div>
+
+                <div class="profile-info-value">
+                    <i class="fa fa-map-marker light-orange bigger-110"></i>
+                    <a href="#">
+                        <span class="editable editable-click">
+                            <a href="/Clientes/EditDomicilio/{{ventaActual.clienteActual.cliente_id}}" target="_blank">
+                                {{ventaActual.clienteActual.domicilioCompleto}}
+                            </a>
+                        </span>
+                    </a>
+
+                </div>
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Tipo </div>
+
+                <div class="profile-info-value">
+                    <span class="editable editable-click" id="age">
+                        {{ventaActual.clienteActual.tipoCliente}}
+                    </span>
+                </div>
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Consumos </div>
+
+                <div class="profile-info-value">
+                    <span class="editable editable-click">
+                        ${{ventaActual.saldosCliente.saldoCuentaConsumo}}
+                    </span>
+                </div>
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Facturación </div>
+
+                <div class="profile-info-value">
+                    <span class="editable editable-click">
+                        ${{ventaActual.saldosCliente.saldoCuentaFacturacion}}
+                    </span>
+                </div>
+            </div>
+
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Envases </div>
+
+                <div class="profile-info-value">
+                    <ul class="list-unstyled spaced2">
+                        <li ng-repeat="item in envasesDelCliente">
+                            <i class="ace-icon fa fa-cubes green"></i>
+                            {{item.nombreArticulo}}
+                            <span class="label label-success arrowed-right arrowed-in">{{item.stockPermanente}}</span>
+                            <span ng-show="item.stockTemporal>0" class="label label-danger arrowed-right arrowed-in">{{item.stockTemporal}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-sm-5">
+
+        <div class="row">
+
+            <div class="profile-user-info profile-user-info-striped">
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Última entrega</div>
+
+                    <div class="profile-info-value">
+                        <a href="/Clientes/EditCliente/{{ventaActual.clienteActual.cliente_id}}">
+                            <span class="editable editable-click">
+                                {{ventaActual.clienteActual.fechaUtlimaEntrega.slice(6, -2)  |  date:'dd/MM/yyyy' }}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Último cobro consumos</div>
+
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            {{ventaActual.clienteActual.fechaUltimoCobroConsumos.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name">Último cobro facturas</div>
+
+                    <div class="profile-info-value">
+                        <span class="editable editable-click">
+                            {{ventaActual.clienteActual.fechaUltimoCobroFactura.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <a class="btn btn-grey btn-xs"
+               href="/ChequesDepositos?nuevocheque=true&hojaderutaid={{hojaDeRutaId}}" target="_blank">
+                <i class="ace-icon fa fa-plus  bigger-110 icon-only"></i>
+                Agregar cheques recibidos
+            </a>
+            <a class="btn btn-info btn-xs"
+               href="/ChequesDepositos?nuevodeposito=true&hojaderutaid={{hojaDeRutaId}}" target="_blank">
+                <i class="ace-icon fa fa-plus  bigger-110 icon-only"></i>
+                Agregar depósitos recibidos
+            </a>
+        </div>
+
+        <br />
+
+        <div class="btn-group btn-corner">
+            <a class="btn btn-purple" title="Hoja de ruta" href="/HojasDeRuta?hojaDeRutaId={{ventaActual.hojaDeRutaId}}">{{hojaDeRuta.fechaRuta.slice(6, -2)  |  date:'dd/MM/yyyy'}} - {{hojaDeRuta.nombreReparto}}</a>
+
+        </div>
+
+    </div>
+</div>

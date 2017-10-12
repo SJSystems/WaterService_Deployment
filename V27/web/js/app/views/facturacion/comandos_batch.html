@@ -1,0 +1,81 @@
+﻿<h2>Procesos Batch de HOY!!!</h2>
+<h5>Estos procesos se ejecutarán solo una vez por día de manera automática</h5>
+<div class="form-horizontal" ng-app="app_facturacion" id="div_comandosBatch" ng-controller="comandosCtrl as modelo">
+   
+    <fieldset>
+        <div class="col-sm-6">
+            
+            <div class="form-group hide">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Proceso 1</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <button id="btn_batchProcesosFacturacion" ng-disabled="modelo.procesando" ng-click="modelo.ejecutarGeneradorDeProcesos()" class="btn btn-sm btn-warning">Ejecutar generador de procesos de Facturación</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Proceso 2</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <button id="btn_batchImputacionesAbonos"  ng-disabled="modelo.procesando" ng-click="modelo.ejecutarImputacionesAbono()" class="btn btn-sm btn-warning">Ejecutar imputaciones de Abonos y pre-procesos de facturación</button>
+                        <br/>
+                        <input class="validate form-control date-picker col-xs-10 col-sm-5 " data-val="true"
+                               errormessage="Ingrese una fecha válida" 
+                               fieldtype="text" id="txt_fechaImputacionAbonos" placeholder="dd/mm/yyyy" type="text">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Proceso 3</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        
+                        <button id="btn_batchGenerarHojasDeRutas" ng-click="modelo.GenerarHojasDeRutas()" class="btn btn-sm btn-warning">Generar hojas de rutas</button>
+                        <br/>
+                        
+                        <input class="validate form-control date-picker col-xs-10 col-sm-5 " data-val="true"
+                               errormessage="Ingrese una fecha válida" 
+                               fieldtype="text" id="txt_fechaHojasDeRutas" placeholder="dd/mm/yyyy" type="text">
+                        
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="col-sm-6">
+           
+        </div>
+        
+    </fieldset>
+    
+    <div class="well well-lg">
+        <h4 class="blue">{{modelo.titulo}}</h4>
+        {{modelo.mensaje}}
+    </div>
+    
+    <button ng-click="modelo.consultarProgreso()" class="btn btn-sm btn-warning">Consultar progreso</button>
+    <h4 class="bigger">{{modelo.progreso.CurrentProgress}} / {{modelo.progreso.FinalProgress}}</h4>
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Hora</th>
+                <th>Avance</th>
+                <th>Mensaje</th>
+                <th>Tipo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="mensaje in modelo.progreso.Messages">
+                <td>{{mensaje.Time.slice(6, -2)  |  date:'dd/MM/yyyy HH:mm:ss'}}</td>
+                <td>{{mensaje.Progress}}</td>
+                <td>{{mensaje.MessageText}}</td>
+                <td>{{mensaje.Type}}</td>
+            </tr>
+        </tbody>
+    </table>
+   
+</div>

@@ -1,0 +1,130 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Cliente_Comodato
+@{
+    ViewBag.Title = "Comodatos";
+}
+@Html.HiddenFor(x => x.ClienteModelo.id)
+
+@Html.Partial("_PasosCliente",Model.ClienteModelo)
+
+            <button id="btn_agregarComodato" type="button" class="btn btn-white btn-default btn-round">
+				<i class="ace-icon fa fa-plus-square-o  red2"></i>
+				Agregar Comodato
+			</button>
+
+<div class="widget-box">
+		<div class="widget-header">
+			<h4 class="widget-title">Comodatos Activos</h4>
+		</div>
+
+		<div class="widget-body">
+			<div class="widget-main no-padding">               
+                <div class="row">
+
+    <div class="col-xs-12">
+        <!-- <div class="table-responsive"> -->
+        <!-- <div class="dataTables_borderWrap"> -->
+        <div>
+            <table id="tb_resultadoClientesActivos" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Artículo</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>                        
+                        <th>Fecha</th>
+                        <th>Observaciones</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model.ComodatosDelCliente_Activos)
+                        {
+                            <tr>
+                                <td>(@item.codigoInterno) @item.nombreArticulo @item.unidad @item.medidaUnidad >> @item.rubro </td>
+                                <td>$@item.precio</td>
+                                <td>@item.cantidad</td>
+                                <td>@item.fechaAlta.ToString("dd/MM/yyyy")</td>
+                                <td>@item.observaciones</td>
+                                <td>
+                                    <div class="hidden-sm hidden-xs action-buttons">                         
+                                        <a class="green" href="javascript: Modelo.AbrirDialogoEdit(@item.id);" >
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                        </a>
+                                        <a class="red"href="javascript: Modelo.DesactivarComodato(@item.id);">
+                                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+   			</div>
+		</div>
+	</div>
+
+<br />
+<div class="widget-box">
+		<div class="widget-header">
+			<h4 class="widget-title">Comodatos Inactivos</h4>
+		</div>
+		<div class="widget-body">
+			<div class="widget-main no-padding">
+               
+                <div class="row">
+
+                    <div class="col-xs-12">
+                        <div>
+                            <table id="tb_resultadoClientesNoActivos" class="   table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Artículo</th>
+                                        <th>Precio</th>
+                                        <th>Cantidad</th>                        
+                                        <th>Fecha Activo</th>
+                                        <th>Fecha Inactivo</th>
+                                        <th>Observaciones</th>                                        
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @if (Model != null)
+                                    {
+                                        foreach (var item in Model.ComodatosDelCliente_NoActivos)
+                                        {
+                                            <tr>
+                                                <td>(@item.codigoInterno) @item.nombreArticulo @item.unidad @item.medidaUnidad >> @item.rubro </td>
+                                                <td>$@item.precio</td>
+                                                <td>@item.cantidad</td>
+                                                <td>@item.fechaAlta.ToString("dd/MM/yyyy")</td>
+                                                <td>@(item.fechaInactivo!=null && item.fechaInactivo.HasValue?item.fechaInactivo.Value.ToString("dd/MM/yyyy"):"")</td>
+                                                <td>@item.observaciones</td>                                             
+                                            </tr>
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+   			</div>
+		</div>
+	</div>
+
+
+<div id="div_addComodato" title=" --- Comodato ---">    
+    <div id="div_ComodatoContent"></div>
+</div>
+
+<script src="~/js/Views/Clientes_Comodatos.js"></script>

@@ -1,0 +1,125 @@
+﻿<div>
+    
+    <buscar-clientes clientes="clientesResultado"></buscar-clientes>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div style="max-height: 300px; overflow-y: scroll" >
+                <table class=" table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="checkbox">
+                                    <label>
+                                        <input class="ace ace-checkbox-2" type="checkbox"
+                                               ng-click="seleccionarTodos()"
+                                               ng-model="todosSeleccionados">
+                                        <span class="lbl"> </span>
+                                    </label>
+                                </div>
+                            </th>
+                            <th>ID</th>
+                            <th>Nombre / Razón Social</th>
+                            <th>Tipo </th>
+                            <th>Domicilio</th>
+                            <th>Reparto</th>
+                            <th>Estado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr ng-repeat="item in clientesResultado">
+                            <td>
+                                <div class="checkbox">
+                                    <label>
+                                        <input class="ace ace-checkbox-2" type="checkbox"
+                                               ng-model="item.seleccionado">
+                                        <span class="lbl"> </span>
+                                    </label>
+                                </div>
+                            </td>
+                            <td>{{item.cliente_id}}</td>
+                            <td>
+                                {{item.nombreCliente}}
+                                <span ng-show="item.datosCompletos" class="label label-warning">
+                                    <i class="ace-icon fa fa-exclamation-triangle bigger-120"></i>
+                                </span>
+                            </td>
+                            <td>{{item.tipoCliente}} </td>
+                            <td>{{item.domicilioCompleto}} </td>
+                            <td>{{item.nombreReparto}} </td>
+                            <td>{{item.estadoCliente}} </td>
+                            <td>
+                                <div class="hidden-sm hidden-xs action-buttons">
+
+                                    <div class="btn-group">
+                                        <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                                            Acciones
+                                            <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-inverse">
+
+                                            <li>
+                                                <a href="/Clientes/ClienteDisplay/{{item.cliente_id}}">Ver detalles</a>
+                                            </li>
+
+                                            <li class="divider"></li>
+
+                                            <li>
+                                                <a href="/Clientes/EditCliente/{{item.cliente_id}}">Editar</a>
+                                            </li>
+
+                                            <li>
+                                                <a href="/Clientes/EditDomicilio/{{item.cliente_id}}">Domicilio</a>
+                                            </li>
+                                            <li>
+                                                <a href="/Clientes/EditReparto/{{item.cliente_id}}">Reparto</a>
+                                            </li>
+                                            <li>
+                                                <a href="/Clientes/DatosFacturacion/{{item.cliente_id}}">Facturación</a>
+                                            </li>
+                                            <li>
+                                                <a href="/Clientes/EditContactos/{{item.cliente_id}}">Contactos</a>
+                                            </li>
+                                            <li>
+                                                <a href="/Clientes/EditCliente/{{item.cliente_id}}">Comodato</a>
+                                            </li>
+                                            <li>
+                                                <a href="/Clientes/EditCliente/{{item.cliente_id}}">Abonos</a>
+                                            </li>
+
+                                        </ul>
+                                    </div><!-- /.btn-group -->
+
+                                    <a class="green" href="/Clientes/EditCliente/{{item.cliente_id}}">
+                                        <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                    </a>
+
+                                </div>
+
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-actions center">
+
+        <button type="button" ng-click="seleccionarClientes ()" class="btn btn-sm btn-success">
+            <i class="ace-icon fa fa-check icon-on-right bigger-110"></i>
+            Confirmar selección de clientes
+        </button>
+
+        <button type="button" ng-click="cancelar()" class="btn btn-sm btn-danger">
+            <i class="ace-icon fa fa-times icon-on-right bigger-110"></i>
+            Cancelar
+        </button>
+
+    </div>
+    
+</div>

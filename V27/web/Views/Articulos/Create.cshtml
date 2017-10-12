@@ -1,0 +1,401 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Articulo_Create
+
+<div class="page-header">
+    <h1>Nuevo Articulo
+		<small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            Ingrese los datos del nuevo articulo
+        </small>
+    </h1>
+</div>
+
+<div class="widget-box">
+    <div class="widget-header">
+        <h4 class="widget-title">Nuevo Artículo: </h4>
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-main no-padding">
+
+            @using (Html.BeginForm("GuardarArticulo", "Articulos", FormMethod.Post, new { id = "form_create", name = "form_create", @class = "form-horizontal", role = "form" }))
+            {
+                <!-- <legend>Form</legend> -->
+                <fieldset>
+
+                    @*nombreArticulo*@
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-3 no-padding-right">Nombre artículo</label>
+                        <div class="col-xs-12 col-sm-9">
+                            <div class="clearfix">
+                                @Html.TextBoxFor(   x => x.ArticuloModelo.nombreArticulo, 
+                                                    new { fieldType = "text", errorMessage = "Ingrese el nombre del artículo", 
+                                                        @class = "validate col-xs-10 col-sm-8 ", 
+                                                        placeholder = "nombre del artículo", type = "text" })
+                            </div>
+                            <div class="mensajeValidacion help-block"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+
+                        @*codigoInterno*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Código Interno</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.ArticuloModelo.codigoInterno, 
+                                                        new { fieldType = "text", errorMessage = "Ingrese el Código Interno ", 
+                                                            @class = "validate col-xs-10 col-sm-8 ", 
+                                                            placeholder = "código interno del artículo", type = "text" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                        
+                        @*Tipo*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(x => x.ArticuloModelo.tipoArticulo_ids,
+                                                            new SelectList(Model.Tipos, "valor_ids", "valorTexto"),
+                                                            new { @class = "input-group col-xs-10 col-sm-8" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*Marca*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Marca</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(x => x.ArticuloModelo.marca_ids,
+                                                            new SelectList(Model.Marcas, "valor_ids", "valorTexto"),
+                                                            new { @class = "input-group col-xs-10 col-sm-8" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*Modelo*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Modelo</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(x => x.ArticuloModelo.modelo,
+                                        new
+                                        {
+                                            errorMessage = "",
+                                            fieldType = "text",
+                                            @class = "col-xs-10 col-sm-8 ",
+                                            placeholder = "modelo"
+                                        })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*Rubros*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Rubro</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(  x => x.ArticuloModelo.rubro_ids, 
+                                        new SelectList(Model.Rubros, "valor_ids", "valorTexto"), 
+                                        new { @class = "input-group col-xs-10 col-sm-8" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                        
+                        @*Rubro Fiscal*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Rubro Fiscal</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(x => x.ArticuloModelo.rubroFiscal_ids,
+                                                            new SelectList(Model.RubrosFiscales, "valor_ids", "valorTexto"),
+                                                            new { @class = "input-group col-xs-10 col-sm-8" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*Unidades*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Unidad de medida</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(  x => x.ArticuloModelo.unidad_ids, 
+                                                            new SelectList(Model.Unidades, "valor_ids", "valorTexto"), 
+                                                            new { @class = "input-group col-xs-10 col-sm-8" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*medidaUnidad*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Medida</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.ArticuloModelo.medidaUnidad, 
+                                                        new { errorMessage = "Ingrese la medida del artículo", 
+                                                            fieldType = "text", @class = "col-xs-10 col-sm-8 ", 
+                                                            placeholder = "medida del artículo" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*cantidadXPack*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Cantidad por pack</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor( x => x.ArticuloModelo.cantidadXPack, 
+                                                      new { errorMessage = "Ingrese la cantidad del pack", 
+                                                          fieldType = "text", 
+                                                          @class = "validate col-xs-10 col-sm-8 ", 
+                                                          placeholder = "cantidad del pack del artículo" })                                   
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*Tipos_Envases*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipos de envases</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor( x => x.ArticuloModelo.tipoEnvase_ids, 
+                                                           new SelectList(Model.Tipos_Envases, "valor_ids", "valorTexto"), 
+                                                           new { @class = "input-group col-xs-10 col-sm-8" })                                    
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                        
+                        @*exportarAMovil*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right"></label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="checkbox">
+                                        <label>
+                                            @Html.CheckBoxFor(x => x.ArticuloModelo.exportarAMovil)
+                                            <span class="lbl"> Exportar a móvil</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                        
+                        @*exportarAMovil*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right"></label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="checkbox">
+                                        <label>
+                                            @Html.CheckBoxFor(x => x.ArticuloModelo.controlableEnPlaya)
+                                            <span class="lbl"> Controlable en playa</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*esFrecuente*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right"></label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="checkbox">
+                                        <label>
+                                            @Html.CheckBoxFor(x => x.ArticuloModelo.esFrecuente)
+                                            <span class="lbl"> Es Frecuente</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                        @*comisionFamilia*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Comisión familia</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.ArticuloModelo.comisionFamilia, 
+                                                        new { errorMessage = "Ingrese la Comisión familia", 
+                                                            fieldType = "text", 
+                                                            @class = "validate col-xs-10 col-sm-8 ", placeholder = "comisión familia" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*comisionEmpresa*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Comisión empresa</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.ArticuloModelo.comisionEmpresa, 
+                                                        new { errorMessage = "Ingrese la Comisión empresa", 
+                                                            fieldType = "text", 
+                                                            @class = "validate col-xs-10 col-sm-8 ", placeholder = "comisión empresa" })                                    
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*tipoDeIva_consumidorFinal*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo IVA Excentos</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(  x => x.ArticuloModelo.tipoDeIva_consumidorFinal, 
+                                                            new SelectList(Model.TiposDeIva, "id", "tipoDeIva"), 
+                                                            new { @class = "input-group col-xs-10 col-sm-8" })                                   
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*tipoDeIva_facturaA*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo IVA Normal</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.DropDownListFor(  x => x.ArticuloModelo.tipoDeIva_facturaA, 
+                                                            new SelectList(Model.TiposDeIva, "id", "tipoDeIva"), 
+                                                            new { @class = "input-group col-xs-10 col-sm-8" })                                    
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*precioMaximo*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Precio máximo</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.ArticuloModelo.precioMaximo, 
+                                                        new { errorMessage = "Ingrese el precio máximo del artículo", 
+                                                            fieldType = "text", 
+                                                            @class = "validate col-xs-10 col-sm-8 ", placeholder = "precio máximo del artículo" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*precioMinimo*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Precio mínimo</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(   x => x.ArticuloModelo.precioMinimo, 
+                                        new { errorMessage = "Ingrese el precio mínimo del artículo", 
+                                            fieldType = "text", 
+                                            @class = "validate col-xs-10 col-sm-8 ", placeholder = "precio mínimo del artículo" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                        
+                        @*Peso*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Peso en kilos</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(x => x.ArticuloModelo.pesoKilos,
+                                                        new
+                                                        {
+                                                            errorMessage = "Ingrese el peso unitario",
+                                                            fieldType = "text",
+                                                            @class = "validate col-xs-10 col-sm-8 ",
+                                                            placeholder = "peso del artículo"
+                                                        })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        @*Stock Actual*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Stock actual</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(x => x.ArticuloModelo.stockActual,
+                                        new
+                                        {
+                                            errorMessage = "Ingrese el stock actual",
+                                            fieldType = "text",
+                                            @class = "validate col-xs-10 col-sm-8 ",
+                                            placeholder = "stock actual"
+                                        })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                        
+                        @*Stock Mínimo*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Stock mínimo</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(x => x.ArticuloModelo.stockMinimo,
+                                        new
+                                        {
+                                            errorMessage = "Ingrese el stock mínimo",
+                                            fieldType = "text",
+                                            @class = "validate col-xs-10 col-sm-8 ",
+                                            placeholder = "stock mínimo"
+                                        })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                        
+                        @*Stock Máximo*@
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right">Stock máximo</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(x => x.ArticuloModelo.stockMaximo,
+                                        new
+                                        {
+                                            errorMessage = "Ingrese el stock máximo",
+                                            fieldType = "text",
+                                            @class = "validate col-xs-10 col-sm-8 ",
+                                            placeholder = "stock máximo"
+                                        })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                     
+                    </div>
+
+                </fieldset>
+                    
+                <div class="form-actions center">
+                    <button type="button" id="btn_guardarArticulo" class="btn btn-sm btn-success">
+                        Guardar
+                        <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script src="~/js/Views/Articulos_Create.js"></script>

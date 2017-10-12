@@ -1,0 +1,176 @@
+﻿@{
+    ViewBag.Title = "Pedidos de Clientes";
+}
+<div ng-app="mainApp" ng-controller="pedidosIndexCtrl">
+    <h2>Pedidos de clientes</h2>
+
+    <form class="form-horizontal" method="post" name="form_buscar" role="form">
+        <fieldset>
+            
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-3 no-padding-right">Cliente a entregar:</label>
+                <div class="col-xs-12 col-sm-9">
+                    <div class="clearfix">
+                        <span class="block input-icon input-icon-right">
+                            
+                            <input  required ng-model="BusquedaModelo.clienteTexto" 
+                                auto-complete="autoCompleteModel" name="txt_cliente" type="text" 
+                                class="col-xs-12 col-sm-12" >
+                            <i ng-show="BusquedaModelo.clienteSelected!=null" title="Cliente seleccionado" class="ace-icon fa fa-info-circle green"></i>
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Nro. pedido</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            <input class="col-xs-10 col-sm-8 "  name="numeroPedido" ng-model="BusquedaModelo.pedidoId" placeholder="nro. del pedido" type="text" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            
+                            <select class="form-control" required 
+                                    ng-model="BusquedaModelo.tipoPedidoSelected" 
+                                    name="cmb_estadoPedido" class="col-xs-12 col-sm-11" 
+                                    ng-options="tipo.valorTexto for tipo in BusquedaModelo.tiposPedidosDisponibles" >
+                            </select>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-6">
+                
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" >Pedido desde</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <div class="clearfix">
+                            <div class="input-group col-sm-8">
+                                <input class="form-control date-picker" required  name="txt_fechaPedidoDesde"
+                                       ng-model="BusquedaModelo.desde" 
+                                       type="text" data-date-format="dd-mm-yyyy">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div ng-show="form_buscar.txt_fechaPedidoDesde.$error.required" class="help-block" style="color: #d16e6c">Seleccione una fecha válida</div>
+                    </div>
+                </div>
+                
+                    
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-3 no-padding-right" >Pedido hasta</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <div class="clearfix">
+                            <div class="input-group col-sm-8">
+                                <input class="form-control date-picker" required  name="txt_fechaPedidohasta"
+                                       ng-model="BusquedaModelo.hasta" 
+                                       type="text" data-date-format="dd-mm-yyyy">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar bigger-110"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div ng-show="form_buscar.txt_fechaPedidohasta.$error.required " class="help-block" style="color: #d16e6c">Seleccione una fecha válida</div>
+                    </div>
+                </div>
+                              
+            </div>
+
+        </fieldset>                    
+        <div class="form-actions center">
+
+            <button type="button" id="btn_submit" class="btn btn-sm btn-primary" ng-click="buscarPedidos()" ng-disabled="!validarBusqueda().isValid">
+                Buscar Dispensers
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+            </button>
+
+            <a href="/Pedidos/Create" id="btn_nuevo" class="btn btn-sm btn-success">Nuevo pedido
+                <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+            </a>
+
+        </div>
+    </form>
+    
+    
+    <table id="tb_resultadoClientes" class=" table table-striped table-bordered table-hover">
+        <thead>
+            <tr>                        
+                <th>N° Pedido</th>
+                <th>Cliente</th>
+                <th>Tipo </th>
+                <th>Domicilio</th>
+                <th>Recepción</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Reparto</th>
+                <th>Registra</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+           
+            <tr ng-repeat="item in BusquedaModelo.pedidosResultado">
+                
+                    <td>{{item.id}}</td>
+                    <td>{{item.nombreCliente}}</td>
+                    <td>{{item.tipoPedido}}</td>
+                    <td>{{item.domicilioCompleto}}</td>
+                    <td>{{item.fechaRecepcion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.estadoPedido}}</td>
+                    <td>{{item.fechaPlanificadaAtencion.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.repartoPlanifiicado}}</td>
+                    <td>{{item.nombreApellido}}</td>
+                <td>
+                    
+                    <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                            Acciones
+                            <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-inverse">
+                            <li>
+                                <a href="/Clientes/ClienteDisplay/{{item.id}}">Ver detalles</a>
+                            </li>
+                            <li>
+                                <a href="/Clientes/ClienteDisplay/{{item.id}}">Editar</a>
+                            </li>
+                            <li>
+                                <a href="/Clientes/ClienteDisplay/{{item.id}}">Cerrar</a>
+                            </li>
+                            <li>
+                                <a href="/Clientes/ClienteDisplay/{{item.id}}">Cancelar</a>
+                            </li>
+
+                        </ul>
+                    </div><!-- /.btn-group -->
+
+                </td>
+                
+            </tr>
+
+        </tbody>
+    </table>
+
+
+</div>
+
+<script src="~/js/app/controllers/PedidosControllers.js"></script>
+
+<script src="~/js/app/app_directives.js"></script>

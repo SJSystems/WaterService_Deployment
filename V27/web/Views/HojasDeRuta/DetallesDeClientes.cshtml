@@ -1,0 +1,147 @@
+﻿@model WaterService.Common.Entities.DTOs.HojaDeRutaExportableDto
+<div ng-app="mainApp" ng-controller="listaDeClientesDeHojaDeRutaController">
+    
+    <div class="checkbox no-print">
+        <label>
+            <input name="form-field-checkbox" ng-model="mostrarArticulos" type="checkbox" class="ace">
+            <span class="lbl"> Mostrar artículos</span>
+        </label>
+    </div>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Dia</th>
+                <th>Reparto</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.HojaDeRuta.dia</td>
+                <td>@Model.HojaDeRuta.nombreReparto</td>
+                <td>@Model.HojaDeRuta.fechaRuta.ToString("dd/MM/yyyy")</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Cliente</th>
+                <th>Saldos</th>
+                <th>Venta</th>
+                <th>Pagos</th>
+                <th>Envases</th>
+                <th>Fechas</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in Model.HojaDeRuta.Clientes)
+            {
+                <tr>
+                    <td >
+                        @cliente.orden
+                    </td>
+                    <td>
+                        (@cliente.cliente_id) @cliente.nombreCliente  @(cliente.servicioTecnico_id.HasValue?"(ST: "+cliente.sintomaServicioTecnico+")":"")
+                       
+                         @if (cliente.servicioTecnico_id.HasValue)
+                         {
+                            <br />
+                            <span>(ST: @cliente.sintomaServicioTecnico)</span>
+                         }
+
+                        <br/>
+                        @cliente.domicilioCompleto
+                    </td>
+                    <td>
+                        Cons: $@cliente.saldoConsumos
+                        <br/>
+                        Fact: $@cliente.saldoFacturacion
+                    </td>
+                    <td>
+                        ________________
+                        <br />
+                        ________________
+                        <br />
+                        ________________
+                    </td>
+                    <td>
+                        C - D
+                    </td>
+                    <td>
+                        @foreach (var envase in cliente.Envases)
+                        {
+                            @("(" + envase.codigoInterno + ") " + (envase.cantidadEnCliente.HasValue ? envase.cantidadEnCliente.Value : 0) + "/" + Math.Round(envase.cantidadComodato,0))
+                            <br/>
+                        }
+                    </td>
+                    <td>
+                        U.C: @(cliente.fechaUltimaCompra.HasValue ? cliente.fechaUltimaCompra.Value.ToString("dd/MM/yyy") : "")
+                        <br />
+                        U.P.C.: @(cliente.fechaUltimoCobroConsumos.HasValue ? cliente.fechaUltimoCobroConsumos.Value.ToString("dd/MM/yyy") : "")
+                        <br />
+                        U.P.F: @(cliente.fechaUltimoCobroFactura.HasValue ? cliente.fechaUltimoCobroFactura.Value.ToString("dd/MM/yyy") : "")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+<table class="table table-striped table-bordered" ng-show="mostrarArticulos">
+    <thead>
+        <tr>
+            <th>Cod</th>
+            <th>Articulo de lista</th>
+            <th>Precio</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var articulo in Model.ArticulosLista)
+        {
+            <tr>
+                <td>@articulo.codigoInterno</td>
+                <td>@articulo.nombreArticulo</td>
+                <td>$@articulo.precioMaximo</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+    <table class="table">
+       
+        <tbody>
+            @foreach (var cliente in Model.HojaDeRuta.Clientes.Where(x => x.servicioTecnico_id.HasValue).ToList())
+            {
+                <tr>
+                    <td>
+                        <div class="widget-box">
+                            <div class="widget-body">
+                                <div class="widget-main">
+
+                                    <detalle-servicio-tecnico servicio-tecnico-id="@cliente.servicioTecnico_id" />
+
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/hojasDeRutaControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/reportes/directivesReportes.js"></script>
+<script src="~/js/app/controllers/resumenDeCuentaControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/controllers/dispensersController.js"></script>

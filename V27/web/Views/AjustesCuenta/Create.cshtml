@@ -1,0 +1,242 @@
+﻿<div ng-app="mainApp" ng-controller="crearAjusteDeCuentaController">
+    
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4 class="widget-title">Crear ajuste de cuenta </h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+                <form name="mainForm" class="form-horizontal" novalidate ng-show="esSaldoInicial">
+                    <!-- <legend>Form</legend> -->
+                    <fieldset>
+
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right"></label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <h2>Saldo inicial facturado</h2>
+                                        <h3>{{cliente.nombreCliente}} - <h4>{{cliente.domicilioCompleto}}</h4></h3>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right">Saldo inicial</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input ng-model="saldoInicial.monto"
+                                               smart-float
+                                               class="form-control col-xs-10 col-sm-10 "
+                                               fieldtype="text" type="text">
+                                    </div>
+                                    ${{saldoInicial.monto}}
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                    </fieldset>
+                    
+                    <div class="form-actions center">
+
+                        <button type="button" ng-click="cancelar()"
+                                class="btn btn-sm btn-danger">
+                            <i class="ace-icon fa fa-arrow-left icon-on-right bigger-110"></i>
+                            Cancelar
+
+                        </button>
+
+                        <button type="button" ng-click="guardarSaldoInicial()"
+                                class="btn btn-sm btn-success">
+                            Guardar Saldo Inicial
+                            <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                        </button>
+
+                    </div>
+                </form>
+
+                <form name="mainForm" class="form-horizontal" novalidate ng-hide="esSaldoInicial">
+                    <!-- <legend>Form</legend> -->
+                    <fieldset>
+
+                        <div class="col-sm-6">
+                            
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right"></label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <h3>{{cliente.nombreCliente}} - <h4>{{cliente.domicilioCompleto}}</h4></h3>  
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right">Tipo de ajuste</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        
+                                        <select style=" width: 300px;" ng-model="ajuste.tipoAjuste_ids"
+                                                ng-options="tipo.valor_ids as tipo.valorTexto for tipo in tiposAjustes"></select>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right">Texto de registro</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input ng-model="ajuste.textoEnMovimiento"
+                                               class="validate form-control col-xs-10 col-sm-10 "
+                                               fieldtype="text" type="text">
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right">Motivo</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        
+                                        <select class="col-sm-8" ng-model="ajuste.motivoAjuste_ids"
+                                                ng-options="motivo.valor_ids as motivo.valorTexto for motivo in motivosAjustes"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right">Comentarios:</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <textarea class="form-control limited" ng-model="ajuste.comentarios" maxlength="300"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right">Monto $</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text" value="{{obtenerTotal()}}" disabled="true" />
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right">Fecha impacto</label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        <input type="text" ng-model="ajuste.fechaAjuste" class="date-picker" />
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-3 no-padding-right"></label>
+                                <div class="col-xs-12 col-sm-9">
+                                    <div class="clearfix">
+                                        
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                    
+                    <button class="btn btn-white btn-warning btn-bold"
+                            ng-click="agregarNuevoConcepto()">
+                        <i class="ace-icon fa fa-plus bigger-120 orange"></i>
+                        Agregar concepto
+                    </button>
+                    
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Concepto</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio</th>
+                                        <th>Iva</th>
+                                        <th>Subtotal</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in conceptos">
+
+                                        <td>
+                                            <select class="col-sm-8" ng-model="item.articulo_id"
+                                                    ng-options="articulo.id as articulo.nombreArticulo for articulo in articulos"></select>
+                                        </td>
+                                        <td>
+                                            <input type="text" smart-float ng-model="item.cantidad" />
+                                        </td>
+                                        <td>
+                                            <input type="text"
+                                                   smart-float
+                                                   ng-model="item.precioUnitario">
+                                        </td>
+                                        <td>{{obtenerPorcentajeIva(item)}}%</td>
+                                        <td>${{obtenerSubtotalItem(item)}}</td>
+
+                                        <td>
+                                            <button class="btn btn-white btn-default btn-round" ng-click="quitarNuevoConcepto($index)">
+                                                <i class="ace-icon fa fa-trash-o red2"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="5">
+                                            <span class="pull-right">
+                                                Total:
+                                            </span>
+                                        </td>
+                                        <td>${{obtenerTotal()}}</td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="form-actions center">
+                        
+                        <button type="button" ng-click="cancelar()"
+                                class="btn btn-sm btn-danger">
+                            <i class="ace-icon fa fa-arrow-left icon-on-right bigger-110"></i>
+                            Cancelar
+
+                        </button>
+
+                        <button type="button" ng-click="guardarAjuste()"
+                                class="btn btn-sm btn-success">
+                            Guardar Ajuste
+                            <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                        </button>
+                        
+                       
+                    </div>
+                </form>
+                
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script src="~/js/app/controllers/ajustesCuentaControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Procesos";
+}
+
+@Scripts.Render("~/js/app/controllers/facturacionControllers.js")
+@Scripts.Render("~/js/app/app_facturacion.js")
+
+<div class="container" ng-app="app_facturacion">
+    <div ng-view></div>
+</div>
+
+<script>
+    window.onbeforeunload = function (evt) {
+        var message = 'Puede haber un proceso de facturación corriendo, por favor verifique y luego cierre la página';
+        if (typeof evt == 'undefined') {
+            evt = window.event;
+
+        }
+        if (evt) {
+            evt.returnValue = message;
+        }
+
+        return message;
+
+    }
+</script>

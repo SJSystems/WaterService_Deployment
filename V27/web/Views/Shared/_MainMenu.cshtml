@@ -1,0 +1,107 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.MainMenu_Model
+
+			<!-- #section:basics/sidebar -->
+			<div id="sidebar" class="sidebar responsive">
+				<script type="text/javascript">
+					try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+				</script>
+                
+                @if (((WaterService.Common.Entities.DTOs.CurrentSession_DTO)ViewBag.CurrentSession).User.cliente_id.HasValue==false)
+                {
+                    <!-- .sidebar-shortcuts -->
+                    <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+
+                        <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+
+                            <!-- #section:basics/sidebar.layout.shortcuts -->
+                            <button class="btn btn-success hasTooltip " title="Plantalla completa" onclick="NoLayoutOnlyPlugins();">
+                                <i class="ace-icon fa fa-external-link"></i>
+                            </button>
+
+                            <a class="btn btn-info hasTooltip " title="Clientes" href="/Clientes">
+                                <i class="ace-icon fa fa-users"></i>
+                            </a>
+
+                            <a class="btn btn-warning hasTooltip" title="Artículos" href="/Articulos">
+                                <i class="ace-icon fa fa-cubes"></i>
+                            </a>
+
+                            <a class="btn btn-danger  hasTooltip " title="Hojas de ruta" href="/HojasDeRuta">
+                                <i class="ace-icon fa fa-truck"></i>
+                            </a>
+                            <!-- /section:basics/sidebar.layout.shortcuts -->
+
+                        </div>
+
+                        <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+                            <span class="btn btn-success"></span>
+
+                            <span class="btn btn-info"></span>
+
+                            <span class="btn btn-warning"></span>
+
+                            <span class="btn btn-danger"></span>
+                        </div>
+                    </div>
+                    <!-- /.sidebar-shortcuts -->
+                }
+
+			 
+             	<ul class="nav nav-list">
+				
+                @foreach (var item in @Model.OpcionesMenu)
+                {
+                    if (!item.Opcion.visible)
+                    {
+                        continue;
+                    }
+                    
+                    <li class="@( item.EsSeleccionado(Model.CodigoOpcionSeleccionado) || item.HijoSeleccionado(Model.CodigoOpcionSeleccionado) ? "active":"") @(item.HijoSeleccionado(Model.CodigoOpcionSeleccionado)?"open":"")">
+						<a href="@(item.TieneHijos?"#":item.Opcion.href)" class="@(item.TieneHijos?"dropdown-toggle":"")">
+							<i class="menu-icon fa @item.Opcion.iconoCss"></i>
+							<span class="menu-text"> @item.Opcion.displayText </span>
+							@if (item.TieneHijos)
+                            {
+                                <b class="arrow fa fa-angle-down"></b>
+                            }
+						</a>
+                         <b class="arrow"></b>
+                        @if (@item.TieneHijos)
+	                    {		                   
+						    <ul class="submenu">
+							
+                                @foreach (var subItem in item.SubOpciones)
+	                            {
+                                    if (!subItem.visible)
+                                    {
+                                        continue;
+                                    }
+                                    
+		                            <li class="@(subItem.codigoOpcion.ToUpper()==Model.CodigoOpcionSeleccionado? "active" :"")">
+								        <a href="@subItem.href">
+									        <i class="menu-icon fa @subItem.iconoCss"></i>
+									        @subItem.displayText
+								        </a>
+								        <b class="arrow"></b>
+							        </li>
+                                }
+
+						    </ul>
+                        }
+	
+					</li>
+                    
+                }
+				</ul><!-- /.nav-list -->   
+            
+				<!-- #section:basics/sidebar.layout.minimize -->
+				<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+					<i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" id="i_minimizarMenu" data-icon2="ace-icon fa fa-angle-double-right"></i>
+				</div>
+
+				<!-- /section:basics/sidebar.layout.minimize -->
+				<script type="text/javascript">
+					try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+				</script>
+			</div>
+			<!-- /section:basics/sidebar -->

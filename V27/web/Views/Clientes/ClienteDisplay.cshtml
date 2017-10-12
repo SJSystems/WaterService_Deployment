@@ -1,0 +1,315 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Cliente_Display
+
+@Html.HiddenFor(x => x.ClienteModel.cliente_id)
+
+<div class="page-header">
+    <h1>
+        @Model.ClienteModel.nombreCliente
+	     <a href="/Clientes/EditCliente/@Model.ClienteModel.cliente_id" class="btn btn-link">
+		    <i class="ace-icon fa fa-pencil bigger-120 green"></i>
+		    Modificar
+	    </a>
+    </h1>
+</div>
+
+<div class="div_accordion">
+
+    <h3>Datos Principales</h3>
+    <div class="accordion_content">
+
+        <div class="col-sm-6">
+
+            
+         <div class="profile-user-info profile-user-info-striped">
+			<div class="profile-info-row">
+				<div class="profile-info-name"> Cliente </div>
+
+				<div class="profile-info-value">
+					<span class="editable" > <strong>@Model.ClienteModel.nombreCliente</strong> </span>
+				</div>
+			</div>
+
+			<div class="profile-info-row">
+				<div class="profile-info-name"> Tipo </div>
+
+				<div class="profile-info-value">
+                    <span class="editable" >@Model.ClienteModel.tipoCliente</span>
+				</div>
+			</div>
+
+			<div class="profile-info-row">
+				<div class="profile-info-name"> Fecha de alta </div>
+
+				<div class="profile-info-value">
+					<span class="editable" >@Model.ClienteModel.datosCompletos</span>
+				</div>
+			</div>
+
+			<div class="profile-info-row">
+				<div class="profile-info-name"> DNI </div>
+
+				<div class="profile-info-value">
+					<span class="editable" >@Model.ClienteModel.dniCliente</span>
+				</div>
+			</div>
+
+            <div class="profile-info-row">
+				<div class="profile-info-name"> Fecha de nac. </div>
+
+				<div class="profile-info-value">
+					<span class="editable" >@Model.ClienteModel.dniCliente</span>
+				</div>
+			</div>
+
+			<div class="profile-info-row">
+				<div class="profile-info-name"> Actividad </div>
+
+				<div class="profile-info-value">
+					<span class="editable" >@Model.ClienteModel.actividadCliente</span>
+				</div>
+			</div>
+
+			<div class="profile-info-row">
+				<div class="profile-info-name"> Promotor </div>
+
+				<div class="profile-info-value">
+					<span class="editable" >@Model.ClienteModel.nombrePromotor</span>
+				</div>
+			</div>
+
+             <div class="profile-info-row">
+				<div class="profile-info-name"> Estado </div>
+
+				<div class="profile-info-value">
+					<span class="editable" >@Model.ClienteModel.estadoCliente</span>
+				</div>
+			</div>
+
+		</div>
+
+
+        </div>
+                
+        <div class="col-sm-6">
+            
+         <div class="profile-user-info profile-user-info-striped">
+			
+            <div class="profile-info-row">
+				<div class="profile-info-name"> Reparto </div>
+
+				<div class="profile-info-value">
+					<span class="editable" > <strong>@Model.ClienteModel.nombreReparto</strong> </span>
+				</div>
+			</div>
+			
+			<div class="profile-info-row">
+				<div class="profile-info-name"> Días de reparto </div>
+
+				<div class="profile-info-value">
+					
+                    @if (Model.RepartosModel != null) {
+
+                        foreach (var item in Model.RepartosModel)
+                        {
+                            
+                            <span class="editable" ><strong> @item.dia  </strong>- @(Convert.ToInt32(item.orden))</span> <br />
+                           
+                        }
+                    
+                    }
+
+				</div>
+			</div>
+             
+            <div class="profile-info-row">
+				<div class="profile-info-name">  </div>
+
+				<div class="profile-info-value">
+                    <button type="button" class="btn btn-white btn-warning btn-bold" onclick="Modelo.VerSucursales()">
+				        <i class="ace-icon fa fa-list-alt bigger-120 orange"></i>
+				        Ver sucursales
+			        </button>				
+
+				</div>
+			</div>
+		</div>
+
+
+        </div>
+        
+    </div>
+
+    <h3>Domicilio</h3>
+    <div class="accordion_content">
+       
+        <div class="col-sm-6">
+             <div class="profile-user-info profile-user-info-striped">
+			
+            <div class="profile-info-row">
+				<div class="profile-info-name">Ciudad </div>
+
+				<div class="profile-info-value">
+					<span class="editable" > @Model.ClienteModel.nombreCiudad  </span>
+                    
+				</div>
+			</div>
+			
+            <div class="profile-info-row">
+				<div class="profile-info-name">Barrio </div>
+
+				<div class="profile-info-value">
+					<span class="editable" > @Model.ClienteModel.nombreBarrio  </span>
+                    
+				</div>
+			</div>
+
+            <div class="profile-info-row">
+				<div class="profile-info-name">Calle </div>
+
+				<div class="profile-info-value">
+					<span class="editable" > @Model.ClienteModel.nombreCalle</span>                    
+				</div>
+			</div>
+
+            <div class="profile-info-row">
+				<div class="profile-info-name">Puerta</div>
+
+				<div class="profile-info-value">
+					<span class="editable" > @Model.ClienteModel.numeroPuerta</span>                    
+				</div>
+			</div>
+			
+
+			
+
+         
+		</div>
+        </div>
+
+        <div class="col-sm-6">
+             <div class="profile-user-info profile-user-info-striped">
+			
+            <div class="profile-info-row">
+				<div class="profile-info-name">Piso </div>
+
+				<div class="profile-info-value">
+					<span class="editable" > @Model.ClienteModel.piso</span>
+                    
+				</div>
+			</div>
+			
+            <div class="profile-info-row">
+				<div class="profile-info-name">Departamento </div>
+
+				<div class="profile-info-value">
+					<span class="editable" > @Model.ClienteModel.depto  </span>
+                    
+				</div>
+			</div>
+
+            <div class="profile-info-row">
+				<div class="profile-info-name">Torre </div>
+
+				<div class="profile-info-value">
+					<span class="editable" > @Model.ClienteModel.torre</span>                    
+				</div>
+			</div>
+
+            <div class="profile-info-row">
+				<div class="profile-info-name">Manzala / Lote</div>
+
+				<div class="profile-info-value">
+					<span class="editable" > @Model.ClienteModel.manzana / @Model.ClienteModel.lote</span>                    
+				</div>
+			</div>
+         
+		</div>
+
+        </div>
+
+        @Html.HiddenFor(x=>x.ClienteModel.altitud)
+        @Html.HiddenFor(x=>x.ClienteModel.longitud)
+
+        <div id="div_map" style="width: 100%; height: 300px;"></div>  
+
+    </div>
+    
+    <h3>Contactos</h3>
+    <div class="accordion_content">
+    
+         <table id="tb_resultadoClientes" class="   table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre / Razón Social</th>
+                        <th>Sector </th>
+                        <th>Telefonos</th>
+                        <th>Email</th>
+                        <th>Observaciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model.ContactosModel)
+                        {
+                        <tr>
+                            <td>@item.id</td>
+                            <td>@item.nombrePersona</td>
+                            <td>@item.sectorEmpresa</td>
+                            <td>@item.telefono / @item.celular</td>
+                            <td><a href="https://mail.google.com/mail/?view=cm&fs=1&to=@item.email" target="_blank" >@item.email </a>   </td>
+                            <td>@item.observaciones</td>                            
+                        </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+    </div>
+
+    <h3>Comodatos</h3>
+    <div class="accordion_content">
+        
+       <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Artículo</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>                        
+                        <th>Fecha</th>
+                        <th>Observaciones</th>                        
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model.ComodatosModel.Where(x=>x.activo).ToList())
+                        {
+                            <tr>
+                                <td>(@item.codigoInterno) @item.nombreArticulo @item.unidad @item.medidaUnidad >> @item.rubro </td>
+                                <td>$@item.precio</td>
+                                <td>@item.cantidad</td>
+                                <td>@item.fechaAlta.ToString("dd/MM/yyyy")</td>
+                                <td>@item.observaciones</td>
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+
+    </div>
+
+</div>
+
+<div id="dialog_sucursales" title="Sucursales del cliente"></div>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+<script src="~/js/Views/Cliente_Display.js"></script>

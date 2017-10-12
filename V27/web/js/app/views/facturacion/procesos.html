@@ -1,0 +1,180 @@
+﻿<h2>Procesos de facturación</h2>
+<div class="form-horizontal" ng-app="app_facturacion" id="div_formBuscarProcesos" ng-controller="procesosCtrl as modelo">
+   
+    <fieldset>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha Fin de Ciclo</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <input   fieldType = "text" ng-model="modelo.fecha" errorMessage = "La fecha fin de ciclo" class = "date-picker col-xs-10 col-sm-8" placeholder = "día/mes/año" type = "text"  />
+                    </div>
+                    <div class="mensajeValidacion help-block"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Estado del proceso</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <select class="col-sm-6"
+                                ng-model="modelo.estado" 
+                                ng-options="est.display for est in modelo.ops_estados"></select><br>
+                    </div>
+                    <div class="mensajeValidacion help-block"></div>
+
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo de Cliente</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <select class="col-sm-6" ng-model="modelo.tipoClienteId">
+                            <option value="1" selected="">Familia</option>
+                            <option value="2" >Empresa</option>
+                        </select>
+                        
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    
+        <div class="col-sm-6">
+          
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Reparto</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <select class="col-sm-6"
+                                ng-model="modelo.repartoSeleccionado" 
+                                ng-options="reparto.nombreReparto for reparto in modelo.repartos"></select><br>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Día</label>
+                <div class="col-xs-12 col-sm-8">
+                    <div class="clearfix">
+                        <select class="col-sm-6"
+                                ng-model="modelo.diaSeleccionado" 
+                                ng-options="dia.valorTexto for dia in modelo.dias"></select><br>
+                    </div>
+                </div>
+            </div>
+            
+
+            <p class="text-danger">{{modelo.procesandoMasivamente?'Procesando masivamente...':''}}</p>
+            <p>Total: <strong>{{modelo.cantidadTotalProcesos}}</strong>. Procesados: <strong>{{modelo.cantidadProcesados}}.</strong> </p>
+            <p>Error: <strong>{{modelo.cantidadConError}}</strong>. Exitosos: <strong>{{modelo.cantidadExitosos}}.</strong></p>
+            
+        </div>
+    </fieldset>
+
+    <div class="form-actions center">
+        
+        <div class="row">
+            <div class="col-sm-2">
+            
+                <button type="button" id="btn_submit" ng-click="modelo.ObtenerProcesos()" ng-disabled="modelo.procesando" class="btn btn-sm btn-primary">
+                    Obtener Procesos
+                    <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                </button>
+            
+            </div>
+            <div class="col-sm-3">
+                <input fieldtype="text" ng-model="modelo.fechaDeProcesos" errormessage="La fecha fin de ciclo" class="date-picker col-xs-10 col-sm-8"
+                       placeholder="Fecha de Procesos" type="text" />
+            </div>
+            <div class="col-sm-3">
+                <input fieldtype="text" ng-model="modelo.fechaDeFacturacion" errormessage="La fecha fin de ciclo" class="date-picker col-xs-10 col-sm-8" 
+                       placeholder="Fecha de Facturacion" type="text" />
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-white btn-danger btn-bold" ng-disabled="modelo.procesandoMasivamente" ng-click="modelo.iniciarProcesoMasivoDeFacturacion()">
+                    <i class="ace-icon fa fa-bolt bigger-120 orange"></i>
+                    Procesar Masivamente
+                </button>
+
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-white btn-warning btn-bold" ng-disabled="modelo.procesando" ng-click="modelo.ProcesarSeleccionados()">
+                    <i class="ace-icon fa fa-bolt bigger-120 orange"></i>
+                    Procesar seleccionados
+                </button>
+              
+            </div>
+            
+        </div>
+    </div>
+
+    <div style="height: 400px; overflow-y: scroll">
+
+        <table id="tb_resultadoClientes" class=" table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" ng-hide="modelo.procesando" ng-model="modelo.seleccionadosTodos" ng-click="modelo.SeleccionarTodos()" /></th>
+                    <th>ID</th>
+                    <th>Cliente</th>
+                    <th>Inicio consumos</th>
+                    <th>Fin consumos</th>
+                    <th>Proceso</th>
+                    <th>Estado</th>
+                    <th>Resultado</th>
+
+                </tr>
+            </thead>
+            <tbody ng-repeat="item in modelo.procesosResultado">
+                <tr>
+                    <td>
+                        <input type="checkbox" ng-model="item.isSelected" ng-disabled="modelo.procesando" ng-hide="item.procesando || item.estadoProcesoFacturacion_ids==3" />
+                        <img src="/Images/waiting.gif" style="width: 20px;" ng-show="item.procesando" />
+                    </td>
+                    <td>
+                        <button class="btn btn-minier btn-yellow" ng-click="modelo.mostrarItemsAFacturar(item)" ng-hide="item.estadoProcesoFacturacion_ids==3">
+                            <i ng-show="!item.mostrarItems" class="btn_icono ace-icon fa fa-chevron-up"></i>
+                            <i ng-show="item.mostrarItems" class="btn_icono ace-icon fa fa-chevron-down"></i>
+                        </button>
+                        {{item.id}}
+                    </td>
+                    <td>
+                        <a target="blank" href="/Clientes/DatosFacturacion/{{item.cliente_id}}">
+                            {{item.nombreCliente}} {{item.tipoCliente_ids ==1?' (F)':' (E)' }}
+                        </a> 
+                    </td>
+                    <td>{{item.fechaInicioConsumos.slice(6, -2) |  date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.fechaFinConsumos.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                    <td>{{item.fechaInicio.slice(6, -2)  |  date:'dd/MM/yyyy HH:mm:ss'}} - {{item.fechaFin.slice(6, -2)  |  date:'HH:mm:ss'}}</td>
+                    <td>{{item.estado}}</td>
+                    <td>{{item.resultadoProceso}}</td>
+
+                </tr>
+                <tr ng-show="item.mostrarItems">
+                    <td colspan="8">
+                        <table class=" table table-striped table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Concepto</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio Unitario</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="itemFactura in item.itemsAFacturar">
+                                    <td>{{itemFactura.nombreArticulo}}</td>
+                                    <td>{{itemFactura.cantidad}}</td>
+                                    <td>${{itemFactura.precioUnitario}}</td>
+                                    <td>${{itemFactura.precioUnitario * itemFactura.cantidad}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+</div>

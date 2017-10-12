@@ -1,0 +1,179 @@
+﻿<style>
+    .vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+</style>
+
+<div ng-app="mainApp" ng-controller="dashboardTalleController">
+    <div class="row">
+        <div class="col-sm-12 infobox-container">
+            <!-- #section:pages/dashboard.infobox -->
+            <div class="infobox infobox-red">
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-times"></i>
+                </div>
+
+                <div class="infobox-data">
+                    <span class="infobox-data-number">{{dashboard.cantidadNoFuncional}}</span>
+                    <div class="infobox-content">No funcionales</div>
+                </div>
+
+            </div>
+
+            <div class="infobox infobox-brown">
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-gears"></i>
+                </div>
+
+                <div class="infobox-data">
+                    <span class="infobox-data-number">{{dashboard.cantidadEnReparacion}}</span>
+                    <div class="infobox-content">En reparación</div>
+                </div>
+
+            </div>
+
+            <div class="infobox infobox-pink">
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-flask"></i>
+                </div>
+
+                <div class="infobox-data">
+                    <span class="infobox-data-number">{{dashboard.cantidadEnObservacion}}</span>
+                    <div class="infobox-content">En observación</div>
+                </div>
+            </div>
+
+            <div class="infobox infobox-black">
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-mail-forward"></i>
+                </div>
+
+                <div class="infobox-data">
+                    <span class="infobox-data-number">{{dashboard.cantidadEnTaller}}</span>
+                    <div class="infobox-content">En taller externo</div>
+                </div>
+            </div>
+
+            <!-- /section:pages/dashboard.infobox -->
+            <div class="space-6"></div>
+
+            <div class="infobox infobox-green">
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-check"></i>
+                </div>
+
+                <div class="infobox-data">
+                    <span class="infobox-data-number">{{dashboard.cantidadFuncionalEnFabrica}}</span>
+                    <div class="infobox-content">En fábrica</div>
+                </div>
+
+            </div>
+
+            <div class="infobox infobox-blue3">
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-ambulance"></i>
+                </div>
+
+                <div class="infobox-data">
+                    <span class="infobox-data-number">{{dashboard.cantidadFuncionalEnTransporte}}</span>
+                    <div class="infobox-content">En transporte</div>
+                </div>
+            </div>
+
+            <div class="infobox infobox-blue">
+                <div class="infobox-icon">
+                    <i class="ace-icon fa fa-users"></i>
+                </div>
+
+                <div class="infobox-data">
+                    <span class="infobox-data-number">{{dashboard.cantidadFuncionalEnCliente}}</span>
+                    <div class="infobox-content">En clientes</div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    
+    <div class="space-6"></div>
+
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <div class="input-group input-group-lg">
+                
+                <input type="text" ng-enter="ejecutarAccion()" class="form-control search-query" ng-model="textoBuscado" placeholder="Número interno">
+                <!-- Split button -->
+                <div class="input-group-btn" uib-dropdown>
+                    <button id="split-button" type="button" class="btn btn-danger" ng-click="ejecutarAccion()">{{accionActual.nombre}}</button>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-sm-3">
+
+            <a href="javascript:void(0)" ng-click="actualizar()">
+                <i class="ace-icon fa fa-refresh bigger-120 orange"></i>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- /section:pages/dashboard.infobox -->
+    <div class="space-6"></div>
+    
+    <uib-tabset active="activeJustified" justified="true">
+        <uib-tab index="0">
+            <uib-tab-heading>
+                <i class="ace-icon fa fa-times red"></i> No funcionales
+            </uib-tab-heading>
+            <div>
+                <dispensers-en-taller dispensers="dashboard.dispensersNoFuncionales"></dispensers-en-taller>
+            </div>
+        </uib-tab>
+        
+        <uib-tab index="1">
+            <uib-tab-heading>
+                <i class="ace-icon fa fa-gears brown"></i> En reparación
+            </uib-tab-heading>
+            <div>
+                <dispensers-en-taller dispensers="dashboard.dispensersEnReparacion"></dispensers-en-taller>
+            </div>
+        </uib-tab>
+        
+        <uib-tab index="2">
+            <uib-tab-heading>
+                <i class="ace-icon fa fa-flask pink"></i> En observación
+            </uib-tab-heading>
+            <div>
+                <dispensers-en-taller dispensers="dashboard.dispensersEnObservacion"></dispensers-en-taller>
+            </div>
+        </uib-tab>
+
+        <uib-tab index="3">
+            <uib-tab-heading>
+                <i class="ace-icon fa fa-check green"></i> Funcionales
+            </uib-tab-heading>
+            <div>
+                <dispensers-en-taller dispensers="dashboard.dispensersFuncionales"></dispensers-en-taller>
+            </div>
+        </uib-tab>
+        <uib-tab index="4">
+            <uib-tab-heading>
+                <i class="ace-icon fa fa-ambulance green"></i> En transporte
+            </uib-tab-heading>
+            <div>
+                <dispensers-en-taller dispensers="dashboard.dispensersEnTransporte"></dispensers-en-taller>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/dispensersController.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>

@@ -1,0 +1,286 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Cliente_Edit
+
+@*<div class="page-header">
+	<h1>
+		Nuevo Cliente
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			Ingrese los datos del nuevo cliente
+		</small>
+	</h1>
+</div><!-- /.page-header -->*@
+
+<div ng-app="mainApp" ng-controller="editClienteController">
+    @Html.Partial("_PasosCliente", Model.ClienteModelo)
+
+    <div class="widget-box">
+        <div class="widget-header">
+            <h4 class="widget-title">Datos principales</h4>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main no-padding">
+
+                @using (Html.BeginForm("EditCliente", "Clientes", FormMethod.Post, new { id = "form_edit", name = "form_edit", @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.HiddenFor(x => x.ClienteModelo.id)
+                    @Html.HiddenFor(x => x.ClienteModelo.domicilio_id)
+                    @Html.HiddenFor(x => x.ClienteModelo.eliminado)
+                    @Html.HiddenFor(x => x.ClienteModelo.datosCompletos)
+                    @Html.HiddenFor(x => x.ClienteModelo.clientePadre)
+                    @Html.HiddenFor(x => x.ClienteModelo.datosFacturacion_id)
+                    @Html.HiddenFor(x => x.ClienteModelo.sistemaExterno_ids)
+                    @Html.HiddenFor(x => x.ClienteModelo.clienteIdSistemaExterno)
+
+               <!-- <legend>Form</legend> -->
+                    <fieldset>
+
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-3 no-padding-right">Nombre cliente / Razón social</label>
+                            <div class="col-xs-12 col-sm-9">
+                                <div class="clearfix">
+                                    @Html.TextBoxFor(x => x.ClienteModelo.nombreCliente, new { fieldType = "text", errorMessage = "Ingrese el nombre del cliente", @class = "validate col-xs-10 col-sm-8 ", placeholder = "nombre y apellido del cliente", type = "text" })
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo de Cliente</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        @Html.DropDownListFor(x => x.ClienteModelo.tipoCliente_ids, new SelectList(Model.Tipos_Clientes, "valor_ids", "valorTexto"), new { @class = "input-group col-xs-10 col-sm-12", ng_model = "tipoCliente_ids" })
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+                                </div>
+                            </div>
+                            <div class="form-group" ng-if="tipoCliente_ids==1">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">DNI</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        @Html.TextBoxFor(x => x.ClienteModelo.dniCliente, new { fieldType = "text", errorMessage = "Ingrese el nombre del cliente", @class = "col-xs-10 col-sm-8 ", placeholder = "DNI del titual (solo familia)", type = "text" })
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" ng-if="tipoCliente_ids==1">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha de nacimiento</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(x => x.ClienteModelo.fechaNacimiento, new { errorMessage = "Ingrese la fecha de ingreso", fieldType = "text", @class = " form-control date-picker col-xs-10 col-sm-5", placeholder = "dd/mm/yyyy" })
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha de alta</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        <div class="input-group">
+                                            @Html.TextBoxFor(x => x.ClienteModelo.fechaIngreso, new { errorMessage = "Ingrese la fecha de ingreso", fieldType = "text", @class = "validate form-control date-picker col-xs-10 col-sm-5", placeholder = "dd/mm/yyyy" })
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Actividad</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        @Html.DropDownListFor(x => x.ClienteModelo.actividad_ids, new SelectList(Model.Actividades_Clientes, "valor_ids", "valorTexto"), new { @class = "input-group col-xs-10 col-sm-12" })
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Promotor</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        @Html.DropDownListFor(x => x.ClienteModelo.promotor_id, new SelectList(Model.Promotores, "usuario_id", "nombreApellido"), new { @class = "input-group col-xs-10 col-sm-12" })
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Estado de Cliente</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        @*@Html.DropDownListFor(x => x.ClienteModelo.estadoCliente_ids, new SelectList(Model.Estados_Clientes, "valor_ids", "valorTexto"), new { @class = "input-group col-xs-10 col-sm-12" })*@
+                                        <h5>
+                                            @Model.EstadoDeCliente
+                                        </h5>
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Reparto</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        @Html.DropDownListFor(x => x.ClienteModelo.reparto_id, new SelectList(Model.Repartos, "id", "nombreReparto"), new { @class = "input-group col-xs-10 col-sm-12" })
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Zona</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        @Html.DropDownListFor(x => x.ClienteModelo.zona_ids, new SelectList(Model.ZonasDeCliente, "valor_ids", "valorTexto"), new { @class = "input-group col-xs-10 col-sm-12" })
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+                                </div>
+                            </div>
+                            <div class="form-group hide">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right"> Días de visita</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(x => x.visita_lunes)
+                                                <span class="lbl"> Lunes</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(x => x.visita_martes)
+                                                <span class="lbl"> Martes</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(x => x.visita_miercoles)
+                                                <span class="lbl"> Miercoles</span>
+                                            </label>
+                                        </div>
+
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(x => x.visita_jueves)
+                                                <span class="lbl"> Jueves</span>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(x => x.visita_viernes)
+                                                <span class="lbl"> Viernes</span>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(x => x.visita_sabado)
+                                                <span class="lbl"> Sábado</span>
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                @Html.CheckBoxFor(x => x.visita_doming)
+                                                <span class="lbl"> Domingo</span>
+                                            </label>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-4 no-padding-right">Datos de acceso</label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <div class="clearfix">
+                                        <p>Usuario: @(Model.NombreDeUsario)</p>
+                                        <p>Contraseña: @(Model.Password) 
+                                            <a class="warning" title="" href="javacript:void(0)" ng-click="editarPasswordUsuario(@Model.ClienteModelo.id)">
+                                                <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                            </a> </p> 
+                                    </div>
+                                   
+                                </div>
+                            </div>
+
+                            @if (Model.ClienteModelo.clientePadre == null || !Model.ClienteModelo.clientePadre.HasValue)
+                            {
+                                <div class="form-group">
+                                    <label class="control-label col-xs-12 col-sm-4 no-padding-right"> </label>
+                                    <div class="col-xs-12 col-sm-8">
+                                        <div class="clearfix">
+                                            <a href="/Clientes/create?padre_id=@Model.ClienteModelo.id" class="btn btn-sm btn-warning">
+                                                <i class="ace-icon fa fa-link bigger-110"></i>
+                                                <span class="bigger-110 no-text-shadow">Crear sucursal</span>
+                                            </a>
+
+                                            <button type="button" class="btn btn-white btn-warning btn-bold" onclick="Modelo.VerSucursales(@Model.ClienteModelo.id)">
+                                                <i class="ace-icon fa fa-list-alt bigger-120 orange"></i>
+                                                Ver sucursales
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+                        </div>
+
+                    </fieldset>
+
+                    <div class="form-actions center">
+                        
+                        <div class="row">
+                            <div class="col-sm-6">
+                                Cambio de estado: 
+                                <button type="button" ng-click="cambiarEstado(6,@Model.ClienteModelo.id)" class="btn btn-white btn-yellow btn-sm ">Gestión de baja</button>
+                                <button type="button" ng-click="cambiarEstado(4,@Model.ClienteModelo.id)" class="btn btn-white btn-danger btn-sm ">Baja</button>
+                                <button type="button" ng-click="cambiarEstado(5,@Model.ClienteModelo.id)" class="btn btn-white btn-pink btn-sm">Borrador</button>
+                                <button type="button" ng-click="cambiarEstado(2,@Model.ClienteModelo.id)" class="btn btn-white btn-inverse btn-sm ">No consume</button>
+                                <button type="button" ng-click="cambiarEstado(3,@Model.ClienteModelo.id)" class="btn btn-white btn-info btn-sm ">Moroso</button>
+                                <button type="button" ng-click="cambiarEstado(1,@Model.ClienteModelo.id)" class="btn btn-white btn-success btn-sm ">Activo</button>
+                                
+                            </div>
+                            <div class="col-sm-6">
+                                <button type="button" id="btn_guardarCliente" class="btn btn-sm  btn-success ">
+                                    Guardar
+                                    <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div id="dialog_sucursales" title="Sucursales del cliente"></div>
+
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/clientesControllers.js"></script>
+<script src="~/js/app/controllers/usuariosClientesControllers.js"></script>
+<script src="~/js/Views/Clientes_Edit.js"></script>

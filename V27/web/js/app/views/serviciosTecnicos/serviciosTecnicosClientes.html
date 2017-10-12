@@ -1,0 +1,71 @@
+﻿<div class="widget-box widget-color-blue">
+    <!-- #section:custom/widget-box.options -->
+    <div class="widget-header">
+        <h5 class="widget-title bigger lighter">
+            <i class="ace-icon fa fa-list-alt"></i>
+            Ordenes de trabajo
+        </h5>
+    </div>
+
+    <!-- /section:custom/widget-box.options -->
+    <div class="widget-body">
+        <div class="widget-main no-padding">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Creado</th>
+                        <th>Ejecutado</th>
+                        <th>Cliente</th>
+                        <th>Sintoma</th>
+                        <th>Estado</th>
+                        <th>Comprobante</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="st in serviciosTecnicos.items">
+
+                    <tr>
+                        <td>
+                            <a title="Ver detalle de serivicio técnico" class="hasTooltip"
+                               ng-click="st.mostrarServicioTecnico= !st.mostrarServicioTecnico"
+                               href="javascript:void(0);">
+                                <i class="btn_icono ace-icon fa fa-chevron-{{st.mostrarServicioTecnico?'down':'up'}}"></i>
+                            </a>
+                            {{st.id}}
+                        </td>
+                        <td>
+                            {{st.creado.slice(6,-2) | date : 'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            {{st.fechaReal.slice(6,-2) | date : 'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            {{st.clienteUbicacion}}
+                        </td>
+                        <td>
+                            {{st.sintoma}}
+                        </td>
+                        <td>
+                            {{st.estado}}
+                        </td>
+                        <td>
+                            <a ng-show="st.archivoComprobante!=null" href="/Archivos/ComprobantesDeTrabajo/{{st.archivoComprobante}}">{{st.nroComprobante}}</a>
+                            <span ng-show="st.archivoComprobante==null">{{st.nroComprobante}}</span>
+                        </td>
+                    </tr>
+                    <tr ng-if="st.mostrarServicioTecnico">
+                        <td colspan="8">
+                            <detalle-servicio-tecnico servicio-tecnico-id="st.id" fecha-de-visita-actual="st.fechaReal" allow-edit="{{allowEdit}}"/>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+</div>

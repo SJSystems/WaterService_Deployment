@@ -1,0 +1,94 @@
+﻿<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCrFetYLnnlcxcJjEhP79agcSbKo1_mAGg"></script>
+
+<style>
+    .mapa-clientes{
+        width: 50%; 
+        height: 650px; 
+        position: fixed !important; 
+        top:100px
+    }
+</style>
+
+<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable" style="min-height: 150px;"
+     ng-app="mainApp" ng-controller="ordenarClientesDeHojaDeRutaController">
+
+    <h1 class="grey lighter smaller">
+        <span class="blue bigger-125">
+            <i class="ace-icon fa fa-truck"></i>
+            {{hojaDeRuta.nombreReparto}}
+        </span>
+        {{hojaDeRuta.fechaRuta | dformat |  date:'dd/MM/yyyy' }}
+    </h1>
+
+    <div class="widget-toolbox padding-8 clearfix">
+
+        <button class="btn btn-white btn-default btn-round" ng-click="AsignarOrden()">
+            <i class="ace-icon fa fa-bolt red2"></i>
+            Asignar Orden
+        </button>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="dd dd-draghandle" id="list_Ordenados">
+
+                @*<div class="dd-empty" ng-if="hojaDeRuta.Clientes.length == 0"></div>*@
+
+                <ol class="dd-list">
+
+                    <li class="dd-item dd2-item registroCliente" ng-repeat="cliente in hojaDeRuta.Clientes | orderBy:'+orden'" data-id="{{cliente.cliente_id}}">
+                        <div class="dd-handle dd2-handle">
+                            <i class="normal-icon ace-icon fa fa-user blue bigger-130"></i>
+                            <i class="drag-icon ace-icon fa fa-arrows bigger-125"></i>
+                        </div>
+                        <div class="dd2-content">
+                            <h4>
+                                <span class="badge badge-success">{{cliente.orden}}</span>
+                                <span class="hasTooltip" title="">({{cliente.cliente_id}})</span> -  {{cliente.nombreCliente}}
+                                <a href="/Clientes/EditCliente/{{cliente.cliente_id}}" target="_blank" class="hasTooltip" title="">
+                                    <i class="ace-icon fa fa-pencil-square-o  green"></i>
+                                </a>
+                                <span ng-if="cliente.servicioTecnico_id != null">
+                                    <i class="fa fa-ambulance red hasTooltip" uib-tooltip="Es Servicio técnico"></i>
+                                    <small>({{cliente.sintomaServicioTecnico}})</small>
+                                </span>
+
+                                <span ng-if="cliente.esPedido">
+                                    <i class="fa fa fa-phone-square orange hasTooltip" uib-tooltip="Es pedido"></i>
+                                </span>
+
+                                <span ng-if="cliente.esVentaExtra">
+                                    <i class="fa fa-plus-circle green hasTooltip" uib-tooltip="Es venta extra"></i>
+                                </span>
+
+                                <span ng-if="cliente.servicioTecnico_id == null && !cliente.esPedido && !cliente.esVentaExtra">
+                                    <i class="fa fa fa-truck green hasTooltip" uib-tooltip="Visita normal"></i>
+                                </span>
+
+                            </h4>
+                            <h5 class="text-warning bigger-110 orange hasTooltip" data-original-title="Domicilio">
+                                <i class="ace-icon fa fa-home red "></i>
+                                {{cliente.domicilioCompleto}}
+                            </h5>
+
+                        </div>
+                    </li>
+
+                </ol>
+            </div>
+        </div>
+        <div class="col-sm-7">
+
+            <div id="div_map_clientes" class="mapa-clientes"></div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<script src="~/assets/js/jquery.nestable.min.js"></script>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/hojasDeRutaControllers.js"></script>

@@ -1,0 +1,498 @@
+﻿@{
+    ViewBag.Title = "title";
+}
+
+<div ng-app="mainApp">
+
+    <div ng-controller="buscarChequesDepositosController">
+        <div class="form-horizontal">
+            <fieldset>
+
+                <div class="col-sm-10">
+                    <div class="form-group">
+                        <label class="control-label col-xs-5 col-sm-2 no-padding-right">Cliente</label>
+                        <div class="col-xs-12 col-sm-9">
+                            <div class="clearfix">
+                                <span class="block input-icon input-icon-right">
+
+                                    <input required ng-model="BusquedaModelo.clienteTexto"
+                                           auto-complete="autoCompleteModel" name="txt_cliente" type="text"
+                                           class="col-xs-12 col-sm-12">
+                                    <i ng-show="BusquedaModelo.clienteSelected!=null" title="Cliente seleccionado" class="ace-icon fa fa-info-circle green"></i>
+                                </span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha Desde</label>
+                        <div class="col-xs-12 col-sm-8">
+                            <div class="clearfix">
+                                <div class="input-group">
+                                    <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaDesde" fieldtype="text" id="fechaDesde" name="fechaDesde" placeholder="dd/mm/yyyy" type="text">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mensajeValidacion help-block"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label class="control-label col-xs-12 col-sm-4 no-padding-right">Fecha Hasta</label>
+                        <div class="col-xs-12 col-sm-8">
+                            <div class="clearfix">
+                                <div class="input-group">
+                                    <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaHasta" fieldtype="text" id="fechaHasta" name="fechaHasta" placeholder="dd/mm/yyyy" type="text">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mensajeValidacion help-block"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+
+            <div class="form-actions center">
+
+                <button type="button" ng-click="ObtenerChequesDepositos()" class="btn btn-sm btn-primary">
+                    <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                    Buscar
+                </button>
+                @*<button type="button" class="btn btn-sm btn-success" ng-click="abrirDialogo('dialog_cheques')">
+                    <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+                    Agregar cheque
+                </button>
+                <button type="button" class="btn btn-sm btn-success" ng-click="abrirDialogo('dialog_depositos')">
+                    <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+                    Agregar deposito
+                </button>*@
+            </div>
+        </div>
+        
+        <uib-tabset active="activeJustified" justified="true">
+            <uib-tab index="0" heading="Cheques">
+                <table id="tb_cheques" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Cliente</th>
+                            <th>Librador</th>
+                            <th>Nro. Cheque</th>
+                            <th>Banco</th>
+                            <th>Importe</th>
+                            <th>Fecha Vencimiento</th>
+                            <th>Cobrado</th>
+                            <th>Nro. Sucursal Banco</th>
+                            <th>Fecha Recibido</th>
+
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="cheque in cheques">
+                        <tr>
+                            <td>{{cheque.id}}</td>
+                            <td>{{cheque.nombreCliente}}</td>
+                            <td>{{cheque.librador}}</td>
+                            <td>{{cheque.nroCheque}}</td>
+                            <td>{{cheque.banco}}</td>
+                            <td>{{cheque.importe}}</td>
+                            <td>{{cheque.fechaVencimiento.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                            <td>{{cheque.cobrado===true?'Si':'No'}}</td>
+                            <td>{{cheque.nroSucursalBanco}}</td>
+                            <td>{{cheque.fechaRecibido.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                                        Acciones
+                                        <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-inverse">
+                                        <li>
+                                            <a href="javascript:return false;"
+                                               ng-click="EliminarCheque(cheque.id)">
+                                                Eliminar
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);"
+                                               ng-click="EditarCheque(cheque)">
+                                                Editar
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </uib-tab>
+            <uib-tab index="1" heading="Depositos">
+                <table id="tb_depositos" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Registro</th>
+                            <th>Cliente</th>
+                            <th>Monto</th>
+                            <th>Banco</th>
+                            <th>Comprobante</th>
+                            <th>Fecha</th>
+                            <th>Verificado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="deposito in depositos">
+                        <tr>
+                            <td>{{deposito.id}}</td>
+                            <td>{{deposito.fechaRegistro.slice(6, -2)  |  date:'dd/MM/yyyy' }}</td>
+                            <td>{{deposito.nombreCliente}}</td>
+                            <td>${{deposito.importe}}</td>
+                            <td>{{deposito.banco}}</td>
+                            <td>{{deposito.nroDeComprobante}}</td>
+                            <td>{{deposito.fechaDeDeposito.slice(6, -2)  |  date:'dd/MM/yyyy' }}</td>
+                            <td>{{deposito.verificado ===true?'Si':'No'}}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                                        Acciones
+                                        <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-inverse">
+                                        <li>
+                                            <a href="javascript:void(0);"
+                                               ng-click="EliminarDeposito(deposito.id)">
+                                                Eliminar
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:return false;"
+                                               ng-click="EditarDeposito(deposito)">
+                                                Editar
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </uib-tab>
+        </uib-tabset>
+        
+    </div>
+
+    <div ng-controller="nuevoChequeController">
+        <div id="dialog_cheques" title="{{accion}}">
+            <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="row">
+                            <div class="form-horizontal col-sm-8">
+                                
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Cliente </label>
+                                            <div class="col-sm-9">
+                                                <button class="btn btn-white btn-default btn-round" ng-click="abrirSeleccionarCliente('clienteCheque')">
+                                                    <i class="ace-icon fa fa-check green"></i>
+                                                </button>
+                                                {{clienteSelected.nombreCliente}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row" ng-show="hojaDeRutaId!=null">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Hoja de Ruta</label>
+                                            <div class="col-sm-9">
+                                                <strong>{{hojaDeRutaId}}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Librador</label>
+                                            <div class="col-sm-9">
+                                                <input ng-model="cheque.librador" class="validate form-control col-xs-10 col-sm-10 " 
+                                                       fieldtype="text" type="text">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Nro. Cheque</label>
+                                            <div class="col-sm-9">
+                                                <input ng-model="cheque.nroCheque" class="validate form-control col-xs-10 col-sm-5 "
+                                                       fieldtype="text"  type="text">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Banco</label>
+                                            <div class="col-sm-9">
+                                                <select ng-model="cheque.banco_ids" class="input-group col-xs-10 col-sm-8">
+                                                    <option ng-repeat="banco in bancos" value="{{banco.valor_ids}}">{{banco.valorTexto}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Importe</label>
+                                            <div class="col-sm-9">
+
+                                                <input ng-model="cheque.importe"
+                                                       smart-float
+                                                         class="validate form-control col-xs-10 col-sm-5 " fieldtype="text" type="text">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Fecha de Vencimiento</label>
+                                            <div class="col-xs-12 col-sm-8">
+                                                <div class="clearfix">
+                                                    <div class="input-group">
+                                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="cheque.fechaVencimiento" fieldtype="text" placeholder="dd/mm/yyyy" type="text">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="mensajeValidacion help-block"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Sucursal</label>
+                                            <div class="col-sm-9">
+
+                                                <input ng-model="cheque.nroSucursalBanco" class="validate form-control col-xs-10 col-sm-5 " fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right">Cobrado </label>
+                                            <div class="col-sm-9">
+                                                <span class="help-inline col-xs-12 col-sm-7">
+                                                    <label class="middle">
+                                                        <input class="ace" type="checkbox" ng-model="cheque.cobrado">
+                                                        <span class="lbl"></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Fecha Recibido</label>
+                                            <div class="col-xs-12 col-sm-8">
+                                                <div class="clearfix">
+                                                    <div class="input-group">
+                                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="cheque.fechaRecibido" fieldtype="text" id="fechaDesde" name="fechaDesde" placeholder="dd/mm/yyyy" type="text">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="mensajeValidacion help-block"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <button class="btn btn-sm btn-success pull-right" ng-click="Save()">
+                                        Guardar
+                                        <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <seleccionar-clientes codigo="clienteCheque"/>
+    </div>
+
+    <div ng-controller="nuevoDepositoController">
+        <div id="dialog_depositos" title="{{accion}}" >
+            <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="row">
+                            <div class="form-horizontal col-sm-8">
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Cliente </label>
+                                            <div class="col-sm-9">
+                                                <button class="btn btn-white btn-default btn-round" ng-click="abrirSeleccionarCliente('clienteDeposito')">
+                                                    <i class="ace-icon fa fa-check green"></i>
+                                                </button> 
+                                                {{clienteSelected.nombreCliente}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row" ng-show="hojaDeRutaId!=null">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Hoja de Ruta</label>
+                                            <div class="col-sm-9">
+                                                <strong>{{hojaDeRutaId}}</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Nro. Comprobante</label>
+                                            <div class="col-sm-9">
+                                                <input ng-model="deposito.nroDeComprobante" class="validate form-control col-xs-10 col-sm-10 " fieldtype="text" type="text">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right">Banco</label>
+                                            <div class="col-sm-9">
+                                                <select ng-model="deposito.banco_ids"
+                                                        class="input-group col-xs-10 col-sm-8">
+                                                    <option ng-repeat="banco in bancos" value="{{banco.valor_ids}}">{{banco.valorTexto}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Importe</label>
+                                            <div class="col-sm-9">
+
+                                                <input ng-model="deposito.importe"
+                                                       smart-float
+                                                       class="validate form-control col-xs-10 col-sm-5 " fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right"> Fecha de depósito</label>
+                                            <div class="col-xs-12 col-sm-8">
+                                                <div class="clearfix">
+                                                    <div class="input-group">
+                                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="deposito.fechaDeDeposito" fieldtype="text" id="fechaDesde" name="fechaDesde" placeholder="dd/mm/yyyy" type="text">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-calendar bigger-110"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="mensajeValidacion help-block"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-sm-12">
+
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right">Verificado </label>
+                                            <div class="col-sm-9">
+                                                <span class="help-inline col-xs-12 col-sm-7">
+                                                    <label class="middle">
+                                                        <input class="ace" type="checkbox" ng-model="deposito.verificado">
+                                                        <span class="lbl"></span>
+                                                    </label>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <button class="btn btn-sm btn-success pull-right" ng-click="Save()">
+                                        Guardar
+                                        <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            
+        </div>
+        <seleccionar-clientes codigo="clienteDeposito"/>
+    </div>
+    
+</div>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/chequesDepositosControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

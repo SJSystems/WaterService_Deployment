@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	
+    <head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+		<title>Water Service</title>
+
+		<meta name="description" content="" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+
+		<!-- bootstrap & fontawesome -->
+        @Styles.Render("~/assets/css/bootstrap.min.css")
+        @Styles.Render("~/assets/css/font-awesome.min.css")
+		
+        <!-- page specific plugin styles -->
+        @Styles.Render("~/assets/css/jquery-ui.min.css")
+		@Styles.Render("~/assets/css/chosen.css")
+        @Styles.Render("~/assets/css/datepicker.css")
+        @Styles.Render("~/assets/css/bootstrap-timepicker.css")
+        @Styles.Render("~/assets/css/daterangepicker.css")
+        @Styles.Render("~/assets/css/bootstrap-datetimepicker.css")
+        @Styles.Render("~/assets/css/colorpicker.css")
+
+		<!-- text fonts -->
+		@Styles.Render("~/assets/css/ace-fonts.css")
+
+		<!-- ace styles -->
+        @Styles.Render("~/assets/css/ace.min.css")
+
+		<!--[if lte IE 9]>
+			<link rel="stylesheet" href="../assets/css/ace-part2.min.css" />
+		<![endif]-->
+        @Styles.Render("~/assets/css/ace-skins.min.css")
+        @Styles.Render("~/assets/css/ace-rtl.min.css")
+
+		<!--[if lte IE 9]>
+		  <link rel="stylesheet" href="../assets/css/ace-ie.min.css" />
+		<![endif]-->
+
+		<!-- inline styles related to this page -->
+        @Scripts.Render("~/assets/js/jquery.min.js")
+        @Scripts.Render("~/assets/js/jquery-ui.min.js")
+        @Scripts.Render("~/assets/js/bootstrap.min.js")
+        @Scripts.Render("~/assets/js/angular.min.js")
+
+		<!-- ace settings handler -->
+        @Scripts.Render("~/assets/js/ace-extra.min.js")
+		<!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
+
+		<!--[if lte IE 8]>
+		<script src="../assets/js/html5shiv.min.js"></script>
+		<script src="../assets/js/respond.min.js"></script>
+		<![endif]-->
+	</head>
+
+	<body class="no-skin">
+
+		<!-- /section:basics/navbar.layout -->
+		<div class="main-container" id="main-container">
+			<script type="text/javascript">
+			    try { ace.settings.check('main-container', 'fixed') } catch (e) { }
+			</script>            
+
+			<div class="main-content">
+                
+				<div class="page-content">
+				
+					<div class="page-content-area" >
+						<div class="row"  >
+							
+                             <div id="div_mainContentLoader" class="col-xs-12" style="margin-top: 100px;"  >
+                                <div  class="ui-progressbar ui-widget ui-widget-content ui-corner-all progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="37">
+                                    <div class="ui-progressbar-value ui-widget-header ui-corner-left progress-bar progress-bar-success" style="width: 100%;"></div>
+                                </div>
+                            </div>
+
+                            <div id="div_mainContent" class="col-xs-12 hide">
+								<!-- PAGE CONTENT BEGINS -->                                
+                                 @RenderSection("featured", required: false)
+                                 @RenderBody()
+								<!-- PAGE CONTENT ENDS -->
+							</div><!-- /.col -->
+
+
+						</div><!-- /.row -->
+					</div><!-- /.page-content-area -->
+				</div><!-- /.page-content -->
+			</div>
+            <!-- /.main-content -->
+            
+		<!-- basic scripts -->
+
+		<!--[if !IE]> -->
+@*		<script type="text/javascript">
+		    window.jQuery || document.write("<script src='@Url.Content("~/assets/js/jquery.min.js")'>" + "<" + "/script>");
+		</script>*@
+
+		<!-- <![endif]-->
+
+		<!--[if IE]>
+<script type="text/javascript">
+ window.jQuery || document.write("<script src='../assets/js/jquery1x.min.js'>"+"<"+"/script>");
+</script>
+<![endif]-->
+		<script type="text/javascript">
+		    if ('ontouchstart' in document.documentElement) document.write("<script src='@Url.Content("~/assets/js/jquery.mobile.custom.min.js")'>" + "<" + "/script>");
+		</script>
+
+		<!-- page specific plugin scripts -->
+        <!--[if lte IE 8]>
+		  <script src="../assets/js/excanvas.min.js"></script>
+		<![endif]-->
+
+        
+        @Scripts.Render("~/assets/js/jquery.ui.touch-punch.min.js")
+        @Scripts.Render("~/assets/js/chosen.jquery.min.js")
+        @Scripts.Render("~/assets/js/fuelux/fuelux.spinner.min.js")
+        @Scripts.Render("~/assets/js/date-time/bootstrap-datepicker.min.js")
+        @Scripts.Render("~/assets/js/date-time/bootstrap-timepicker.min.js")
+        @Scripts.Render("~/assets/js/date-time/moment.min.js")
+        @Scripts.Render("~/assets/js/date-time/daterangepicker.min.js")
+        @Scripts.Render("~/assets/js/date-time/bootstrap-datetimepicker.min.js")
+
+        @Scripts.Render("~/assets/js/jquery.dataTables.min.js")
+        @Scripts.Render("~/assets/js/jquery.dataTables.bootstrap.js")
+        
+        @*@Scripts.Render("~/assets/js/jquery.knob.min.js")*@
+
+        @Scripts.Render("~/assets/js/jquery.inputlimiter.1.3.1.min.js")
+        @Scripts.Render("~/assets/js/jquery.maskedinput.min.js")
+        @Scripts.Render("~/assets/js/bootstrap-tag.min.js")
+        @Scripts.Render("~/assets/js/typeahead.jquery.min.js")
+
+        
+		<!-- ace scripts -->
+        @Scripts.Render("~/assets/js/ace-elements.min.js")
+        @Scripts.Render("~/assets/js/ace.min.js")
+		<!-- inline scripts related to this page -->
+
+@*		<!-- the following scripts are used in demo only for onpage help and you don't need them -->
+        @Styles.Render("~/assets/css/ace.onpage-help.css")
+        @Styles.Render("~/docs/assets/js/themes/sunburst.css")       *@
+
+		<script type="text/javascript"> ace.vars['base'] = '..'; </script>
+		
+@*        @Scripts.Render("~/assets/js/ace/elements.onpage-help.js")		
+        @Scripts.Render("~/assets/js/ace/ace.onpage-help.js")		*@
+        
+        @Scripts.Render("~/docs/assets/js/rainbow.js")
+        @Scripts.Render("~/docs/assets/js/language/generic.js")        
+        @Scripts.Render("~/docs/assets/js/language/html.js")
+        @Scripts.Render("~/docs/assets/js/language/css.js")
+        @Scripts.Render("~/docs/assets/js/language/javascript.js")
+
+         @Scripts.Render("~/js/General_OnLoad.js")
+
+        @RenderSection("scripts", required: false)
+                
+	    <div id="div_loader" title="&nbsp;&nbsp;procesando..." >
+				<div class=" alert-info bigger-110">
+					&nbsp;Espere por favor mientras se procesan los datos ...
+				</div>							
+                
+                <div class="ui-progressbar ui-widget ui-widget-content ui-corner-all progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="37">
+                    <div class="ui-progressbar-value ui-widget-header ui-corner-left progress-bar progress-bar-success" style="width:100%;"></div>
+                </div>
+
+			</div>
+									
+
+	</body>
+
+</html>

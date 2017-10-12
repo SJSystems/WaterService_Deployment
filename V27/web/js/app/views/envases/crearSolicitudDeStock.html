@@ -1,0 +1,47 @@
+﻿<div class="widget-box ui-sortable-handle" id="div_crearSolicitudDeStock">
+    <div class="widget-header">
+        <h5 class="widget-title">Crear solicitud de stock de envase</h5>
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-main">
+           
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Envase </label>
+
+                    <div class="col-sm-9">
+                        <input readonly="" type="text" class="col-xs-10 col-sm-5" id="form-input-readonly" value="{{articulo.nombreArticulo}}">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Cantidad </label>
+
+                    <div class="col-sm-9">
+                        <input class="input-sm numericControl" ng-model="cantidad" value="0" maxlength="3" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> Motivos </label>
+                    <div class="col-sm-9">
+                        <select ng-model="motivoSeleccionado"
+                                ng-options="motivo.valorTexto for motivo in motivos">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+            <button class="btn btn-success pull-right" ng-click="guardar()">
+                <span class="bigger-110">Confirmar</span>
+                <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+            </button>
+        </div>
+    </div>
+</div>

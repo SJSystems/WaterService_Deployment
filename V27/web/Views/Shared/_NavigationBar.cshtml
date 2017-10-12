@@ -1,0 +1,65 @@
+﻿
+
+<div class="breadcrumbs" id="breadcrumbs">
+	<script type="text/javascript">
+		try { ace.settings.check('breadcrumbs', 'fixed') } catch (e) { }
+	</script>
+
+	<ul class="breadcrumb">
+	
+        @if (ViewBag.NavigationOptions!=null)
+        {
+            var i = 0;
+            var ultimo = ((List<WaterService.Common.Entities.DTOs.OpcionesMenu_DTO>)ViewBag.NavigationOptions).Count;
+
+            foreach (var item in ((List<WaterService.Common.Entities.DTOs.OpcionesMenu_DTO>) ViewBag.NavigationOptions))
+            {
+                i++;
+                if (ultimo==i)
+                {
+                    <li class="active">
+                        @if (!string.IsNullOrEmpty(item.iconoCss))
+                        {
+                            <i class="ace-icon fa fa-home @item.iconoCss"></i>
+                        }
+                        @item.displayText
+                    </li>
+                }
+                else
+                {
+                    <li>
+			            
+                        @if (!string.IsNullOrEmpty(item.iconoCss))
+                        {
+                            <i class="ace-icon fa fa-home @item.iconoCss"></i>
+                        }
+			            <a href="@item.href">@item.displayText</a>
+		            </li>
+                }
+                    
+            }
+        }
+
+    </ul><!-- /.breadcrumb -->
+    
+    @if (!(((WaterService.Common.Entities.DTOs.CurrentSession_DTO)ViewBag.CurrentSession).User.cliente_id.HasValue))
+    {
+        <!-- #section:basics/content.searchbox -->
+        <div class="nav-search" id="nav-search">
+
+            @using (Html.BeginForm("BuscarGeneral", "Misc", FormMethod.Post, new { id = "form_buscarGeneral", name = "form_buscarGeneral", @class = "form-search", role = "form" }))
+            {
+                @*<form class="form-search" action="">*@
+                <span class="input-icon">
+                    <input type="text" placeholder="Buscar..." class="nav-search-input" style="width: 300px;"
+                           name="texto_buscado" id="nav-search-input" autocomplete="off">
+                    <i class="ace-icon fa fa-search nav-search-icon"></i>
+                </span>
+                @*</form>*@
+            }
+        </div><!-- /.nav-search -->
+    }
+
+
+	<!-- /section:basics/content.searchbox -->
+</div>

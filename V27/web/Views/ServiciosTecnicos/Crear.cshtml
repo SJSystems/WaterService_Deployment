@@ -1,0 +1,121 @@
+﻿<div ng-app="mainApp" ng-controller="crearSoporteTecnico">
+
+    <div class="page-header">
+        <h1>
+            {{tituloPantalla?tituloPantalla:'Nuevo servicio técnico (Orden de trabajo)'}}
+        </h1>
+    </div>
+    
+    <div class="form-horizontal">
+        <autocomplete-seleccionar-cliente ng-if="!esEdicion"
+                                          ng-cliente-seleccionado="servicioTecnico.clienteSeleccionado">
+        </autocomplete-seleccionar-cliente>
+
+        <div class="form-group" ng-if="esEdicion">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Cliente </label>
+            <div class="col-sm-9">
+                <strong>{{servicioTecnico.clienteSeleccionado.nombreCliente +' - '+ servicioTecnico.clienteSeleccionado.domicilioCompleto}}</strong>
+                <links-de-cliente cliente-id="servicioTecnico.clienteSeleccionado.cliente_id"></links-de-cliente>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Síntoma </label>
+            <div class="col-sm-9">
+                <select class="col-sm-8" ng-model="servicioTecnico.sintoma_ids" ng-disabled="noEditar"
+                        ng-options="sintoma.valor_ids as sintoma.valorTexto for sintoma in sintomas"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Prioridad </label>
+            <div class="col-sm-9">
+                <select class="col-sm-8" ng-model="servicioTecnico.prioridad_ids"  ng-disabled="noEditar"
+                        ng-options="prioridad.valor_ids as prioridad.valorTexto for prioridad in prioridades"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" > Franja Horaria </label>
+            <div class="col-sm-9">
+                <select class="col-sm-8" ng-model="servicioTecnico.franjaHoraria_ids" ng-disabled="noEditar"
+                        ng-options="item.valor_ids as item.valorTexto for item in franjasHorarias"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" > Comentarios</label>
+            <div class="col-sm-9">
+                <textarea class="form-control"
+                          ng-model="servicioTecnico.comentarios" ng-disabled="noEditar" 
+                          placeholder="Comentarios para el técnico"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" > Cantidad de dispensers </label>
+            <div class="col-sm-9">
+                <input type="text" ng-model="servicioTecnico.cantidadDispensers" ng-disabled="noEditar" class="col-xs-10 col-sm-5">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" > Sector / Ubicación </label>
+            <div class="col-sm-9">
+                <input type="text" ng-model="servicioTecnico.sectorUbicacion" ng-disabled="noEditar" class="col-xs-10 col-sm-8">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" > Responsable en cliente </label>
+            <div class="col-sm-9">
+                <input type="text" ng-model="servicioTecnico.responsableEnCliente" ng-disabled="noEditar" class="col-xs-10 col-sm-8">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right" > Teléfono del responsable </label>
+            <div class="col-sm-9">
+                <input type="text" ng-model="servicioTecnico.telefonoResponsable" ng-disabled="noEditar" class="col-xs-10 col-sm-8">
+            </div>
+        </div>
+    </div>
+
+    <dispensers-asociados-a-servicio-tecnico servicio-tecnico="servicioTecnico"
+                                             dispensers="dispensersAsociadosDeFabrica"
+                                             de-cliente="false" ,
+                                             permitir-edicion="permitirEdicion"></dispensers-asociados-a-servicio-tecnico>
+
+
+    <dispensers-asociados-a-servicio-tecnico servicio-tecnico="servicioTecnico"
+                                             dispensers="dispensersAsociadosDeCliente"
+                                             de-cliente="true",
+                                             permitir-edicion="permitirEdicion" ></dispensers-asociados-a-servicio-tecnico>
+       
+    
+    <div class="clearfix form-actions">
+        <div class="col-md-offset-3 col-md-9">
+
+            <button class="btn btn-primary" type="button" ng-click="guardar()" ng-hide="noEditar">
+                <i class="ace-icon fa fa-save bigger-110"></i>
+                Guardar
+            </button>
+            
+            <button ng-if="esPlanificado && !noEditar"
+                    class="btn btn-success" type="button" ng-click="cerrar()">
+                <i class="ace-icon fa fa-check bigger-110"></i>
+                Cerrar servicio técnico
+            </button>
+            
+            <button ng-show="(esEdicion || esPlanificado) && !noEditar"  
+                    class="btn btn-danger" type="button" ng-click="cancelar()">
+                <i class="ace-icon fa fa-times bigger-110"></i>
+                Cancelar servicio técnico
+            </button>
+
+            <a class="btn btn-warning" type="button" href="/ServiciosTecnicos">
+                <i class="ace-icon fa fa-arrow-circle-left bigger-110"></i>
+                Volver
+            </a>
+
+        </div>
+    </div>
+
+</div>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/dispensersController.js"></script>

@@ -1,0 +1,108 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.ArchivosAdjuntosModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout_Plugins.cshtml";
+}
+
+    @using (Html.BeginForm("Upload", "ArchivosAdjuntos", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {                 
+         <div class="form-group">
+            <label class="control-label">Seleccionar un archivo para adjuntar</label>
+            <div class="controls">
+            <input type="file" name="file" id="file"/>
+            </div>
+        </div> 
+        
+        <button type="submit"  class="btn btn-warning btn-sm" ><i class="icon-cloud-upload"></i>Subir Archivo</button>
+        
+        <div style=" display:none" >        
+            @Html.EditorFor(model => model.ArchivoAdjunto.entidad)
+            @Html.EditorFor(model => model.ArchivoAdjunto.idEntidad)
+            @Html.EditorFor(model => model.ArchivoAdjunto.tags)
+        </div>
+    }
+            <div class="col-xs-12">
+						<div class="widget-box">
+							
+							<div class="widget-content nopadding">
+								<table class="table table-bordered table-striped table-hover">
+									<thead>
+										<tr>
+											<th>Archivo</th>
+											<th>Fecha</th>
+                                            <th></th>
+										</tr>
+									</thead>
+									<tbody>
+
+                                    @foreach (var item in Model.ArchivosAdjuntos)
+                                    {
+                                        <tr class="tr_adjunto-@item.id">
+											<td><a href="@item.pathArchivo" target="_blank">@item.nombreArchivo</a></td>
+											<td>@item.fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                                            <td>
+                                                <button onclick="EliminarArchivo(@item.id)" type="button" class="btn btn-xs btn-danger">
+												<i class="ace-icon fa fa-times red2 bigger-110"></i>
+												Eliminar
+											</button>
+                                            </td>
+										</tr>  
+                                    }
+										
+									</tbody>
+								</table>							
+							</div>
+						</div>
+
+			</div>
+
+    <script type = "text/javascript">
+
+        var btn_eliminarAdjunto;
+        var archivoIdEliminar = 0;
+        
+        function EliminarArchivo(archivoId) {
+
+            archivoIdEliminar = archivoId;
+
+            var urlService = "http://" + window.location.hostname + (window.location.port == "" ? "" : ":" + window.location.port) + "/ArchivosAdjuntos/DeleteArchivoAdjunto?archivo_id=" + archivoId + "&ts=" + (new Date().getMilliseconds()).toString();
+            
+            $.ajax({
+                url: urlService,
+                success: function (result) {
+                
+                    if (result.error == "0") {
+
+                        $(".tr_adjunto-" + archivoIdEliminar).hide();
+                       
+                       // ShowStickInfoMessage(" Operación Exitosa", "Usted a quitado un reporte al usuario", false);
+                    }
+                    else {
+                       // ShowStickErrorMessage("Error al quitar el reporte", result.message, false);
+                    }
+
+                },
+                error: function (er) {
+                   // ShowStickErrorMessage("Error al Quitar el reporte", "Error en el Seridor", false);
+                }
+
+            });
+        }
+
+        function getParam(name) {
+            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            var regexS = "[\\?&]" + name + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(window.location.href);
+            if (results == null)
+                return "";
+            else
+                return results[1];
+        }
+
+    
+    </script>
+
+
+    

@@ -1,0 +1,334 @@
+﻿@{
+    ViewBag.Title = "Control de Playa";
+}
+<style>
+    .tieneEnvases td {
+        background-color: greenyellow !important;
+    }
+</style>
+
+<div ng-app="mainApp" ng-controller="controlDePlayaCtrl">
+
+    <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+
+        <div class="widget-box ui-sortable-handle">
+            <div class="widget-header">
+                <h5 class="widget-title">Registrar control de playa</h5>
+                <div class="widget-toolbar">
+                    <a href="#" data-action="fullscreen" class="orange2">
+                        <i class="ace-icon fa fa-expand"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="widget-body">
+                <div class="widget-main">
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right"> Hoja de Ruta</label>
+                                <div class="col-sm-9">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control search-query" placeholder="Seleccione una hoja de ruta" ng-model="Model.textoHojaDeRutaSeleccionada" readonly="true">
+                                        <span class="input-group-btn">
+                                            <button type="button" ng-click="abrirHojasDeRuta()" class="btn btn-purple btn-sm" ng-disabled="esEdit">
+                                                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+
+                            <div class="form-group">
+
+                                <label class="col-sm-3 control-label no-padding-right"> Fecha</label>
+
+                                <div class="col-sm-9">
+
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="Model.fechaControl" errormessage="Fecha de devolución" fieldtype="text" id="txt_FechaDevolucion" name="txt_FechaDevolucion" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-2">
+
+                            <div class="input-group bootstrap-timepicker">
+                                <input type="text" class="form-control timepicker" ng-model="Model.horaControl" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-clock-o bigger-110"></i>
+                                </span>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <br />
+                    <div class="row">
+
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label no-padding-right"> Usuario carga</label>
+                                <div class="col-sm-8">
+                                    <div class="clearfix">
+                                        <select ng-model="Model.usuarioControlSeleccionado" ng-options="user.nombreApellido for user in Model.usuariosControl" class="input-group col-xs-10 col-sm-8"></select><br>
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right"> Evento</label>
+                                <div class="col-sm-10">
+                                    <div class="clearfix">
+                                        <select ng-model="Model.tipoEnventoSeleccionado" ng-disabled="esEdit"
+                                                ng-options="evento.valor for evento in Model.tiposEventos" class="input-group col-xs-10 col-sm-8"></select><br>
+                                    </div>
+                                    <div class="mensajeValidacion help-block"></div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label no-padding-right">KMs</label>
+                                <div class="col-sm-10">
+                                    <input class="validate form-control col-xs-10 col-sm-5"
+                                           ng-model="Model.kilometrosRodado"
+                                           fieldtype="text"
+                                           type="text">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <br />
+                    <table class="table  ">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Productos
+                                </th>
+                                <th colspan="6">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <select ng-model="productoSeleccionadoParaAgregar"
+                                                    ng-options="('(ART- '+art.codigoInterno +') ' +art.nombreArticulo ) for art in Model.productosControlables"
+                                                    class="selecctor-articulos"></select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-white btn-default btn-round" ng-click="agregarProducto();">
+                                                <i class="ace-icon fa fa-plus green"></i>
+                                                Agregar producto
+                                            </button>
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="col-sm-2 center">Llenos (pack)</th>
+                                <th class="col-sm-2 center">Llenos</th>
+                                <th>Artículo disponible</th>
+                                <th class="col-sm-2 center" ng-show="Model.tipoEnventoSeleccionado.id==2">Vacíos (pack)</th>
+                                <th class="col-sm-2 center" ng-show="Model.tipoEnventoSeleccionado.id==2">Vacíos</th>
+                                <th class="col-sm-2 center" ng-show="Model.tipoEnventoSeleccionado.id==2">Fallados</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="articulo in Model.productosAgregados track by $index"
+                                class="{{articulo.cantidadLlenos * 1 >0 || articulo.cantidadLlenosPack * 1 >0 || articulo.cantidadFallados * 1 >0  || articulo.cantidadVaciosPack * 1 >0 || articulo.cantidadVacios * 1 > 0? 'tieneEnvases':'' }}">
+                                <td>
+                                    <input type="text" ng-model="articulo.cantidadLlenosPack" ng-if="articulo.cantidadXPack>1" class="input-mini spinner-input form-control numericControl" value="0" maxlength="3">
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="articulo.cantidadLlenos" class="input-mini spinner-input form-control numericControl" value="0" maxlength="5">
+                                </td>
+                                <td class="">
+                                    <h5>({{articulo.codigoInterno}}) - {{articulo.nombreArticulo}} {{articulo.cantidadXPack>1?'(x'+articulo.cantidadXPack+')':''}}</h5>
+                                </td>
+                                <td ng-show="Model.tipoEnventoSeleccionado.id==2">
+                                    <input type="text" ng-model="articulo.cantidadVaciosPack" ng-if="articulo.cantidadXPack>1" class="input-mini spinner-input form-control numericControl" value="0" maxlength="5">
+                                </td>
+                                <td ng-show="Model.tipoEnventoSeleccionado.id==2">
+                                    <input type="text" ng-model="articulo.cantidadVacios" class="input-mini spinner-input form-control numericControl" value="0" maxlength="5">
+                                </td>
+                                <td ng-show="Model.tipoEnventoSeleccionado.id==2">
+                                    <input type="text" ng-model="articulo.cantidadFallados" class="input-mini spinner-input form-control numericControl" value="0" maxlength="5">
+                                </td>
+                                <td>
+                                    <button type="button" title="Quitar" ng-click="quitarProducto($index, articulo)" class="btn spinner-down btn-xs btn-danger">
+                                        <i class="ace-icon  fa fa-times smaller-75"></i>
+                                    </button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+
+                    <br />
+                    <table class="table  ">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Repuestos
+                                </th>
+                                <th colspan="4">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <select ng-model="repuestoSeleccionadoParaAgregar"
+                                                    ng-options="('(ART- '+art.codigoInterno +') ' +art.nombreArticulo ) for art in Model.repuestosControlables"
+                                                    class="selecctor-articulos"></select>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-white btn-default btn-round" ng-click="agregarRepuesto();">
+                                                <i class="ace-icon fa fa-plus green"></i>
+                                                Agregar repuesto
+                                            </button>
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th class="col-sm-2 center">Cantidad</th>
+                                <th>Nombre</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="repuesto in Model.repuestosAgregados track by $index"
+                                class="{{repuesto.cantidad * 1 >0 ? 'tieneEnvases':'' }}">
+                                <td>
+                                    <input type="text" ng-model="repuesto.cantidad" class="input-mini spinner-input form-control numericControl" value="0" maxlength="5">
+                                </td>
+                                <td>{{repuesto.nombreArticulo}}</td>
+                                <td>{{repuesto.marcaArticulo}}</td>
+                                <td>{{repuesto.modelo}}</td>
+                                <td>
+                                    <button type="button" title="Quitar" ng-click="quitarRepuesto($index, repuesto)" class="btn spinner-down btn-xs btn-danger">
+                                        <i class="ace-icon  fa fa-times smaller-75"></i>
+                                    </button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <br />
+                    <table class="table" ng-show="Model.hojaDeRutaSeleccionada!=null || Model.dispensersAgregados.length > 0">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Dispensers
+                                </th>
+                                <th colspan="5">
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <input type="text" placeholder="Código interno" ng-model="codigoInternoDispenserSeleccionado" />
+                                            <button class="btn btn-white btn-default btn-round" ng-click="agregarDispenser();">
+                                                <i class="ace-icon fa fa-plus green"></i>
+                                                Buscar y agregar dispenser
+                                            </button>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr>                           
+                                <th>Nro Interno</th>
+                                <th>Nro Serie</th>
+                                <th>Marca</th>
+                                <th>Tipo</th>
+                                <th>Color</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="dispenser in Model.dispensersAgregados track by $index">
+                                <td>{{dispenser.numeroInterno}}</td>
+                                <td>{{dispenser.numeroSerie}}</td>
+                                <td>{{dispenser.marcaDispenser}}</td>
+                                <td>{{dispenser.tipoDispenser}}</td>
+                                <td>{{dispenser.color}}</td>                            
+                                <td>
+                                    <button type="button" title="Quitar"  ng-click="quitarDispenser($index, dispenser)" class="btn spinner-down btn-xs btn-danger">
+                                        <i class="ace-icon  fa fa-times smaller-75"></i>
+                                    </button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="widget-toolbox padding-8 clearfix">
+
+                <div class="col-sm-6">
+
+                    <button class="btn btn-lg btn-success pull-right" ng-click="confirmarControl()">
+                        <i class="ace-icon fa fa-check"></i>
+                        Confirmar control de playa
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div id="div_SeleccionarHojaDeRutaDialogo" title="-- Seleccione una hoja de Ruta --">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Fecha</th>
+                    <th>Reparto</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr ng-repeat="hoja in Model.hojasDeRutasDisponibles">
+                    <td>
+                        <button type="button" class="btn btn-white btn-success hasTooltip " ng-click="SeleccionarHojaDeRuta($index)" data-original-title="Seleccionar">
+                            <i class="ace-icon fa fa-check green"></i>
+                        </button>
+
+                    </td>
+                    <td>{{hoja.fechaRuta.slice(6, -2)  |  date:'dd/MM/yyyy'}}</td>
+                    <td>{{hoja.nombreReparto}}</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/controlDePlayaControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+

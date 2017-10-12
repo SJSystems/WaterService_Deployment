@@ -1,0 +1,105 @@
+﻿<h3 class="lighter block green">Resolución de pedidos:</h3>
+
+<div class="clearfix">
+    <!-- #section:custom/extra.grid -->
+    <div class="grid3">
+        <span class="grey">
+            <i class="ace-icon fa fa-users fa-2x blue"></i>
+            &nbsp; Cantidad
+        </span>
+        <h4 class="bigger pull-right">{{metricas.pedidos.cantidad}}</h4>
+    </div>
+
+    <div class="grid3">
+        <span class="grey">
+            <i class="ace-icon fa fa-thumbs-o-up fa-2x green"></i>
+            &nbsp; Visitados
+        </span>
+        <h4 class="bigger pull-right">{{metricas.pedidos.visitados}}</h4>
+    </div>
+
+    <div class="grid3">
+        <span class="grey">
+            <i class="ace-icon fa fa-info fa-2x red"></i>
+            &nbsp; Métrica
+        </span>
+        <h4 class="bigger pull-right">{{metricas.pedidos.metrica}}%</h4>
+    </div>
+
+    <!-- /section:custom/extra.grid -->
+</div>
+
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Código</th>
+            <th>Cliente</th>
+            <th>Tipo</th>
+            <th>Domicilio</th>
+            <th>Visita</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="cliente in cierreLiquidacion.ClientesPedidos">
+            <td>{{cliente.orden}}</td>
+            <td>
+                <a href="/Clientes/EditCliente/{{cliente.cliente_id}}" target="blank">{{cliente.cliente_id}}</a>
+
+            </td>
+            <td>
+                <a target="blank" href="/TransaccionesTemporales/Create?clienteId={{cliente.cliente_id}}&hojaDeRutaId={{liquidacion.hojaDeRuta.id}}" class="hasTooltip" title="Venta al cliente">
+                    {{cliente.nombreCliente}}
+
+                </a>
+            </td>
+
+            <td>{{cliente.tipoCliente}}</td>
+            <td>{{cliente.domicilioCompleto}}</td>
+            <td>
+                <i ng-show="!cliente.visitado" class="fa fa-times red hasTooltip" title="No visitado"></i>
+                <i ng-show="cliente.visitado" class="fa fa-check green hasTooltip" title="Visitado"></i>
+
+                <i ng-show="cliente.visitado && !cliente.ausente && !cliente.ventaEntrega && !cliente.cobroConsumo && !cliente.cobroFactura && !cliente.devolucionEnvases && !cliente.prestamoEnvases && !cliente.devolucionArticulo"
+                   class="fa fa-exclamation-circle orange hasTooltip" title="Sin gestionaes"></i>
+
+                <i ng-show="cliente.ausente" class="fa fa-coffee red hasTooltip" title="Ausente"></i>
+
+                <a ng-show="cliente.ventaEntrega" href="/Archivos/Remitos/Entregas/{{cliente.cliente_id}}_{{liquidacion.hojaDeRuta.id}}.pdf" target="_blank">
+                    <i class="fa fa-shopping-cart green hasTooltip" title="Venta-entrega y remito"></i>
+                </a>
+
+                <i ng-show="cliente.cobroConsumo" class="fa fa-money blue hasTooltip" title="Cobro de consumos"></i>
+                <i ng-show="cliente.cobroFactura" class="fa fa-file-text-o blue hasTooltip" title="Cobro de facturas"></i>
+                <i ng-show="cliente.devolucionEnvases" class="fa fa-reply blue hasTooltip" title="Devolución de envases"></i>
+                <i ng-show="cliente.prestamoEnvases" class="fa fa-share blue hasTooltip" title="Préstamo de envases"></i>
+                <i ng-show="cliente.devolucionArticulo" class="fa fa-retweet red hasTooltip" title="Devolución de artículo"></i>
+            </td>
+            <td>
+                <div class="btn-group">
+                    <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                        Acciones
+                        <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-inverse">
+                        <li>
+                            <a href="javascript:void(0);"
+                               ng-click="verIncidente(cliente)">
+                                Ver
+                            </a>
+                        </li>
+
+                        @*
+                        <li>
+                            <a href="javascript:return false;"
+                               ng-click="editarIncidente(cliente)">
+                                Editar
+                            </a>
+                        </li>*@
+                    </ul>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

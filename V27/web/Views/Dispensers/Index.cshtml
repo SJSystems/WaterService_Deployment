@@ -1,0 +1,133 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Dispenser_Index
+
+<script src="~/js/Views/Dispensers_Index.js"></script>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/dispensersController.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+@{
+    ViewBag.Title = "Editar Dispenser";
+}
+
+<div ng-app="mainApp" ng-controller="buscarDispensersController" id="div_buscarDispensers">
+    <h2>Buscar Dispensers</h2>
+
+    @using (Html.BeginForm("Buscar", "Dispensers", FormMethod.Post, new { id = "form_buscar", name = "form_buscar", @class = "form-horizontal", role = "form" }))
+    {
+        <fieldset>
+
+            <div class="col-sm-6">
+
+                @*numeroInterno*@
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Nro. Interno</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            @Html.TextBoxFor(x => x.DispenserModelo.numeroInterno,
+                                                        new
+                                                        {
+                                                            fieldType = "text",
+                                                            errorMessage = "Ingrese el nro. Interno ",
+                                                            @class = "col-xs-10 col-sm-8 ",
+                                                            placeholder = "nro. interno del dispenser",
+                                                            type = "text"
+                                                        })
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+
+                @*Tipo*@
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            @Html.DropDownListFor(x => x.DispenserModelo.tipoDispenser_ids,
+                                                            new SelectList(Model.Tipos_Dispensers, "valor_ids", "valorTexto"),
+                                                            new { @class = "input-group col-xs-10 col-sm-8" })
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+                @*Condicion_Actual_Dispensers*@
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Condición Actual</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            @Html.DropDownListFor(x => x.DispenserModelo.condicionActual_ids,
+                                                           new SelectList(Model.Condiciones_Dispensers, "valor_ids", "valorTexto"),
+                                                           new { @class = "input-group col-xs-10 col-sm-8" })
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="col-sm-6">
+
+                @*Contrato*@
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Tipo Contrato </label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            @Html.DropDownListFor(x => x.DispenserModelo.tipoContratoActual_ids,
+                                                            new SelectList(Model.Tipos_Contratos_Dispensers, "valor_ids", "valorTexto"),
+                                                            new { @class = "input-group col-xs-10 col-sm-8" })
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+                @*Estados_Dispensers*@
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Estado</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            @Html.DropDownListFor(x => x.DispenserModelo.estadoDispenserActual_ids,
+                                                           new SelectList(Model.Estados_Dispensers, "valor_ids", "valorTexto"),
+                                                           new { @class = "input-group col-xs-10 col-sm-8" })
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+                @*Ubicacion_Dispensers*@
+                <div class="form-group">
+                    <label class="control-label col-xs-12 col-sm-4 no-padding-right">Ubicación</label>
+                    <div class="col-xs-12 col-sm-8">
+                        <div class="clearfix">
+                            @Html.DropDownListFor(x => x.DispenserModelo.ubicacionActual_ids,
+                                                           new SelectList(Model.Ubicaciones_Dispensers, "valor_ids", "valorTexto"),
+                                                           new { @class = "input-group col-xs-10 col-sm-8" })
+                        </div>
+                        <div class="mensajeValidacion help-block"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </fieldset>
+
+        <div class="form-actions center">
+
+            <button type="button" id="btn_submit" class="btn btn-sm btn-primary">
+                Buscar Dispensers
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+            </button>
+
+            <a href="/Dispensers/Create" id="btn_nuevo" class="btn btn-sm btn-success">
+                Nuevo Dispenser
+                <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+            </a>
+
+        </div>
+    }
+
+    <div id="div_resultadoBusqueda">
+    </div>
+
+</div>

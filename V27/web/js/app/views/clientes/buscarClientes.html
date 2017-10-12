@@ -1,0 +1,108 @@
+﻿<h2>Buscar clientes</h2>
+<div class="form-horizontal">
+    <fieldset>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2 no-padding-right">Cliente</label>
+                <div class="col-xs-12 col-sm-10">
+                    <div class="clearfix">
+                        <input class=" col-xs-10 col-sm-8 " placeholder="nombre, dni, razón social" type="text"
+                               ng-model="parametros.datosCliente">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2 no-padding-right">Domicilio</label>
+                <div class="col-xs-12 col-sm-10">
+                    <div class="clearfix">
+                        <input class=" col-xs-10 col-sm-8 " placeholder="ciudad, barrio, calle" type="text"
+                               ng-model="parametros.domicilio">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2 no-padding-right">Repartos</label>
+                <div class="col-xs-12 col-sm-10">
+                    <div class="clearfix">
+                        <select class="input-group col-xs-10 col-sm-8"
+                                ng-model="parametros.reparto_id"
+                                ng-options="item.id as item.nombreReparto for item in datosBusqueda.repartos"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2 no-padding-right">Día</label>
+                <div class="col-xs-12 col-sm-10">
+                    <div class="clearfix">
+                        <select class="input-group col-xs-10 col-sm-8"
+                                ng-model="parametros.dia_ids"
+                                ng-options="item.valor_ids as item.valorTexto for item in datosBusqueda.dias"></select>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2 no-padding-right">Tipo</label>
+                <div class="col-xs-12 col-sm-10">
+                    <div class="clearfix">
+                        <select class="input-group col-xs-10 col-sm-8" 
+                                ng-model="parametros.tipoCliente_ids"
+                                ng-options="item.valor_ids as item.valorTexto for item in datosBusqueda.tiposDeClientes">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2 no-padding-right">Estado</label>
+                <div class="col-xs-12 col-sm-10">
+                    <div class="clearfix">
+                        <select class="input-group col-xs-10 col-sm-8"
+                                ng-model="parametros.estado_ids"
+                                ng-options="item.valor_ids as item.valorTexto for item in datosBusqueda.estados"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2 no-padding-right">Promotor</label>
+                <div class="col-xs-12 col-sm-10">
+                    <div class="clearfix">
+                        <select class="input-group col-xs-10 col-sm-8"
+                                ng-model="parametros.promotor_id"
+                                ng-options="item.usuario_id as item.nombreApellido for item in datosBusqueda.promotores"></select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label col-xs-12 col-sm-2 no-padding-right">Teléfono</label>
+                <div class="col-xs-12 col-sm-10">
+                    <div class="clearfix">
+                        <input class=" col-xs-10 col-sm-8 " placeholder="teléfono: 351421431" type="text"
+                               ng-model="parametros.telefono">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </fieldset>
+    <div class="form-actions center">
+
+        <button type="button" class="btn btn-sm btn-primary" ng-click="buscarClientes()" ng-disabled="buscandoClientes">
+            {{buscandoClientes?'Buscando...':'Buscar clientes'}}
+            <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+        </button>
+
+    </div>
+</div>

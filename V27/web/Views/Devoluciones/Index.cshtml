@@ -1,0 +1,74 @@
+﻿
+
+<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+    
+    <div class="widget-box ui-sortable-handle">
+        <div class="widget-header">
+            <h5 class="widget-title">Venta - Entrega</h5>
+            <div class="widget-toolbar">
+                <a href="#" data-action="fullscreen" class="orange2">
+                    <i class="ace-icon fa fa-expand"></i>
+                </a>
+            </div>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+					
+                <div class="row">
+                    <div class="col-sm-6">
+		                    
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Fecha</label>
+                            <div class="col-sm-10">
+                                
+                                <div class="input-group">
+                                    <input class="validate form-control date-picker col-xs-10 col-sm-5"  errormessage="Fecha de devolución" fieldtype="text" id="txt_FechaDevolucion" name="txt_FechaDevolucion" placeholder="dd/mm/yyyy" type="text"> 
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar bigger-110"></i>
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+                    
+                <div class="row">
+		                
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Cliente</label>
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control search-query" id="txt_clienteSeleccionado" placeholder="Seleccione un cliente" readonly="true">
+                                    <span class="input-group-btn">
+                                        <button type="button"  onclick="Modelo.AbrirDialogo_SeleccionarCliente()" class="btn btn-purple btn-sm">
+                                            <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="col-sm-1">
+                        <input type="text" placeholder="id cliente" id="txt_clienteId" class="col-xs-10 col-sm-12">
+                    </div>
+
+                </div>
+                <br/>
+                
+                <div id="div_SeccionCliente"></div>
+                 
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="div_BuscarClienteDialogo" title="-- Seleccione un cliente --"></div>
+
+<script src="~/js/Views/Devoluciones_Index.js"></script>

@@ -1,0 +1,34 @@
+﻿@model System.Collections.Generic.List<WaterService.Common.Entities.DTOs.SaldoInicialCliente_DTO>
+
+<h2>Resultado de saldo inicial</h2>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>IdExterno</th>
+            <th>IdInterno</th>
+            <th>Saldo</th>
+            <th>Nro Factura</th>
+            <th>Fecha</th>
+            <th>Errores</th>
+            <th>Exitoso</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td></td>
+                <td>@r.IdExterno</td>
+                <td>@r.Cliente_id</td>
+                <td>@r.SaldoInicial</td>
+                <td>@r.NroDeFactura</td>
+                <td>@r.FechaFactura</td>
+                <td>@r.Errores</td>
+                <td>@r.Exitoso</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,150 @@
+﻿@model  WaterService.FrontEnd.WebUI.Models.Pages.Repartos_OrdenClientes
+<style>
+			/* some elements used in demo only */
+			.spinner-preview {
+				width: 100px;
+				height: 100px;
+				text-align: center;
+				margin-top: 60px;
+			}
+			
+			.dropdown-preview {
+				margin: 0 5px;
+				display: inline-block;
+			}
+			.dropdown-preview  > .dropdown-menu {
+				display: block;
+				position: static;
+				margin-bottom: 5px;
+			}
+</style>
+
+<div class="widget-box widget-color-blue ui-sortable-handle">
+	<!-- #section:custom/widget-box.options -->
+	<div class="widget-header">
+		<h5 class="widget-title bigger lighter">
+			<i class="ace-icon fa fa-table"></i>
+			Repartos y días
+		</h5>		
+	</div>
+
+	<!-- /section:custom/widget-box.options -->
+	<div class="widget-body">
+		<div class="widget-main no-padding">
+			<table class="table table-striped table-bordered table-hover">
+				<thead class="thin-border-bottom">
+					<tr>
+                        <th></th>
+						<th>Lunes</th>
+                        <th>Martes</th>
+                        <th>Miércoles</th>
+                        <th>Jueves</th>
+                        <th>Viernes</th>
+                        <th>Sábado</th>
+                        <th>Domingo</th>						
+					</tr>
+				</thead>
+
+				<tbody>
+					
+                    @foreach (var item in Model.Repartos)
+                    {
+                        <tr>
+						    <td >                                 
+                                <strong>@item.nombreReparto</strong>
+                                <a href="/Repartos/EditarReparto/@item.id" tabindex="-1"><i class="ace-icon fa fa-pencil bigger-130"></i></a>
+						    </td>
+
+						    @for (int i = 1; i < 8; i++)
+                            {
+                             <td > 
+                                <div class="dropdown dropdown-preview">
+									<ul class="dropdown-menu" style="min-width:60px;">
+									    
+									    <li class="hasTooltip center" title="Cantidad de clientes">
+									        
+                                            @switch (i)
+                                            {
+                                                case 1:
+                                                    if (item.cantidadLunes>0)
+                                                    {
+                                                        <span class="badge badge-pink">@item.cantidadLunes</span>
+                                                    }
+                                                    break;
+                                                    
+                                                case 2:
+                                                    if (item.cantidadMartes > 0)
+                                                    {
+                                                        <span class="badge badge-pink">@item.cantidadMartes</span>        
+                                                    }
+                                                    break;
+                                                    
+                                                case 3:
+                                                    if (item.cantidadMiercoles > 0)
+                                                    {
+                                                       <span class="badge badge-pink">@item.cantidadMiercoles</span>        
+                                                    }
+                                                    break;                                                    
+                                                    
+                                                case 4:
+                                                    if (item.cantidadJueves > 0)
+                                                    {
+                                                        <span class="badge badge-pink">@item.cantidadJueves</span>        
+                                                    }
+                                                    break;
+                                                    
+                                                case 5:
+                                                    if (item.cantidadViernes > 0)
+                                                    {
+                                                        <span class="badge badge-pink">@item.cantidadViernes</span>        
+                                                    }
+                                                    break;
+                                                    
+                                                case 6:
+                                                    if (item.cantidadSabado > 0)
+                                                    {
+                                                        <span class="badge badge-pink">@item.cantidadSabado</span>        
+                                                    }
+                                                    break;
+                                                    
+                                                case 7:
+                                                    if (item.cantidadDomingo > 0)
+                                                    {
+                                                        <span class="badge badge-pink">@item.cantidadDomingo</span>        
+                                                    }        
+                                                    break;
+                                                                                                                                                                                                                                                               
+                                            }
+
+									    </li>
+									    
+                                        <li class="divider"  ></li>
+
+									    <li class="hasTooltip center" title="Ordenar clientes">
+											<a href="/Repartos/ConfigurarRuta?reparto_id=@item.id&dia_id=@i" tabindex="-1"><i class="ace-icon fa fa-sort-numeric-asc bigger-130 blue"></i></a>
+                                        </li>
+									    
+                                        <li class="divider"></li>
+									    
+                                        <li class="hasTooltip center" title="Ver en mapa">
+									        <a href="/Repartos/MapaReparto?reparto_id=@item.id&dia_id=@i" tabindex="-1"><i class="ace-icon fa fa-map-marker bigger-130 red"></i></a>
+									    </li>
+									    
+                                        <li class="divider hide"  ></li>
+									    <li class="hasTooltip center hide" title="Hoja de ruta">
+									        <a href="/Repartos/HojaDeRuta?reparto_id=@item.id&dia_id=@i" tabindex="-1"><i class="ace-icon fa fa-list-ul bigger-130 green"></i></a>
+									    </li>
+                                        
+									</ul>
+								</div>
+                            </td>
+                            }
+                           
+					    </tr>
+                    }
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

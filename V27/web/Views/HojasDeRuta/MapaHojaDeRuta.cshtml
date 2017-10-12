@@ -1,0 +1,31 @@
+﻿<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+
+<div ng-app="mainApp" ng-controller="hojasDeRutaMapaCtrl">
+    
+    <uib-tabset active="activeForm">
+        <uib-tab index="0" heading="Clientes">
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <div id="div_map" style="width: 100%; height: 600px;"></div>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab index="1" heading="Movil">
+            
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="div_map_movil" style="width: 100%; height: 600px;"></div>
+                </div>
+            </div>
+
+        </uib-tab>
+        
+    </uib-tabset>
+
+
+
+</div>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/hojasDeRutaControllers.js"></script>

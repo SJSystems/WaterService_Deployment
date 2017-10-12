@@ -1,0 +1,80 @@
+﻿<div ng-app="mainApp" ng-controller="nuevaTransaccionTemporalCtrl" ng-show="mostrarContenido">
+    
+    <!-- Datos del cliente -->
+    <div ng-include="'/js/app/views/transaccionesTemporales/datosDelCliente.html'"></div>
+    
+    <br/>
+
+    <!-- Ventas -->
+    <div ng-include="'/js/app/views/transaccionesTemporales/articulosEntregados.html'"></div>
+
+    <!-- Envases -->
+    <div ng-include="'/js/app/views/transaccionesTemporales/envases.html'"></div>
+
+    <!-- Facturas pendientes -->
+    <seleccionar-cheques></seleccionar-cheques>
+    <seleccionar-depositos></seleccionar-depositos>
+    <div ng-include="'/js/app/views/transaccionesTemporales/facturas.html'"></div>
+    
+    <!-- Cobros consumos -->
+    <div ng-include="'/js/app/views/transaccionesTemporales/cobrosConsumos.html'">
+    </div>
+
+    
+    <!-- Devoluciones -->
+    <div ng-include="'/js/app/views/transaccionesTemporales/devoluciones.html'"></div>
+
+    <!-- Comprobantes físicos -->
+    <div ng-include="'/js/app/views/transaccionesTemporales/comprobantesFisicos.html'"></div>
+    
+    <!-- Botonera -->
+    <div class="widget-toolbox padding-8 clearfix " style="display: block;">
+
+        <div class="col-sm-3">
+            <fieldset>
+                <label>N° Recibo:</label>
+                <input  type="text" placeholder="n° de recibo" ng-model="ventaActual.nroRecibo">
+            </fieldset>
+        </div>
+        
+        <div class="col-sm-6 pull-right">
+            
+            <label class="middle">
+                <input class="ace" type="checkbox" ng-model="facturarVenta">
+                <span class="lbl"> Facturar</span>
+            </label>
+            <button class="btn btn-lg btn-success " ng-click="facturarVenta===true? preguntarFacturarVenta() : confirmar(false,false)">
+                <i class="ace-icon fa fa-check"></i>
+                Confirmar Venta
+            </button>
+
+            <div class="btn-group" >
+                <button data-toggle="dropdown" class="btn btn-primary btn-white dropdown-toggle">
+                    Confirmar visita al cliente
+                    <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                </button>
+
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="javascript:return false" ng-click="confirmar(true,true);">
+                            <i class="ace-icon fa fa-coffee  bigger-120 orange"></i> - Cliente ausente
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="javascript:return false" ng-click="confirmar(false,true);">
+                            <i class="ace-icon fa  fa-thumbs-o-down bigger-120 orange"></i> - Sin gestiones en visita 
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+
+</div>
+
+</div>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/transaccionesTemporalesControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

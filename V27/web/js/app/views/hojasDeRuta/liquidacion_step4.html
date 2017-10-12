@@ -1,0 +1,159 @@
+﻿<h3 class="lighter block green">Clientes ausentes y no atendidos:</h3>
+
+<div class="clearfix">
+    <!-- #section:custom/extra.grid -->
+    <div class="grid4">
+        <span class="grey">
+            <i class="ace-icon fa fa-users fa-2x blue"></i>
+            &nbsp; Total
+        </span>
+        <h4 class="bigger pull-right">{{metricas.clientesNoVisitados.cantidad}}</h4>
+    </div>
+
+    <div class="grid4">
+        <span class="grey">
+            <i class="ace-icon fa fa-thumbs-o-down fa-2x red"></i>
+            &nbsp; No visitados
+        </span>
+        <h4 class="bigger pull-right">{{metricas.clientesNoVisitados.noVisitados}}</h4>
+    </div>
+
+    <div class="grid4">
+        <span class="grey">
+            <i class="ace-icon fa fa-info fa-2x red"></i>
+            &nbsp; Métrica no visitados
+        </span>
+        <h4 class="bigger pull-right">{{metricas.clientesNoVisitados.metricaNoVisitados | number:2}}%</h4>
+    </div>
+
+    <div class="grid4">
+        <span class="grey">
+            <i class="ace-icon fa fa-exclamation-triangle fa-2x orange"></i>
+            &nbsp; Ausentes
+        </span>
+        <h4 class="bigger pull-right">{{metricas.clientesNoVisitados.ausentes}}</h4>
+    </div>
+
+    <!-- /section:custom/extra.grid -->
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th class="center" >
+                Fecha
+            </th>
+            <th >
+                Reparto
+            </th>
+            <th style="border-right: 2px solid !important;">
+                Cant
+            </th>
+
+            <th >Vis</th>
+            <th >N/Vis</th>
+            <th style="border-right: 2px solid !important;">
+                % Vis
+            </th>
+
+            <th >C/Ges</th>
+            <th >Aus</th>
+            <th >S/Ges</th>
+            <th >% C/Ges</th>
+            <th style="border-right: 2px solid !important;">% Aus</th>
+
+
+            <th >Entr</th>
+            <th >Cob</th>
+            <th >Env</th>
+            <th >Dev</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        
+        <tr ng-repeat="item in liquidacion.gestiones">
+            <td>
+                {{item.fecha.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+            </td>
+            <td>
+                {{item.nombreReparto}}
+            </td>
+            <td style="border-right: 2px solid !important;">
+                {{item.cantidadClientes}}
+            </td>
+
+            <td>{{item.cantidadVisitados}}</td>
+            <td>{{item.cantidadNoVisitados}}</td>
+            <td style="border-right: 2px solid !important;">
+                {{item.porcVisitados}}%
+            </td>
+
+            <td>{{item.cantidadConGestiones}}</td>
+            <td>{{item.cantidadAusentes}}</td>
+            <td>{{item.cantidadSinGestiones}}</td>
+            <td>{{item.porcConGestiones}}%</td>
+            <td style="border-right: 2px solid !important;">
+                {{item.porcAusentes}}%
+            </td>
+
+            <td>{{item.cantidadConEntregas}}</td>
+            <td>{{item.cantidadConCobros}}</td>
+            <td>{{item.cantidadConEnvases}}</td>
+            <td>{{item.cantidadConDevoluciones}}</td>
+
+        </tr>
+
+    </tbody>
+</table>
+
+
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Código</th>
+            <th>Cliente</th>
+            <th>Tipo</th>
+            <th>Domicilio</th>
+            <th>Visita</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="cliente in cierreLiquidacion.ClientesAusentesNoVisitados">
+            <td>{{cliente.orden}}</td>
+            <td>
+                <a href="/Clientes/EditCliente/{{cliente.cliente_id}}" target="blank">{{cliente.cliente_id}}</a>
+
+            </td>
+            <td>
+                <a target="blank" href="/TransaccionesTemporales/Create?clienteId={{cliente.cliente_id}}&hojaDeRutaId={{liquidacion.hojaDeRuta.id}}" class="hasTooltip" title="Venta al cliente">
+                    {{cliente.nombreCliente}}
+
+                </a>
+            </td>
+
+            <td>{{cliente.tipoCliente}}</td>
+            <td>{{cliente.domicilioCompleto}}</td>
+            <td>
+                <i ng-show="!cliente.visitado" class="fa fa-times red hasTooltip" title="No visitado"></i>
+                <i ng-show="cliente.visitado" class="fa fa-check green hasTooltip" title="Visitado"></i>
+
+                <i ng-show="cliente.visitado && !cliente.ausente && !cliente.ventaEntrega && !cliente.cobroConsumo && !cliente.cobroFactura && !cliente.devolucionEnvases && !cliente.prestamoEnvases && !cliente.devolucionArticulo"
+                   class="fa fa-exclamation-circle orange hasTooltip" title="Sin gestionaes"></i>
+
+                <i ng-show="cliente.ausente" class="fa fa-coffee red hasTooltip" title="Ausente"></i>
+
+                <a ng-show="cliente.ventaEntrega" href="/Archivos/Remitos/Entregas/{{cliente.cliente_id}}_{{liquidacion.hojaDeRuta.id}}.pdf" target="_blank">
+                    <i class="fa fa-shopping-cart green hasTooltip" title="Venta-entrega y remito"></i>
+                </a>
+
+                <i ng-show="cliente.cobroConsumo" class="fa fa-money blue hasTooltip" title="Cobro de consumos"></i>
+                <i ng-show="cliente.cobroFactura" class="fa fa-file-text-o blue hasTooltip" title="Cobro de facturas"></i>
+                <i ng-show="cliente.devolucionEnvases" class="fa fa-reply blue hasTooltip" title="Devolución de envases"></i>
+                <i ng-show="cliente.prestamoEnvases" class="fa fa-share blue hasTooltip" title="Préstamo de envases"></i>
+                <i ng-show="cliente.devolucionArticulo" class="fa fa-retweet red hasTooltip" title="Devolución de artículo"></i>
+            </td>
+        </tr>
+    </tbody>
+</table>

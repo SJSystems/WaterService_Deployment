@@ -1,0 +1,64 @@
+﻿
+
+<div id="modal_configuraciones">
+    <div class="col-xs-12 col-sm-12 widget-container-col ui-sortable">
+
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <h3 class="header smaller lighter blue">
+                        <span style="margin-left: 10px">{{tituloAccion}}</span>
+                    </h3>
+                    <div class="form-horizontal col-sm-9">
+                        <div class="row" ng-show="false">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Id </label>
+                                    <div class="col-sm-9">
+                                        <input ng-model="configuracionXEditar.id" class="validate form-control col-xs-10 col-sm-10 "
+                                               fieldtype="text" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Key </label>
+                                    <div class="col-sm-9">
+                                        <input ng-model="configuracionXEditar.key" class="validate form-control col-xs-10 col-sm-10 "
+                                               fieldtype="text" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label no-padding-right"> Value </label>
+                                    <div class="col-sm-9">
+                                        <input ng-model="configuracionXEditar.value" class="validate form-control col-xs-10 col-sm-10 "
+                                               fieldtype="text" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <a class="btn btn-warning" type="button" href="javascript:void(0);" ng-click="Cerrar()">
+                            <i class="ace-icon fa fa-arrow-circle-left bigger-110"></i>
+                            Volver
+                        </a>
+
+                        <button class="btn btn-primary pull-right" type="button" ng-click="Save()">
+                            <i class="ace-icon fa fa-save bigger-110"></i>
+                            Guardar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

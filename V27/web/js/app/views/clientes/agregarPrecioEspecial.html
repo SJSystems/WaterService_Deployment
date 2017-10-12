@@ -1,0 +1,63 @@
+﻿
+<div class="widget-box" style="margin-top: 0px ;margin-bottom:0px ">
+    <div class="widget-header">
+        <h4 class="widget-title">Agregar precio especial a cliente</h4>       
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-main">
+
+            <div class="form-horizontal" role="form">
+
+                <div class="space-4"></div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> Tipo de artículo</label>
+
+                    <div class="col-sm-9">
+                        <select class="form-control"
+                                ng-model="tipoArticulo_ids"
+                                ng-options="item.valor_ids as item.valorTexto for item in tiposDeArticulos"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> Artículo</label>
+
+                    <div class="col-sm-9">
+                        <select class="form-control"
+                                ng-model="precio.articulo_id"
+                                ng-options="item.id as (item.nombreArticulo + ' ('+item.codigoInterno+')') for item in articulos | filter:{ tipoArticulo_ids: tipoArticulo_ids }"></select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label no-padding-right"> Precio </label>
+
+                    <div class="col-sm-9">
+                        <input ng-model="precio.precio" type="text" smart-float class="form-control">
+                    </div>
+                </div>
+
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button class="btn btn-info" type="button" ng-click="guardar()" ng-disabled="guardando">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            {{guardando?'Guardando':'Guardar'}}
+                        </button>
+
+                        &nbsp; &nbsp; &nbsp;
+
+                        <button class="btn" type="button" ng-click="cancelar()" ng-disabled="guardando">
+                            <i class="ace-icon fa fa-times bigger-110"></i>
+                            Cancelar
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+﻿
+<div title="{{title}}" class="escribir-log-template">
+    
+
+    <div class="form-horizontal">
+
+        <fieldset>
+            <div class="col-sm-12">
+                <div class="col-sm-12 center">
+                    <h4 class="blue">{{"Comentario para " + log.entidad + " ( Id: " + log.entidadId + " )"}}</h4>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-5 col-sm-2 no-padding-right">Comentario</label>
+                    <div class="col-xs-12 col-sm-10">
+                        <div class="clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <textarea class="form-control limited" ng-model="log.comentario" maxlength="3000" style="height:115px!important;"></textarea>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="form-horizontal center">
+            <button type="button" ng-click="WriteLog()" class="btn btn-sm btn-primary">
+                <i class="ace-icon fa fa-floppy-o icon-on-right bigger-110"></i>
+                Guardar
+            </button>
+        </div>
+    </div>
+</div>

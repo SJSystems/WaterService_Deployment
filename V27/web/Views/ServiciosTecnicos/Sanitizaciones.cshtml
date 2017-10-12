@@ -1,0 +1,283 @@
+﻿<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable" style="min-height: 109px;"
+     ng-app="mainApp" ng-controller="sanitizacionesController">
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">Sanitización de dispensers</h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+
+                    <div class="col-sm-6">
+
+                        <label class="hasTooltip" title="Fecha de última sanitización + meses entre sanitizaciones">Periodo para sanitizaciones</label>
+                        <div class="row">
+
+                            <div class="col-xs-8 col-sm-12">
+                                <div class="input-daterange input-group">
+                                    <input type="text" class=" form-control" ng-model="desde" name="start" />
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-exchange"></i>
+                                    </span>
+                                    <input type="text" class=" form-control" ng-model="hasta" name="end" />
+                                </div>
+
+                                <!-- /section:plugins/date-time.datepicker -->
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            
+                            <div class="col-xs-8 col-sm-12">
+                                <label>
+                                    <input type="checkbox" name="file-format" id="id-file-format" ng-model="soloSinPlanificar" class="ace">
+                                    <span class="lbl"> Solo sin planificar</span>
+                                </label>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6">
+                        
+                        <label>Cliente</label>
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-12">
+                                <div class="input-group">
+                                    <span class="form-control search-query">{{clienteSelected.nombreCliente}}</span>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-info btn-sm" 
+                                                ng-click="abrirSeleccionarCliente('sanitizacionesBuscarCliente')">
+                                            <i class="ace-icon fa fa-check white"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-danger btn-sm" 
+                                                ng-click="quitarClienteSeleccionado()" ng-show="clienteSelected != null">
+                                            <i class="ace-icon fa fa-times white"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+            
+            <input type="text" ng-model="fechaPlanificada" class="date-picker" style="width: 100px" placeholder="Fecha" />
+
+            <button class="btn btn-white btn-default btn-round" ng-click="generarServiciosTecnicos()">
+                <i class="ace-icon fa fa-bolt red2"></i>
+                Generar Servicios Técnicos
+            </button>
+
+            <button class="btn btn-primary pull-right" ng-click="buscar()">
+                <i class="ace-icon fa fa-search align-top bigger-125"></i>
+                Buscar
+            </button>
+
+        </div>
+    </div>
+    
+    <div ng-if="false">
+
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>
+                        <label class="hasTooltip" title="Seleccionar todos los dispensers">
+                            <input type="checkbox" name="file-format" id="id-file-format" class="ace"
+                                   ng-model="seleccionarTodos">
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>Nro. Interno</th>
+                    <th>Nro. Serie</th>
+                    <th>Tipo </th>
+                    <th>Marca </th>
+                    <th>Últ sanitización</th>
+                    <th>Próx sanitización</th>
+                    <th>Acciones </th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr ng-repeat="item in dispensers">
+                    <td ng-if="mostrarColumnaCliente(item,$index)" rowspan="{{obtenerRowspan(item)}}">{{item.nombreCliente}}</td>
+                    <td>
+                        <label class="hasTooltip" title="Seleccionar dispenser">
+                            <input type="checkbox" name="file-format" id="id-file-format" class="ace"
+                                   ng-model="item.seleccionado">
+                            <span class="lbl"> </span>
+                        </label>
+                    </td>
+                    <td>{{item.numeroInterno}} </td>
+                    <td>{{item.numeroSerie}} </td>
+                    <td>{{item.tipoDispenser}} </td>
+                    <td>{{item.marcaDispenser}} </td>
+                    <td>{{item.fechaUltimaSani.slice(6, -2)  |  date:'dd/MM/yyyy' }}</td>
+                    <td>{{item.fechaProximaSanitizacion.slice(6, -2)  |  date:'dd/MM/yyyy' }}</td>
+                    <td>
+                        <div class="hidden-sm hidden-xs action-buttons">
+                            @*<a class="blue" href="#">
+                                <i class="ace-icon fa fa-search-plus bigger-130"></i>
+                                    <div class="btn-group">
+                            </a>*@
+
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                                    Acciones
+                                    <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                </button>
+
+                                <ul class="dropdown-menu dropdown-inverse">
+                                    <li>
+                                        <a href="/Dispensers/Edit/{{item.tipoContrato}}">Ver detalles</a>
+                                    </li>
+
+                                    <li class="divider"></li>
+
+                                    <li>
+                                        <a href="/Dispensers/Edit/{{item.id}}">Editar</a>
+                                    </li>
+                                </ul>
+                            </div><!-- /.btn-group -->
+                            @*<a class="green" target="_blank" href="/Dispensers/Edit/{{item.id}}">
+                                <i class="ace-icon fa fa-pencil bigger-130"></i>
+                            </a>*@
+
+                            @*<a class="red" href="javascript:return null;">
+                                <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                            </a>*@
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+    
+
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Cliente</th>
+                <th>Dirección</th>
+                <th>Tipo</th>
+                <th>Dispensers</th>
+            </tr>
+        </thead>
+
+        <tbody ng-repeat="item in clientesConDispensers">
+
+            <tr>
+                <td>
+                    <label class="hasTooltip" title="Seleccionar cliente">
+                        <input type="checkbox" name="file-format" id="id-file-format" class="ace"
+                               ng-model="item.seleccionado">
+                        <span class="lbl"> </span>
+                    </label>
+                </td>
+                <td>
+                    <a title="Ver dispensers del cliente" class="hasTooltip"
+                       ng-init="item.mostrarDispensers=false"
+                       ng-click="item.mostrarDispensers = !item.mostrarDispensers"
+                       href="javascript:return false;">
+                        <i class="btn_icono ace-icon fa fa-chevron-{{item.mostrarDispensers?'down':'up'}}"></i>
+                    </a>
+                    {{item.Clinte.nombreCliente}}
+                </td>
+                <td>{{item.Clinte.domicilioCompleto}} </td>
+                <td>{{item.Clinte.tipoCliente}} </td>
+                <td>{{item.Clinte.Dispensers.length}} </td>
+
+            </tr>
+            <tr ng-show="item.mostrarDispensers">
+                <td colspan="5">
+
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nro. Interno</th>
+                                <th>Nro. Serie</th>
+                                <th>Tipo </th>
+                                <th>Marca </th>
+                                <th>Últ sanitización</th>
+                                <th>Próx sanitización</th>
+                                <th>Acciones </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr ng-repeat="item in item.Dispensers">
+
+                                <td>{{item.numeroInterno}} </td>
+                                <td>{{item.numeroSerie}} </td>
+                                <td>{{item.tipoDispenser}} </td>
+                                <td>{{item.marcaDispenser}} </td>
+                                <td>{{item.fechaUltimaSani.slice(6, -2)  |  date:'dd/MM/yyyy' }}</td>
+                                <td>{{item.fechaProximaSanitizacion.slice(6, -2)  |  date:'dd/MM/yyyy' }}</td>
+                                <td>
+                                    <div class="hidden-sm hidden-xs action-buttons">
+
+                                        <div class="btn-group">
+                                            <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                                                Acciones
+                                                <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu dropdown-inverse">
+                                                <li>
+                                                    <a href="/Dispensers/Edit/{{item.tipoContrato}}">Ver detalles</a>
+                                                </li>
+
+                                                <li class="divider"></li>
+
+                                                <li>
+                                                    <a href="/Dispensers/Edit/{{item.id}}">Editar</a>
+                                                </li>
+                                            </ul>
+                                        </div><!-- /.btn-group -->
+                                        @*<a class="green" target="_blank" href="/Dispensers/Edit/{{item.id}}">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                        </a>*@
+
+                                        @*<a class="red" href="javascript:return null;">
+                                            <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                        </a>*@
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+
+
+    <seleccionar-clientes codigo="sanitizacionesBuscarCliente" />
+</div>
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

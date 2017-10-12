@@ -1,0 +1,102 @@
+﻿
+<div class="widget-box ui-sortable-handle">
+
+    <div class="widget-header">
+        <h5 class="widget-title">
+            Cobros Consumos
+            <span class="label label-warning arrowed-in-right arrowed" ng-if="obtenerTextoCobrosConsumos()!=''">
+                <i class="ace-icon fa fa-exclamation-triangle  bigger-120"></i> {{obtenerTextoCobrosConsumos()}}
+            </span>
+        </h5>
+
+        <!-- #section:custom/widget-box.toolbar -->
+        <div class="widget-toolbar">
+
+            <a href="#" class="collapse-button" data-action="collapse">
+                <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+        </div>
+
+        <!-- /section:custom/widget-box.toolbar -->
+    </div>
+
+    <div class="widget-body" style="display: block;">
+        <div class="widget-main">
+            
+            <div class="row">
+                <div class="col-sm-8">
+                    <table class="table table-bordered table-striped">
+                        <thead class="thin-border-bottom">
+                            <tr>
+                                <th>
+
+                                </th>
+                                <th>
+                                    Monto
+                                </th>
+                                <th colspan="2">
+                                    Medio
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="cobroConsumos in ventaActual.cobrosConsumos">
+                                <td>
+                                    <button type="button" ng-click="eliminarCobroConsumos($index, cobroConsumos)"
+                                            class="btn btn-sm btn-danger btn-round center">
+                                        <i class="ace-icon fa fa-trash-o "></i>
+                                    </button>
+
+                                </td>
+                                <td>
+                                    <input type="text" ng-model="cobroConsumos.monto" class="decimalFormat" smart-float style="width: 100px" />
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <select ng-model="cobroConsumos.formaDePago_ids"
+                                                ng-options="fp.valor_ids as fp.valorTexto for fp in listas.formasDePago"
+                                                class="form-control col-xs-10 col-sm-8"></select>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-sm btn-warning" type="button" ng-click="seleccionarMedioDeCobroConsumos(cobroConsumos)">
+                                                <i class="ace-icon fa fa-check bigger-110"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    {{obtenerDatosDelMedioDePagoDelCobroConsumos(cobroConsumos)}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4">
+                                    <p>
+                                        <h5>
+                                            Cobro total: 
+                                            <span class="red">$ <span>{{obtenerTotalCobradoConsumos() | number:2}}</span>  </span>
+                                        </h5>
+                                    </p> 
+                                    <p>
+                                        <h5>
+                                            Saldo:
+                                            <span class="red">$ <span>{{obtenerSaldoCuentaConsumos() | number:2}}</span>  </span>
+                                        </h5>
+                                    </p> 
+                                </td>
+                                
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <button class="btn btn-white btn-default btn-round" ng-click="agregarCobroConsumos()">
+                <i class="ace-icon fa fa-plus orange"></i>
+                Agregar Cobro
+            </button>
+
+        </div>
+    </div>
+</div>

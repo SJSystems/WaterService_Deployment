@@ -1,0 +1,75 @@
+﻿@model WaterService.FrontEnd.WebUI.Models.Pages.Cliente_EditDispensers
+
+<div ng-app="mainApp" ng-controller="dispensersClienteCtrl">
+    
+
+    @Html.Partial("_PasosCliente",Model.ClienteModelo)
+    @Html.HiddenFor(x => x.ClienteModelo.id)
+    
+    <div class="row">
+        <div class="col-sm-4">
+      
+        </div>
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="form-inline">
+                    <select ng-model="modelo.clienteSeleccionado"
+                            ng-options="cliente.nombreCliente for cliente in sucursalesDisponibles"
+                            class="input-group col-xs-10 col-sm-8"></select>
+                    <button class="btn btn-xs btn-yellow" type="button" ng-click="AbrirDialogo_AgregarDispenser()">
+                        <i class="ace-icon fa fa-plus bigger-120"></i>
+                        Agregar dispenser
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+   
+    
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>N° serie</th>
+                <th>Marca</th>
+                <th>Tipo</th>
+                <th>Locacion</th>
+                <th>Estado</th>
+                <th>Abono</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            @foreach (var item in @Model.DispensersCliente)
+            {
+                 <tr>
+                     <td>@item.numeroInterno</td>   
+                     <td>@item.numeroSerie</td>   
+                     <td>@item.marcaDispenser</td>
+                     <td>@item.tipoDispenser</td>
+                     <td>@item.nombreCliente</td>
+                     <td>@item.estadoDispenser</td>
+                     <td>@(item.abono_id.HasValue?"ABO-"+item.abono_id.Value:"-")</td>
+                     <td>
+                         <button class="btn btn-xs btn-danger" type="button" ng-click="QuitarDispenserDeAbono(@item.id);">
+                             <i class="ace-icon fa fa-times bigger-120"></i>
+                         </button>
+                     </td>
+                 </tr>
+            }
+            
+        </tbody>
+    </table>
+    
+
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/dispensersController.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/dispensersClientesController.js"></script>
+<script src="~/js/app/app_directives.js"></script>

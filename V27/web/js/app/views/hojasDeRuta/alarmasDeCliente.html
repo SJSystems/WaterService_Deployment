@@ -1,0 +1,20 @@
+﻿<div class="page-header">
+    <h1>
+        <a href="/Clientes/HistorialMovimientos/{{cliente.cliente_id}}" target="_blank">{{cliente.nombreCliente}}</a>
+        <small>{{hojaDeRuta.fechaRuta.slice(6, -2)  |  date:'dd/MM/yyyy'}} - {{hojaDeRuta.nombreReparto}}</small>
+    </h1>
+</div>
+
+<div class="row">
+
+    <div class="col-sm-12">
+        <h4 class="smaller">El cliente posee las siguientes alarmas:</h4>
+        <ul class="list-unstyled spaced inline bigger-110 margin-15">
+            <li ng-repeat="item in alertas">
+                <i class="ace-icon fa fa-hand-o-right red"></i>
+                <strong class="text-danger">{{item.tipoDeAlarma}}</strong>
+            </li>
+        </ul>
+    </div>
+  
+</div>

@@ -1,0 +1,195 @@
+﻿<div class="widget-box ui-sortable-handle">
+
+    <div class="widget-header">
+        <h5 class="widget-title">
+            Artículos y Cobro
+            <span class="label label-warning arrowed-in-right arrowed" ng-if="obtenerTextoVentas()!=''">
+                <i class="ace-icon fa fa-exclamation-triangle  bigger-120"></i> {{obtenerTextoVentas()}}
+            </span>
+
+        </h5>
+
+        <!-- #section:custom/widget-box.toolbar -->
+        <div class="widget-toolbar">
+
+            <a href="#" class="collapse-button" data-action="collapse">
+                <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+        </div>
+
+        <!-- /section:custom/widget-box.toolbar -->
+    </div>
+
+    <div class="widget-body" style="display: block;">
+        <div class="widget-main">
+
+            <div class="row">
+                <br />
+
+                <table class="table table-striped table-bordered">
+
+                    <thead>
+                        <tr>
+                            <th class="col-sm-1 center"></th>
+                            <th>Artículo</th>
+                            <th class="col-sm-2 center">Cantidad</th>
+                            <th class="col-sm-1 center">Precio</th>
+                            <th class="col-sm-1 center">Subtotal</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr ng-repeat="artAbono in articulos.articulosAbonos">
+
+                            <td class="center">
+                                <button type="button" ng-click="eliminarArticuloAbono(artAbono);" class="btn btn-sm hide btn-danger btn-round center">
+                                    <i class="ace-icon fa fa-trash-o "></i>
+                                </button>
+                            </td>
+
+                            <td>
+                                <h5>(ART-{{artAbono.codigoInterno}}) - {{artAbono.nombreArticulo}} (ABO)</h5>
+                            </td>
+
+                            <td class="center">
+                                <input type="text" class="numericControl form-control" ng-model="artAbono.cantidadEntregada" value="0" maxlength="8">
+                            </td>
+
+                            <td class="center">
+                                <h5>
+                                    $<span>{{artAbono.precioExcendente}}</span>
+                                </h5>
+                            </td>
+
+                            <td class="center">
+                                <h5>
+                                    $<strong> {{obtenerSubtotalArticuloAbono(artAbono) | number:2}} </strong>
+                                </h5>
+                            </td>
+
+                        </tr>
+
+                        <tr ng-repeat="artComodato in articulos.articulosComodatos">
+
+                            <td class="center">
+                                <button type="button" ng-click="eliminarArticuloComodato(artComodato);" class="btn btn-sm hide btn-danger btn-round center">
+                                    <i class="ace-icon fa fa-trash-o "></i>
+                                </button>
+                            </td>
+
+                            <td>
+                                <h5>(ART-{{artComodato.codigoInterno}}) - {{artComodato.nombreArticulo}} (COM)</h5>
+                            </td>
+
+                            <td class="center">
+                                <input type="text" class="numericControl form-control" ng-model="artComodato.cantidadEntregada" value="0" maxlength="8">
+                            </td>
+
+                            <td class="center">
+                                <h5>
+                                    $<span>{{artComodato.precio}}</span>
+                                </h5>
+                            </td>
+
+                            <td class="center">
+                                <h5>
+                                    $<strong> {{obtenerSubtotalArticuloComodato(artComodato)  | number:2}} </strong>
+                                </h5>
+                            </td>
+
+                        </tr>
+
+                        <tr ng-repeat="artLista in articulos.articulosListaEntregados">
+
+                            <td class="center">
+                                <button type="button" ng-click="eliminarArticuloLista($index);" class="btn btn-sm btn-danger btn-round center">
+                                    <i class="ace-icon fa fa-trash-o "></i>
+                                </button>
+                            </td>
+
+                            <td>
+                                <select ng-model="artLista.articulo"
+                                        ng-options="('(ART- '+art.codigoInterno +') ' +art.nombreArticulo ) for art in articulos.articulosLista"
+                                        class=""></select>
+                            </td>
+
+                            <td class="center">
+                                <input type="text" class="numericControl form-control" ng-model="artLista.cantidadEntregada" value="0" maxlength="8">
+                            </td>
+
+                            <td class="center">
+                                <h5>
+                                    $<span>{{artLista.articulo.precioMaximo}}</span>
+                                </h5>
+                            </td>
+
+                            <td class="center">
+                                <h5>
+                                    $<strong> {{obtenerSubtotalArticuloLista(artLista) | number:2}} </strong>
+                                </h5>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+                <div class="col-sm-5 pull-right">
+
+                    <div class="profile-user-info profile-user-info-striped">
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name">Total</div>
+                            <div class="profile-info-value">
+                                <h5>
+                                    <span class="red">$ <span> {{ obtenerTotalVentaActual() | number:2}}</span>  </span>
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name">Saldo anterior</div>
+                            <div class="profile-info-value">
+                                <h5>
+                                    <span class="red">$ <span>{{ (ventaActual.saldosCliente.saldoCuentaConsumo) | number:2}}</span>  </span>
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name">Total final</div>
+                            <div class="profile-info-value">
+                                <h5>
+                                    <span class="red">$ <span>{{(ventaActual.saldosCliente.saldoCuentaConsumo + obtenerTotalVentaActual())  | number:2}}</span>  </span>
+                                </h5>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row" ng-hide="ventaActual.clienteActual.tipoCliente_ids!=1">
+                            <div class="profile-info-name">Saldo final</div>
+                            <div class="profile-info-value">
+                                <h4>
+                                    <span class="red">$ <span>{{ (ventaActual.saldosCliente.saldoCuentaConsumo + obtenerTotalVentaActual() - ventaActual.cobroConsumos ) | number:2 }}</span>  </span>
+                                </h4>
+                            </div>
+                        </div>
+                        <br>
+
+
+
+                    </div>
+
+                </div>
+                <button class="btn btn-white btn-default btn-round" ng-click="agregarNuevoArticuloDeLista();">
+                    <i class="ace-icon fa fa-plus green"></i>
+                    Agregar artículo
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>

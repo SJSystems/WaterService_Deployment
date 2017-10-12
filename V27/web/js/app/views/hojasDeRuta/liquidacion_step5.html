@@ -1,0 +1,130 @@
+﻿<h3 class="lighter block green">Recuperación y préstamos de envases:</h3>
+
+<div class="row">
+    
+    <div class="col-sm-7">
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Artículo</th>
+                    <th>Adeudada</th>
+                    <th>Recuperada</th>
+                    <th>Recupero</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in gestionDeEnvases.PrestamosPendientes"
+                    ng-style="obtenerEstiloParaDevolucion(item)">
+                    <td>{{item.cliente}} </td>
+                    <td>{{item.nombreArticulo}} </td>
+                    <td>{{item.cantidadAdeudada}} </td>
+                    <td>{{item.cantidadRecuperada}} </td>
+                    <td>{{item.porcentajeDeRecuperacion}}% </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    
+    <div class="col-sm-5">
+        
+        <div class="row">
+            <div class="col-sm-12 infobox-container">
+
+                <div class="infobox infobox-orange2">
+                    <div class="infobox-progress">
+                        <!-- #section:pages/dashboard.infobox.easypiechart -->
+                        <div class="easy-pie-chart percentage" data-percent="{{gestionDeEnvases.porcentajeDePrestamosPorVentas}}" data-size="46">
+                            <span class="percent">{{gestionDeEnvases.porcentajeDePrestamosPorVentas}}</span>%
+                        </div>
+
+                        <!-- /section:pages/dashboard.infobox.easypiechart -->
+                    </div>
+
+                    <div class="infobox-data">
+                        <span class="infobox-text">Prestamos</span>
+                    </div>
+                </div>
+
+                <div class="infobox infobox-blue2">
+                    <div class="infobox-progress">
+                        <!-- #section:pages/dashboard.infobox.easypiechart -->
+                        <div class="easy-pie-chart percentage" data-percent="{{gestionDeEnvases.porcentajeDeRecuperacion}}" data-size="46">
+                            <span class="percent">{{gestionDeEnvases.porcentajeDeRecuperacion}}</span>%
+                        </div>
+
+                        <!-- /section:pages/dashboard.infobox.easypiechart -->
+                    </div>
+
+                    <div class="infobox-data">
+                        <span class="infobox-text">Recuperación</span>
+                    </div>
+                </div>
+
+                <div class="infobox infobox-red">
+                    <div class="infobox-icon">
+
+                    </div>
+
+                    <div class="infobox-data">
+                        <span class="infobox-data-number">{{gestionDeEnvases.cantidadAdeudada}}</span>
+                        <div class="infobox-content">Cant adeudada</div>
+                    </div>
+                </div>
+
+                <div class="infobox infobox-pink">
+                    <div class="infobox-icon">
+
+                    </div>
+
+                    <div class="infobox-data">
+                        <span class="infobox-data-number">{{gestionDeEnvases.cantidadRecuperada}}</span>
+                        <div class="infobox-content">Cant recuperada</div>
+                    </div>
+                </div>
+
+                <div class="infobox infobox-blue">
+                    <div class="infobox-icon">
+
+                    </div>
+
+                    <div class="infobox-data">
+                        <span class="infobox-data-number">{{gestionDeEnvases.cantidadPendienteDeRecuperacion}}</span>
+                        <div class="infobox-content">Aún pendiente </div>
+                    </div>
+                </div>
+                
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                
+                <h4 class="widget-title lighter">
+                    Préstamos realizados en ruta
+                </h4>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Artículo</th>
+                            <th>Cant</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in gestionDeEnvases.PrestamosRealizadosEnHojaDeRuta">
+                            <td>{{item.nombreCliente}}</td>
+                            <td>{{item.nombreArticulo}}</td>
+                            <td>{{item.cantidad}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+

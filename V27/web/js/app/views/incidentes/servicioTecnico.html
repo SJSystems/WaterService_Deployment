@@ -1,0 +1,144 @@
+﻿
+<div class="row" ng-show="subTipoIncidentesSelected.valor_ids==9">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label class="col-sm-6 control-label no-padding-right">Síntoma (reparación)</label>
+            <div class="col-sm-6">
+                <select class="col-sm-8" ng-model="$parent.servicioTecnico.sintoma_ids"
+                        ng-options="sintoma.valor_ids as sintoma.valorTexto for sintoma in sintomas"></select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label class="col-sm-6 control-label no-padding-right">Franja horaria</label>
+            <div class="col-sm-6">
+                <select ng-model="$parent.servicioTecnico.franjaHoraria_ids"
+                        ng-options="item.valor_ids as item.valorTexto for item in franjasHorarias"
+                        class="input-group col-xs-10 col-sm-8"></select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="serviciosTecnicosParaElDia!=null && serviciosTecnicosParaElDia.length>0">
+
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label class="col-sm-6 control-label no-padding-right">Planificados para el mismo día</label>
+            <div class="col-sm-6">
+                <div class="profile-user-info">
+                    <div class="profile-info-row" ng-repeat="item in serviciosTecnicosParaElDia">
+                        <div class="profile-info-name"> {{ item.franjaHoraria==null? 'Sin definir' : item.franjaHoraria  }} </div>
+
+                        <div class="profile-info-value">
+                            <span>{{item.cantidadDeServicios}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label class="col-sm-6 control-label no-padding-right">Cant. Dispensers</label>
+            <div class="col-sm-6">
+                <input ng-model="$parent.servicioTecnico.cantidadDispensers" class="validate form-control col-xs-10 col-sm-5 " fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>#Serie</th>
+                    <th>#Interno</th>
+                    <th>Tipo</th>
+                    <th>Marca</th>
+                    <th>Color</th>
+                    <th>Instalado</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="dispenser in dispensersDelCliente">
+                    <td>
+
+                        <span>
+                            <label class="middle">
+                                <input class="ace" type="checkbox" ng-model="dispenser.seleccionado">
+                                <span class="lbl">  </span>
+                            </label>
+                        </span>
+                    </td>
+                    <td>{{dispenser.numeroSerie}}</td>
+                    <td>{{dispenser.numeroInterno}}</td>
+                    <td>{{dispenser.tipoDispenser}}</td>
+                    <td>{{dispenser.marcaDispenser}}</td>
+                    <td>{{dispenser.color}}</td>
+                    <td>{{dispenser.fechaInstalacionCliente.slice(6, -2)  |  date:'dd/MM/yyyy' }}</td>
+                    <td>{{dispenser.estadoDispenser}}</td>
+                </tr>
+            </tbody>
+        </table>    
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label class="col-sm-6 control-label no-padding-right">Ubicación</label>
+            <div class="col-sm-6">
+                <div class="clearfix">
+                    <textarea class="form-control limited" ng-model="$parent.servicioTecnico.sectorUbicacion" maxlength="3000"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label class="col-sm-6 control-label no-padding-right">Responsable</label>
+            <div class="col-sm-6">
+                <input ng-model="$parent.servicioTecnico.responsableEnCliente" class="validate form-control col-xs-10 col-sm-5 " fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label class="col-sm-6 control-label no-padding-right">Teléfono Responsable</label>
+            <div class="col-sm-6">
+                <input ng-model="$parent.servicioTecnico.telefonoResponsable" class="validate form-control col-xs-10 col-sm-5 " fieldtype="text" id="txtNombreApellido" name="txtNombreApellido" type="text">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label class="col-sm-6 control-label no-padding-right">Comentarios</label>
+            <div class="col-sm-6">
+                <div class="clearfix">
+                    <textarea class="form-control limited" ng-model="$parent.servicioTecnico.comentarios" maxlength="3000"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

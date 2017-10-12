@@ -1,0 +1,134 @@
+﻿<div class="row">
+    
+    <div class="col-sm-8">
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <th>Articulo</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Subtotal</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="articulo in operaciones.Articulos">
+                    <td>
+                        {{articulo.nombreArticulo}}
+                    </td>
+                    <td>
+                        {{articulo.cantidad}}
+                    </td>
+                    <td>
+                        ${{articulo.precioUnitario}}
+                    </td>
+                    <td>
+                        ${{articulo.cantidad*articulo.precioUnitario}}
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    
+    <div class="col-sm-3">
+        
+        <div class="clearfix">
+            
+            <div class="grid2" ng-repeat="cobroConsumo in operaciones.CobrosConsumos">
+                <span class="bigger-175 blue"> ${{cobroConsumo.montoCobro}}</span>
+
+                <br>
+                Cobros consumos
+            </div>
+
+            
+        </div>
+
+        
+    </div>
+
+</div>
+
+<div class="row">
+    
+     <div class="col-sm-6" ng-if="operaciones.PrestamosDevolucionesEnvases!=null && operaciones.PrestamosDevolucionesEnvases.length>0">
+         <table class="table table-striped table-bordered table-hover" >
+            <thead>
+                <th>Evento</th>
+                <th>Articulo</th>
+                <th>Cantidad</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="articulo in operaciones.PrestamosDevolucionesEnvases">
+                    <td>
+                        {{articulo.evento}}
+                    </td>
+                     <td>
+                        {{articulo.nombreArticulo}}
+                    </td>
+                    <td>
+                        {{articulo.cantidad}}
+                    </td>
+                   
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    
+     <div class="col-sm-5" ng-if="operaciones.CobrosFacturas!=null && operaciones.CobrosFacturas.length>0">
+         
+         <table class="table table-striped table-bordered table-hover" >
+             <thead>
+                 <th>Factura</th>
+                 <th>Monto</th>
+             </thead>
+             <tbody>
+                 <tr ng-repeat="cobroFactura in operaciones.CobrosFacturas">
+                     <td>
+                         FAC-{{cobroFactura.nroFactura}}
+                     </td>
+                     <td>
+                         ${{cobroFactura.montoCobro}}
+                     </td>
+                    
+                   
+                 </tr>
+             </tbody>
+
+         </table>
+         
+
+     </div>
+    
+     <div class="col-sm-5" ng-if="operaciones.Devoluciones!=null && operaciones.Devoluciones.length>0">
+         
+         <table class="table table-striped table-bordered table-hover" >
+             <thead>
+                 <th>Artículo</th>
+                 <th>Cantidad</th>
+                 <th>Motivo</th>
+                 <th>Cambio directo</th>
+             </thead>
+             <tbody>
+                 <tr ng-repeat="devolucion in operaciones.Devoluciones">
+                     <td>
+                         {{devolucion.nombreArticulo}}
+                     </td>
+                     <td>
+                         {{devolucion.cantidadDevuelta}}
+                     </td>
+                     <td>
+                         {{devolucion.motivoDevolucion}}
+                     </td>
+                      <td>
+                         {{devolucion.esCambioDirecto?'si':'no'}}
+                     </td>
+                 </tr>
+             </tbody>
+
+         </table>
+         
+
+     </div>
+
+
+</div>

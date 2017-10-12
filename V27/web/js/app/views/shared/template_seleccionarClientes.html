@@ -1,0 +1,79 @@
+﻿
+<div title="Buscar Clientes" class="seleccionar-clientes-template hide">
+    <div class="form-horizontal">
+        <fieldset>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label col-xs-5 col-sm-2 no-padding-right">Cliente</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <div class="clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <input ng-model="clienteTexto" ng-enter="buscarClientes()" type="text" class="col-xs-12 col-sm-12 ">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="control-label col-xs-5 col-sm-2 no-padding-right">Domicilio</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <div class="clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <input ng-model="domicilio" ng-enter="buscarClientes()" type="text" class="col-xs-12 col-sm-12 ">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-5 col-sm-2 no-padding-right">Teléfono</label>
+                    <div class="col-xs-12 col-sm-9">
+                        <div class="clearfix">
+                            <span class="block input-icon input-icon-right">
+                                <input ng-model="telefono" ng-enter="buscarClientes()" type="text" class="col-xs-12 col-sm-12 ">
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+
+        <div class="form-actions center">
+
+            <button type="button" ng-click="buscarClientes()" class="btn btn-sm btn-primary">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar clientes
+            </button>
+
+        </div>
+    </div>
+
+    <div style="overflow-y: scroll; height: 500px" >
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Cliente</th>
+                    <th>Tipo</th>
+                    <th>Domicilio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cliente in clientes">
+                    <td>
+                        <button class="btn btn-white btn-default btn-round" ng-click="seleccionarCliente(cliente)">
+                            <i class="ace-icon fa fa-check green"></i>
+                        </button>
+                    </td>
+                    <td>{{cliente.nombreCliente}}</td>
+                    <td>{{cliente.tipoCliente}}</td>
+                    <td>{{cliente.domicilioCompleto}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

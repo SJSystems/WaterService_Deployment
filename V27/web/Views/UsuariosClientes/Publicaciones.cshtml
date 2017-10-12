@@ -1,0 +1,81 @@
+﻿<div ng-app="mainApp" ng-controller="publicacionesController">
+    <titulo-cliente cliente="cliente"></titulo-cliente>
+
+    <div class="user-profile row">
+        <div class="col-sm-12">
+
+            <div class="space"></div>
+
+            <form class="form-horizontal">
+                <div class="tabbable">
+                    <ul class="nav nav-tabs padding-16">
+
+                        <li ng-repeat="tab in tiposDePublicaciones" >
+                            <a data-toggle="tab" id="tab_tab_{{$index}}" href="#tab_{{$index}}" aria-expanded="true">
+                                {{tab}}
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content profile-edit-tab-content">
+
+                        <div ng-repeat="tab in tiposDePublicaciones" id="tab_{{$index}}" class="tab-pane active">
+
+                            
+
+                            <div class="timeline-container">
+
+                                <div class="timeline-items">
+                                    <div class="timeline-item clearfix" ng-repeat="publicacion in publicaciones | filter: { tipoPublicacion: tab }" >
+                                        <div class="timeline-info">
+                                            <i class="timeline-indicator ace-icon fa fa-bookmark btn btn-pink no-hover"></i>
+                                        </div>
+
+                                        <div class="widget-box transparent">
+                                            <div class="widget-header widget-header-small">
+                                                <h5 class="widget-title smaller">{{publicacion.titulo}}</h5>
+
+                                                <span class="widget-toolbar">
+                                                    <i class="ace-icon fa fa-clock-o bigger-110"></i>
+                                                    {{publicacion.fechaAlta.slice(6, -2)  |  date:'dd/MM/yyyy HH:mm'}}
+                                                </span>
+                                            </div>
+
+                                            <div class="widget-body">
+                                                <div class="widget-main">
+                                                    <div class="clearfix">
+                                                        <div class="pull-left">
+                                                            {{publicacion.descripcion}}
+                                                        </div>
+
+                                                        <div class="pull-right">
+                                                            <ol class="list-unstyled">
+                                                                <li ng-repeat="archivo in publicacion.archivos">
+                                                                    <i class="ace-icon fa fa-download green"></i>
+                                                                    <a href="/Archivos/Publicaciones/{{archivo.nombreArchivo}}" target="_blank">{{archivo.tituloArchivo}}</a>
+                                                                </li>
+                                                            </ol>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- /.timeline-items -->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+        </div><!-- /.span -->
+    </div>
+
+</div>
+
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/app_directives.js"></script>
+<script src="~/js/app/controllers/usuariosClientesControllers.js"></script>

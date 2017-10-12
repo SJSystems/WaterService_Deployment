@@ -1,0 +1,116 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "title";
+}
+<div ng-app="mainApp" ng-controller="opcionesXRolesController">
+    
+    <div class="row">
+        <div class="col-sm-3">
+            <label>
+                <input name="form-field-checkbox" ng-model="todosRolesSelected" ng-click="onTodosRolesSelectedClick()" class="ace ace-checkbox-2" type="checkbox">
+                <span class="lbl"> <strong>-- TODOS --</strong> </span>
+            </label>
+        </div>
+        <div class="col-sm-3" ng-repeat="rol in roles">
+            <label>
+                <input name="form-field-checkbox" ng-model="rol.visible" class="ace ace-checkbox-2" type="checkbox">
+                <span class="lbl"> {{rol.nombreRol}}</span>
+            </label>
+        </div>
+        
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+
+
+            <div class="widget-box widget-color-orange ui-sortable-handle collapsed" ng-repeat="modulo in modulos" style="opacity: 1;">
+
+                <!-- #section:custom/widget-box.options.collapsed -->
+                <div class="widget-header widget-header-small">
+                    <h6 class="widget-title">
+                        <a href="#" data-action="collapse">
+                            <i class="ace-icon fa fa-plus" data-icon-show="fa-plus" data-icon-hide="fa-minus"></i>
+                        </a>
+                        {{modulo.nombre==null? 'Sin especificar': modulo.nombre}}
+                    </h6>
+
+                </div>
+
+                <!-- /section:custom/widget-box.options.collapsed -->
+                <div class="widget-body" >
+                    <div class="widget-main">
+                        
+                        <div class="widget-box transparent" ng-repeat="funcionalidad in modulo.funcionalidades">
+                            <div class="widget-header widget-header-flat">
+                                <h4 class="widget-title lighter">
+                                    <a href="javascript:void(0)" ng-click="funcionalidad.verModulos = !funcionalidad.verModulos">
+                                        <i class="ace-icon fa {{funcionalidad.verModulos?'fa-chevron-down':'fa-chevron-up'}}"></i>
+                                    </a>
+                                    {{funcionalidad.nombre==null? 'Sin especificar': funcionalidad.nombre}}
+                                </h4>
+
+                                
+                            </div>
+
+                            <div class="widget-body">
+                                <div class="widget-main padding-4" ng-if="funcionalidad.verModulos"  style="overflow:auto; max-height:600px">
+                                    
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="center">
+                                                    Permiso
+                                                </th>
+                                                <th class="center" ng-repeat="rol in roles" ng-show="rol.visible">
+                                                    {{rol.nombreRol}}
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+
+                                            <tr ng-repeat="config in funcionalidad.configuraciones">
+                                                <td>{{config.opcion.displayText}} </td>
+                                                <td ng-repeat="configRol in config.roles" class="itemdiv" ng-show="configRol.rol.visible">
+
+                                                    <span ng-show="configRol.asignado" title="{{config.opcion.descripcion}}" class="label label-success arrowed-right">Si</span>
+                                                    <span ng-show="!configRol.asignado" title="{{config.opcion.descripcion}}" class="label label-danger arrowed">No</span>
+
+                                                    <div class="tools" style="z-index: 999">
+                                                        <button type="button" class="btn btn-minier btn-danger" title="Quitar permiso"
+                                                                ng-show="configRol.asignado" ng-click="quitarPermiso(config.opcion.id, configRol.rol.id)">
+                                                            <i class="icon-only ace-icon fa fa-times"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-minier btn-success" title="Asignar permiso"
+                                                                ng-show="!configRol.asignado" ng-click="asignarPermiso(config.opcion.id, configRol.rol.id)">
+                                                            <i class="icon-only ace-icon fa fa-check"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div><!-- /.widget-main -->
+                            </div><!-- /.widget-body -->
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+          
+        </div><!-- /.span -->
+    </div>
+
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/securityControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

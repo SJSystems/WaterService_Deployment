@@ -1,0 +1,48 @@
+﻿@model List<WaterService.Common.Entities.DTOs.VIEW_VentasEntregas_DTO>
+
+@{
+    Layout = null;
+}
+
+<div>
+            <table id="tbl_Ventas" class=" dynamicDataTable  table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>                        
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Cliente </th>
+                        <th>Domicilio </th>
+                        <th>Venta</th>
+                        <th>Cobro Consumos</th>
+                        <th>Cobro Facturas</th>
+                        
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                    @if (Model!=null )
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>VE-@item.id</td>
+                                <td>
+                                    @item.fechaVenta.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    @item.nombreCliente
+                                </td>
+                                <td>@item.domicilioCompleto</td>
+                                <td>$@item.montoTotalVenta</td>
+                                <td>$@item.totalCobrado</td>
+                                <td>$@item.totalCobradoFactura</td>
+                              
+                       
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>

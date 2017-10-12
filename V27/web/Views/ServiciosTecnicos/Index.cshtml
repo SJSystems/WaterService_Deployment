@@ -1,0 +1,325 @@
+﻿@{
+    ViewBag.Title = "title";
+}
+
+<div class="col-xs-12 col-sm-12 widget-container-col ui-sortable" style="min-height: 109px;"
+     ng-app="mainApp" ng-controller="buscarServiciosTecnicosController">
+    <div class="widget-box widget-color-dark ui-sortable-handle" style="opacity: 1; z-index: 0;">
+        <div class="widget-header widget-header-small">
+            <h2 class="widget-title smaller">Servicios Técnicos</h2>
+        </div>
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label no-padding-right center">Reparto</label>
+                                    <div class="col-sm-8">
+                                        <select ng-model="repartoSeleccionadoBuscarId" style="width: 200px"
+                                                ng-options="reparto.id as reparto.nombreReparto for reparto in repartosBuscar"></select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center">Planificado Desde</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaPlanificadoDesde" fieldtype="text" id="fecha" name="fecha" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center">Planificado Hasta</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaPlanificadoHasta" fieldtype="text" id="fecha" name="fecha" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label no-padding-right center">Síntomas</label>
+                                    <div class="col-sm-8">
+                                        <multiple-select codigo="sintomas" placeholder="Síntomas" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center">Creado Desde</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaCreadoDesde" fieldtype="text" id="fecha" name="fecha" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-xs-12 col-sm-4 no-padding-right center">Creado Hasta</label>
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="clearfix">
+                                    <div class="input-group">
+                                        <input class="validate form-control date-picker col-xs-10 col-sm-5" ng-model="fechaCreadoHasta" fieldtype="text" id="fecha" name="fecha" placeholder="dd/mm/yyyy" type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="mensajeValidacion help-block"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label no-padding-right center">Estados</label>
+                            <div class="col-sm-8">
+                                <select ng-model="estadoSeleccionadoId" style="width: 200px"
+                                        ng-options="estado.valor_ids as estado.valorTexto for estado in estados"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="checkbox">
+                            <label>
+                                <input name="form-field-checkbox" ng-model="soloAbiertos" type="checkbox" class="ace">
+                                <span class="lbl"> Solo Abiertos</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="checkbox">
+                            <label>
+                                <input name="form-field-checkbox" ng-model="soloNoPlanificados" type="checkbox" class="ace">
+                                <span class="lbl"> Solo No Planificados</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+              
+            </div>
+        </div>
+        <div class="widget-toolbox padding-8 clearfix">
+            <select ng-model="repartoSeleccionado" style="width: 200px"
+                    ng-options="reparto as reparto.nombreReparto for reparto in repartos"></select>
+
+            <input type="text" ng-model="fechaPlanificada" class="date-picker" style="width: 100px" placeholder="Fecha" />
+
+            <button class="btn btn-white btn-default btn-round" ng-click="PlanificarServiciosTecnicos()">
+                <i class="ace-icon fa fa-bolt red2"></i>
+                Planificar Servicios Técnicos
+            </button>
+            <button class="btn btn-white btn-default btn-round" ng-click="QuitarPlanificacion()">
+                <i class="ace-icon fa fa-bolt red2"></i>
+                Quitar Planificados
+            </button>
+            
+            <button type="button" style="margin-left: 10px" ng-click="BuscarServiciosTecnicos()" class="btn btn-sm btn-primary pull-right">
+                <i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+                Buscar Servicios Técnicos
+            </button>
+
+            <a href="/Clientes/VerClientesEnMapa?idsClientes={{idsClientesUrl}}" target="_blank" class="btn btn-sm btn-warning" style="margin-left: 10px">
+                Mapa
+                <i class="ace-icon fa fa-map-marker icon-on-right bigger-110"></i>
+            </a>
+
+            <a href="/ServiciosTecnicos/Crear" class="btn btn-sm btn-success pull-right">
+                <i class="ace-icon fa fa-plus icon-on-right bigger-110"></i>
+                Nuevo
+            </a>
+        </div>
+    </div>
+
+
+    <uib-tabset active="activeJustified" justified="true">
+
+        <uib-tab index="0" heading="Lista">
+
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            <label class="hasTooltip" title="Seleccionar todos los servicios técnicos">
+                                <input type="checkbox" name="file-format" id="id-file-format" class="ace"
+                                       ng-model="seleccionarTodos">
+                                <span class="lbl"></span>
+                            </label>
+                        </th>
+                        <th>Id</th>
+                        <th>Cliente</th> 
+                        <th>Síntoma</th>
+                        <th>Creado</th>
+                        <th>Planificada</th>
+                        <th>Estado</th>
+                        <th>Prioridad</th>
+                        <th>Reparto</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="servicioTecnico in serviciosTecnicos | orderBy : 'fechaCreacion' " class="{{obtenerColorDeFila(servicioTecnico)}}">
+                        
+                        <td>
+                            <label ng-hide="servicioTecnico.estadoServicioTecnico_ids == 3 || servicioTecnico.estadoServicioTecnico_ids == 4 " class="hasTooltip" title="Seleccionar servicio técnico">
+                                <input type="checkbox" name="file-format" class="ace"
+                                       ng-model="servicioTecnico.seleccionado">
+                                <span class="lbl"> </span>
+                            </label>
+                        </td>
+                        <td>{{servicioTecnico.id}}</td>
+                        <td>
+                            {{servicioTecnico.nombreCliente}}
+                            <br />
+                            {{servicioTecnico.domicilioCompleto}}
+                        </td>
+                        <td>
+                            {{servicioTecnico.sintoma}}
+                            <br />
+                            {{servicioTecnico.cantidadDispensers > 0 ? "dispensers: "+servicioTecnico.cantidadDispensers:""}}
+                        </td>
+                        <td>
+                            {{servicioTecnico.fechaCreacion.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                            <br />
+                            {{servicioTecnico.fechaCreacion.slice(6, -2)  |  date:'HH:mm'}}
+                            <i class="ace-icon fa fa-exclamation-triangle bigger-130 orange" 
+                               ng-show="servicioTecnico.demora.mostrarError" 
+                               uib-tooltip="{{servicioTecnico.demora.mensaje}}"
+                               tooltip-placement="right"></i>
+                        </td>
+                        <td>
+                            {{servicioTecnico.fechaVisitaPlanificada.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                            <br />
+                            {{servicioTecnico.franjaHoraria}}
+                        </td>
+                        <td>{{servicioTecnico.estadoServicioTecnico}}</td>
+                        <td>{{servicioTecnico.prioridad}}</td>
+                        <td>{{servicioTecnico.nombreReparto}}</td>
+                        <td>
+                            <a href="/ServiciosTecnicos/Crear?id={{servicioTecnico.id}}">
+                                <i class="ace-icon fa fa-pencil"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </uib-tab>
+
+        <uib-tab index="1" heading="Por cliente">
+
+            <table id="tb_incidentes" class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        @*<th>
+                            <label class="hasTooltip" title="Seleccionar todos los servicios técnicos">
+                                <input type="checkbox" name="file-format" id="id-file-format" class="ace"
+                                       ng-model="seleccionarTodos">
+                                <span class="lbl"></span>
+                            </label>
+                        </th>*@
+                        <th>Id</th>
+                        <th>Síntoma</th>
+                        <th>Creado</th>
+                        <th>Planificada</th>
+                        <th>Estado</th>
+                        <th>Prioridad</th>
+                        <th>Reparto</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="servicioTecnico in serviciosTecnicos" class="{{obtenerColorDeFila(servicioTecnico)}}">
+
+                        <td ng-if="mostrarColumnaCliente(servicioTecnico,$index)" rowspan="{{obtenerRowspan(servicioTecnico)}}">
+                            {{servicioTecnico.nombreCliente}}
+                            <br />
+                            {{servicioTecnico.domicilioCompleto}}
+                        </td>
+                        @*<td>
+                            <label ng-hide="servicioTecnico.estadoServicioTecnico_ids == 3 || servicioTecnico.estadoServicioTecnico_ids == 4 " class="hasTooltip" title="Seleccionar servicio técnico">
+                                <input type="checkbox" name="file-format" class="ace"
+                                       ng-model="servicioTecnico.seleccionado">
+                                <span class="lbl"> </span>
+                            </label>
+                        </td>*@
+                        <td>{{servicioTecnico.id}}</td>
+                        <td>
+                            {{servicioTecnico.sintoma}}
+                            <br />
+                            {{servicioTecnico.cantidadDispensers > 0 ? "dispensers: "+servicioTecnico.cantidadDispensers:""}}
+                        </td>
+                        <td>
+                            {{servicioTecnico.fechaCreacion.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                            <br />
+                            {{servicioTecnico.fechaCreacion.slice(6, -2)  |  date:'HH:mm'}}                             
+                        </td>
+                        <td>
+                            {{servicioTecnico.fechaVisitaPlanificada.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                            <br />
+                            {{servicioTecnico.franjaHoraria}}
+                        </td>
+                        <td>{{servicioTecnico.estadoServicioTecnico}}</td>
+                        <td>{{servicioTecnico.prioridad}}</td>
+                        <td>{{servicioTecnico.nombreReparto}}</td>
+                        <td>
+
+                            <a href="/ServiciosTecnicos/Crear?id={{servicioTecnico.id}}">
+                                <i class="ace-icon fa fa-pencil"></i>
+                            </a>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </uib-tab>
+      
+    </uib-tabset>
+
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoControllers.js"></script>
+<script src="~/js/app/controllers/serviciosTecnicoCommonControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

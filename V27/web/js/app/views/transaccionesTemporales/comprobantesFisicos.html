@@ -1,0 +1,64 @@
+﻿<div class="widget-box ui-sortable-handle">
+
+    <div class="widget-header">
+        <h5 class="widget-title">
+            Comprobantes Fisicos            
+        </h5>
+
+        <!-- #section:custom/widget-box.toolbar -->
+        <div class="widget-toolbar">
+
+            <a href="#" class="collapse-button" data-action="collapse">
+                <i class="ace-icon fa fa-chevron-up"></i>
+            </a>
+        </div>
+
+        <!-- /section:custom/widget-box.toolbar -->
+    </div>
+
+    <div class="widget-body" style="display: block;">
+        <div class="widget-main">
+            <table class="table table-bordered table-striped">
+                <thead class="thin-border-bottom">
+                    <tr>
+                        <th>
+                            Tipo
+                        </th>
+                        <th style="width: 50px;">
+                            Prefijo
+                        </th>
+                        <th>
+                            Número
+                        </th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <strong>Remito</strong>
+                        </td>
+                        <td>
+                            <input type="text" placeholder="n° prefijo" ng-model="ventaActual.remitoPrefijo">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="n° comprobante" ng-model="ventaActual.remitoNumero">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Recibo</strong>
+                        </td>
+                        <td>
+                            <input type="text" placeholder="n° prefijo" ng-model="ventaActual.reciboPrefijo">
+                        </td>
+                        <td>
+                            <input type="text" placeholder="n° comprobante" ng-model="ventaActual.reciboNumero">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </div>
+    </div>
+</div>

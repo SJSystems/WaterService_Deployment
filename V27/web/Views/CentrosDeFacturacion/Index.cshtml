@@ -1,0 +1,217 @@
+﻿
+
+<div ng-app="mainApp">
+    <div ng-controller="buscarCentrosDeFactuCtrl">
+        <h2 class="widget-title smaller">Centros de Facturación</h2>
+        <div class="form-horizontal">           
+
+            <div class="form-actions ">
+
+                <label class="middle">
+                    <input class="ace" type="checkbox" ng-model="soloActivos">
+                    <span class="lbl">
+                        Solo Activos
+                    </span>
+                </label>
+
+                <button type="button" ng-click="Init()" class="btn btn-sm btn-primary">
+                    <i class="ace-icon fa fa-search icon-on-right align-center bigger-110"></i>
+                    Buscar
+                </button>
+                <button type="button" class="btn btn-sm btn-success" ng-click="EditarCentrosDeFactu(centro, 'new')">
+                    <i class="ace-icon fa fa-plus icon-on-right align-middle bigger-110"></i>
+                    Agregar
+                </button>
+            </div>
+        </div>
+
+        <div class="row" ng-repeat="centro in centros">
+            </br>
+
+
+            <div class="col-sm-12">
+                <div class="col-sm-12">
+                    <div class="profile-user-info profile-user-info-striped">
+
+                        <div class="col-sm-5">
+                            <span class="black middle bolder">Centro de Facturación: {{centro.id}}</span>
+                        </div>
+
+                        <div class="col-sm-5">                            
+                                <button type="button" class="btn btn-minier btn-yellow" ng-click="EditarCentrosDeFactu(centro, 'edit')">
+                                    <i class="ace-icon fa fa-pencil align-center bigger-110"></i>
+                                    Editar
+                                </button>
+                          
+                                <button type="button" class="btn btn-minier btn-inverse" ng-click="EliminarCentrosDeFactu(centro.id)">
+                                    <i class="ace-icon fa fa-trash-o align-center bigger-110"></i>
+                                    Borrar
+                                </button>                            
+                        </div>
+
+                        <div class="col-sm-2">
+                            @*<span class="green middle bolder" ng-show="centro.activo">  Activo </span>*@
+                            @*<span class="red middle bolder" ng-hide="centro.activo">  Inactivo </span>*@
+
+                            <span class="label label-success arrowed" ng-show="centro.activo"> Activo </span>                            
+                            <span class="label label-danger arrowed-in" ng-hide="centro.activo"> Inactivo </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="col-sm-4">
+                    <!-- INICIO # section:pages/profile.info -->
+                    <div class="profile-user-info profile-user-info-striped">
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Razon Social </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.razonSocial}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Nombre de Fantasía </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.nombreDeFantasia}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Inicio Activ. </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.fechaInicioActividades}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Condición IVA </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.condicionIva}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Cuit </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.cuit}} </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- FIN # section:pages/profile.info -->
+                </div>
+
+                <div class="col-sm-4">
+                    <!-- INICIO # section:pages/profile.info -->
+                    <div class="profile-user-info profile-user-info-striped">
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Domicilio </div>
+
+                            <div class="profile-info-value">
+                                <i class="fa fa-map-marker light-orange bigger-110"></i>
+                                <span class=""> {{centro.domicilio}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Email </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.emailEmpresa}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Sitio Web </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.sitioWebEmpresa}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Teléfonos </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.telefonos}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Punto de Venta </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.puntoDeVenta}} </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- FIN # section:pages/profile.info -->
+                </div>
+
+                <div class="col-sm-4">
+                    <!-- INICIO # section:pages/profile.info -->
+                    <div class="profile-user-info profile-user-info-striped">
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Tipo </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.tipoDeFacturacion}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Entorno </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.entorno}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Archivo Certif. </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.nombreArchivoCertificado}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Clave Certif. </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.passwordCertificado}} </span>
+                            </div>
+                        </div>
+
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Logo </div>
+
+                            <div class="profile-info-value">
+                                <span class=""> {{centro.archivoLogo}} </span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- FIN # section:pages/profile.info -->
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="~/js/app/mainApp.js"></script>
+<script src="~/js/app/controllers/centrosDeFactuControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

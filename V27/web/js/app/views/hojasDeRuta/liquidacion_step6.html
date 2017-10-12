@@ -1,0 +1,52 @@
+﻿<div class="row">
+    <div class="col-sm-6">
+        <h3 class="lighter block green">Dispensers:</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Nro</th>
+                    <th>Origen</th>
+                    <th>Estado</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="dispenser in liquidacionServicioTecnico.dispensers"
+                    ng-style="obtenerEstiloParaDispenser(dispenser)">
+                    <td>{{dispenser.dispenser.numeroInterno}} </td>
+                    <td>{{dispenser.esDeFabrica ? 'Fábrica': 'Cliente' }} </td>
+                    <td>{{dispenser.esError?'ERROR':'OK'}} </td>
+                    <td>{{dispenser.observaciones}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <div class="col-sm-6">
+        <h3 class="lighter block green">Repuestos:</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Repuesto</th>
+                    <th>Cant salida</th>
+                    <th>Cant entrada</th>
+                    <th>Cant utilizada</th>
+                    <th>Dif</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="repuesto in liquidacionServicioTecnico.repuestos"
+                    ng-style="obtenerEstiloParaRepuesto(repuesto)">
+                    <td>{{repuesto.articulo.nombreArticulo}} ({{repuesto.articulo.codigoInterno}}) </td>
+                    <td>{{repuesto.cantidadSalida }} </td>
+                    <td>{{repuesto.cantidadEntrada }} </td>
+                    <td>{{repuesto.cantidadUtilizada }} </td>
+                    <td>{{repuesto.diferencia }} </td>
+                    <td>{{repuesto.observaciones}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+     
+</div>

@@ -1,0 +1,155 @@
+﻿@model List<WaterService.Common.Entities.DTOs.VIEW_Clientes_DTO>
+@{
+    Layout = null;
+}
+
+<div class="row">
+
+    <div class="col-xs-12">
+        
+        <!-- <div class="table-responsive"> -->
+        <!-- <div class="dataTables_borderWrap"> -->
+        <div>
+            
+            <table id="tb_resultadoClientes" class=" dynamicDataTable  table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>                        
+                        <th>ID</th>
+                        <th>Nombre / Razón Social</th>
+                        <th>Domicilio</th>
+                        <th>Reparto</th>
+                        <th>Estado</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                    @if (Model!=null )
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.cliente_id</td>
+                                <td>
+                                    @item.nombreCliente 
+                                    
+                                    @if (item.tipoCliente_ids == 1)
+                                    {
+                                        <i class="fa fa-home green hasTooltip" title="Familia"></i>
+                                    }
+                                    else if (item.tipoCliente_ids == 2 && !item.clientePadre.HasValue)
+                                    {
+                                        <i class="ace-icon fa fa-building-o blue hasTooltip" title="Empresa - principal"></i>
+                                    }
+                                    
+                                    @if (!item.clientePadre.HasValue)
+                                    {
+                                       
+                                    }
+
+                                    @if (!item.datosCompletos)
+                                    {
+                                        <i class="ace-icon fa fa-exclamation-triangle bigger-130 orange hasTooltip" title="Datos incompletos"></i>
+                                    }
+                                </td>
+                                
+                                <td>@item.domicilioCompleto</td>
+                                <td>@item.nombreReparto</td>
+                                <td>@item.estadoCliente</td>
+                                <td>
+                                    <div class="hidden-sm hidden-xs action-buttons">
+                                      
+                                        <div class="btn-group">
+                                            <button data-toggle="dropdown" class="btn btn-primary btn-white btn-xs dropdown-toggle">
+                                                Acciones
+                                                <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                                            </button>
+
+                                            <ul class="dropdown-menu dropdown-inverse">
+
+                                                @if (!item.datosCompletos)
+                                                {
+                                                    <li>
+                                                        <a class="red" href="javascript:Modelo.CompletarCliente(@item.cliente_id);"><i class="fa fa-check-square-o"></i>Completar cliente</a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                }
+
+                                                <li>
+                                                    <a href="/Clientes/ClienteDisplay/@item.cliente_id">Ver detalles</a>
+                                                </li>
+                                                    
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a href="/Incidentes/#?clienteId=@item.cliente_id" target="_blank">Crear incidente</a>
+                                                </li>
+
+                                                <li class="divider"></li>
+
+                                                <li>
+                                                    <a href="/Clientes/EditCliente/@item.cliente_id">Editar</a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="/Clientes/EditDomicilio/@item.cliente_id">Domicilio</a>
+                                                </li>												
+                                                <li>
+                                                    <a href="/Clientes/EditReparto/@item.cliente_id">Reparto</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/Clientes/DatosFacturacion/@item.cliente_id">Facturación</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/Clientes/EditContactos/@item.cliente_id">Contactos</a>
+                                                </li>
+                                                <li>
+                                                    <a href="/Clientes/EditComodatos/@item.cliente_id">Comodato</a>
+                                                </li>     
+                                                <li>
+                                                    <a href="/Clientes/EditAbonos/@item.cliente_id">Abonos</a>
+                                                </li>                                                                                        
+                                                <li class="divider"></li>
+                                                <li>
+                                                    <a  href="javascript:Modelo.EliminarCliente(@item.cliente_id);">
+                                                        <i class="fa fa-trash"></i>Eliminar cliente
+                                                    </a>
+                                                </li>
+                                                    
+
+                                            </ul>
+                                        </div><!-- /.btn-group -->
+
+                                        <a class="green hasTooltip" title="Editar cliente" href="/Clientes/EditCliente/@item.cliente_id">
+                                            <i class="ace-icon fa fa-pencil bigger-130"></i>
+                                        </a>
+                                        
+                                        <a class="hasTooltip" title="Cuenta del cliente" href="/Clientes/HistorialMovimientos/@item.cliente_id">
+                                            <i class="ace-icon fa fa-history bigger-130"></i>
+                                            Cuenta
+                                        </a>
+
+                                        @if (!item.datosCompletos)
+                                        {
+                                            <a class="red hasTooltip" title="Completar datos" href="javascript:Modelo.CompletarCliente(@item.cliente_id);">
+                                                <i class="fa fa-check-square-o bigger-130 "></i>
+                                            </a>
+                                        }
+                                        
+                                    </div>
+
+                                </td>
+                       
+                            </tr>
+                        }
+                    }
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    setTooltip();
+</script>

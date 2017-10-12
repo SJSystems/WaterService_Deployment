@@ -1,0 +1,27 @@
+﻿
+<links-de-cliente cliente-id="clienteId"></links-de-cliente>
+
+<div ng-init="onInit()">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfonos</th>
+                <th>Tipo</th>
+                <th>Sector</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in datosCliente.contactos">
+                <td>{{item.nombrePersona}}</td>
+                <td>{{item.email}}</td>
+                <td>{{item.telefonoCelular}} / {{item.telefonoFijo}}</td>
+                <td>{{item.tipo}}</td>
+                <td>{{item.sector}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<dashboard-cliente cliente-id="clienteId"></dashboard-cliente>

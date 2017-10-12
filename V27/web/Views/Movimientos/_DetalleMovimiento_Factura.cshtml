@@ -1,0 +1,31 @@
+﻿@model System.Collections.Generic.List<WaterService.Common.Entities.DTOs.VIEW_ItemsFacturas_DTO>
+@{
+    Layout = null;
+}
+  <table class="table">
+    <thead>
+        <th>Cod</th>
+        <th>Artículo</th>
+        <th>Cant</th>
+        <th>Precio</th>
+        <th>IVA</th>
+        <th>Subtotal</th>
+
+    </thead>
+    <tbody>
+        
+       @foreach (var item in Model)
+       {
+         <tr>
+            <td>@item.codigoInterno</td>
+            <td>@item.descriptionItem</td>
+            <td>@item.cantidad</td>
+             <td>$@item.precioUnitario</td>
+             <td>$@(Math.Round(item.subtotalIva.Value,2))</td>
+            <td>$@(item.subtotal)</td>
+        </tr>
+
+       }
+
+    </tbody>
+</table>

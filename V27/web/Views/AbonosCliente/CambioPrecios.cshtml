@@ -1,0 +1,155 @@
+﻿<div ng-app="mainApp" ng-controller="cambiosPreciosCtrl" >
+    
+    <div class="row">
+        
+        <div class="col-xs-12 col-sm-8">
+	    
+            <div class="widget-box">
+                
+                <div class="widget-header">
+                    <h4 class="widget-title">Aumento masivo de precios</h4>
+
+                    <span class="widget-toolbar">
+	                    
+                        @* <a href="#" data-action="collapse">
+	                        <i class="ace-icon fa fa-chevron-up"></i>
+	                    </a>*@
+	                    
+                    </span>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+	                    
+                        <div>
+                            <label for="form-field-select-1">Entidad de aumento</label>
+                            <select class="form-control" id="form-field-select-1" ng-model="entidadAumento"  >
+                                <option value="1" selected>Abonos</option>
+                                <option value="2">Artículos de abonos</option>
+                                <option value="3">Comodatos</option>
+                                
+                            </select>
+                        </div>
+                        
+                        <hr />
+                        
+                        <div ng-hide="entidadAumento==1">
+                            <label for="form-field-select-3">Artículo</label>
+                            <br />
+                            <select id="select_articulos" data-placeholder="Todos los artículos" 
+                                    ng-model="articuloSelected" ng-options="art.articulo  for art in articulos">
+                            </select>
+                        </div>
+
+                        <hr ng-hide="entidadAumento==1"/>
+                        
+                        <div>
+                            <label for="form-field-select-1">Parámetro de aumento</label>
+
+                            <select class="form-control" id="form-field-select-1" ng-model="parametroAumento" >
+                                <option value="1" selected>Por porcentaje</option>
+                                <option value="2">Por monto</option>
+                                <option value="3">Por precio final</option>
+                            </select>
+                        </div>
+                        
+                        <hr /> 
+                        
+                        <div>
+                            <label for="form-field-select-1">Tipo de cliente</label>
+
+                            <select class="form-control" id="form-field-select-1" ng-model="tipoDeCliente" >
+                                <option value="0" selected>Todos</option>
+                                <option value="1">Familia</option>
+                                <option value="2">Empresa</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="form-field-select-1">Zona</label>
+
+                            <select class="form-control" ng-model="zonaSeleccionada" ng-options="zona.valorTexto for zona in zonas"></select>
+                        </div>
+
+                        
+                        <hr /> 
+                        
+                        <div ng-show="parametroAumento==2">
+	                        
+                            <label >
+                                Monto aumento
+                            </label>
+
+                            <div class="input-group col-sm-6">
+                                <input class="form-control decimalFormat" smart-float ng-model="montoAumento" type="text" />
+                                <span class="input-group-addon">
+                                    <strong>${{montoAumento}}</strong>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div ng-show="parametroAumento==1">
+	                        
+                            <label for="form-field-mask-2">
+                                Porcentaje aumento
+                            </label>
+
+                            <div class="input-group col-sm-6">
+                                <input class="form-control decimalFormat" smart-float ng-model="porcentajeAumento" type="text"  /> 
+                                <span class="input-group-addon">
+                                    <strong>{{porcentajeAumento}}%</strong>
+                                </span>
+
+                            </div>
+                        </div>
+                        
+                        <div ng-show="parametroAumento==3">
+	                        
+                            <label for="form-field-mask-2">
+                               Precio final
+                            </label>
+
+                            <div class="input-group col-sm-6">                               
+                                <input class="form-control decimalFormat" smart-float ng-model="precioFinalAumento" type="text"  /> 
+                                <span class="input-group-addon">
+                                    <strong>${{precioFinalAumento}}</strong>
+                                </span>
+                            </div>
+                        </div>
+
+                        <hr  ng-hide="parametroAumento==3" />
+
+                        <div ng-hide="parametroAumento==3">
+	                        
+                            <label >
+                                Precio máximo
+                            </label>
+
+                            <div class="input-group col-sm-6">
+                                <input class="form-control decimalFormat" smart-float ng-model="precioTope"  type="text" />
+                                <span class="input-group-addon">
+                                    <strong>${{precioTope}}</strong>
+                                </span>
+                            </div>
+                        </div>
+	                    
+                    </div>
+                </div>
+                
+                <div class="form-actions center">
+                    <button type="button" class="btn btn-sm btn-success" ng-click="confirmarCambioDePrecio()">
+                        Modificar precios
+                        <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                    </button>
+                </div>
+            
+            </div>
+
+        </div>
+        
+    </div>
+
+</div>
+
+<script src="~/js/app/controllers/cambioPreciosControllers.js"></script>
+<script src="~/js/app/app_directives.js"></script>

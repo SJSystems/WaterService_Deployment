@@ -1,0 +1,61 @@
+﻿<div class="widget-box widget-color-green">
+    <!-- #section:custom/widget-box.options -->
+    <div class="widget-header">
+        <h5 class="widget-title bigger lighter">
+            <i class="ace-icon fa fa-list-alt"></i>
+            Cobros recibidos
+        </h5>
+    </div>
+
+    <!-- /section:custom/widget-box.options -->
+    <div class="widget-body">
+        <div class="widget-main no-padding">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Recibo</th>
+                        <th>Importe</th>
+                        <th>Forma de pago</th>
+                        <th>Info</th>
+                    </tr>
+                </thead>
+                <tbody ng-repeat="cobro in cobros">
+
+                    <tr>
+                        <td>
+                            {{cobro.fecha.slice(6, -2)  |  date:'dd/MM/yyyy'}}
+                        </td>
+                        <td>
+                            <span class="lbl" ng-show="cobro.recibo_id != null">
+                                <i class="fa fa-file-pdf-o"></i>
+                                <a href="/UsuariosClientes/ObtenerComprobante?tipoComprobante=3&idComprobante={{cobro.recibo_id}}" target="_blank">
+                                    {{cobro.nroDeRecibo}}
+                                </a>
+                            </span>
+                            <span class="lbl" ng-show="cobro.recibo_id == null">
+                               {{cobro.nroDeRecibo}}
+                            </span>
+                        </td>                        
+                        <td>
+                            <strong>
+                                ${{cobro.importe}}
+                            </strong>
+                        </td>
+                        <td>
+                            {{cobro.formaDePago}}
+                        </td>
+                        <td>
+                            {{cobro.info}}
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+</div>
